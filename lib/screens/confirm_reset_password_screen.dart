@@ -166,7 +166,9 @@ class ConfirmResetPasswordScreenState
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Text(
                     'Back',
                     style: TextStyle(

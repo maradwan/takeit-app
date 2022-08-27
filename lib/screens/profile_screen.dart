@@ -3,8 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String name = '';
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      final result = await Amplify.Auth.fetchUserAttributes();
+      for (final element in result) {
+        if (element.userAttributeKey == CognitoUserAttributeKey.name) {
+          setState(() {
+            name = element.value;
+          });
+          break;
+        }
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Amr Khaled'),
+        title: Text(name),
         actions: [
           IconButton(
             onPressed: () {
@@ -23,10 +46,12 @@ class ProfileScreen extends StatelessWidget {
           IconButton(
             onPressed: () async {
               await Amplify.Auth.signOut();
+              if (!mounted) return;
+
               Navigator.pushReplacementNamed(context, '/');
             },
-            icon: const Icon(FontAwesomeIcons.gear),
-          )
+            icon: const Icon(FontAwesomeIcons.arrowRightFromBracket),
+          ),
         ],
       ),
       body: Container(),

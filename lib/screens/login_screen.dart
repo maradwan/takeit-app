@@ -10,27 +10,23 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   bool _isSignedIn = false;
   SignupData? _signupData;
 
   Future<bool> isAuthenticated() async {
-    try {
-      await Amplify.Auth.getCurrentUser();
-      return true;
-    } on AuthException catch (_) {
-      return false;
-    }
+    final session = await Amplify.Auth.fetchAuthSession();
+    return session.isSignedIn;
   }
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
       final auth = await isAuthenticated();
-      if (auth) {
+      if (auth && mounted) {
         Navigator.pushReplacementNamed(context, TabsScreen.routeName);
       }
     });
@@ -76,9 +72,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<String?>? _onRecoverPassword(String email) async {
     try {
       final res = await Amplify.Auth.resetPassword(username: email);
+      if (!mounted) return null;
 
       if (res.nextStep.updateStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
-        Navigator.of(context).pushReplacementNamed(
+        Navigator.of(context).pushNamed(
           ConfirmResetPasswordScreen.routeName,
           arguments: LoginData(name: email, password: ''),
         );
