@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
@@ -20,7 +21,10 @@ class ProfileScreen extends StatelessWidget {
             icon: const Icon(FontAwesomeIcons.plus),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await Amplify.Auth.signOut();
+              Navigator.pushReplacementNamed(context, '/');
+            },
             icon: const Icon(FontAwesomeIcons.gear),
           )
         ],

@@ -6,6 +6,8 @@ import 'package:travel_app/screens/received_packages_screen.dart';
 import 'package:travel_app/screens/search_screen.dart';
 
 class TabsScreen extends StatefulWidget {
+  static const String routeName = '/tabs';
+
   const TabsScreen({Key? key}) : super(key: key);
 
   @override

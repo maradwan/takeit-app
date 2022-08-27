@@ -1,75 +1,70 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:travel_app/screens/tabs_screen.dart';
 
-class ConfirmEmailScreen extends StatefulWidget {
-  static const String routeName = '/confirm-email';
+class ConfirmResetPasswordScreen extends StatefulWidget {
+  static const String routeName = '/confirm-reset-password';
 
-  const ConfirmEmailScreen({Key? key}) : super(key: key);
+  const ConfirmResetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  ConfirmEmailScreenState createState() => ConfirmEmailScreenState();
+  ConfirmResetPasswordScreenState createState() =>
+      ConfirmResetPasswordScreenState();
 }
 
-class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
-  late final SignupData _data;
+class ConfirmResetPasswordScreenState
+    extends State<ConfirmResetPasswordScreen> {
+  late final LoginData _data;
   final _controller = TextEditingController();
+  final _newPasswordController = TextEditingController();
   bool _isEnabled = false;
+  bool _obscureText = true;
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      final argMap = ModalRoute.of(context)!.settings.arguments as SignupData;
+      final argMap = ModalRoute.of(context)!.settings.arguments as LoginData;
       setState(() {
         _data = argMap;
       });
     });
+    super.initState();
 
     _controller.addListener(() {
       setState(() {
         _isEnabled = _controller.text.isNotEmpty;
       });
     });
-    super.initState();
+    _newPasswordController.addListener(() {
+      setState(() {
+        _isEnabled = _controller.text.isNotEmpty;
+      });
+    });
   }
 
-  void _verifyCode(SignupData data, String code) async {
+  void _resetPassword(
+      BuildContext context, String code, String password) async {
     try {
-      await Amplify.Auth.signOut();
-      final res = await Amplify.Auth.confirmSignUp(
-        username: data.name!,
+      await Amplify.Auth.confirmResetPassword(
+        username: _data.name,
+        newPassword: password,
         confirmationCode: code,
       );
-
-      if (res.isSignUpComplete) {
-        // Login user
-        final user = await Amplify.Auth.signIn(
-            username: data.name!, password: data.password);
-
-        if (user.isSignedIn && mounted) {
-          Navigator.pushReplacementNamed(context, TabsScreen.routeName);
-        }
-      }
-    } on AuthException catch (e) {
-      _showError(context, e.message);
-    }
-  }
-
-  void _resendCode(SignupData data) async {
-    try {
-      await Amplify.Auth.resendSignUpCode(username: data.name!);
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.blueAccent,
-          content: Text('Confirmation code resent. Check your email',
-              style: TextStyle(fontSize: 15)),
+          backgroundColor: Colors.green,
+          content: Text(
+            'Password changed successfully. Please log in',
+            style: TextStyle(fontSize: 15),
+          ),
         ),
       );
+
+      Navigator.of(context).pushReplacementNamed('/');
     } on AuthException catch (e) {
-      _showError(context, e.message);
+      _showError(context, '${e.message} - ${e.underlyingException}');
     }
   }
 
@@ -88,6 +83,7 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _newPasswordController.dispose();
     super.dispose();
   }
 
@@ -97,16 +93,40 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: Card(
-          margin: const EdgeInsets.all(16),
           elevation: 12,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
+          margin: const EdgeInsets.all(30),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _newPasswordController,
+                  obscureText: _obscureText,
+                  decoration: InputDecoration(
+                    filled: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 4.0),
+                    prefixIcon: const Icon(Icons.lock),
+                    labelText: 'Enter new password',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                      child: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _controller,
@@ -124,7 +144,11 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                 MaterialButton(
                   onPressed: _isEnabled
                       ? () {
-                          _verifyCode(_data, _controller.text);
+                          _resetPassword(
+                            context,
+                            _controller.text,
+                            _newPasswordController.text,
+                          );
                         }
                       : null,
                   elevation: 4,
@@ -134,7 +158,7 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   child: const Text(
-                    'VERIFY',
+                    'RESET',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -142,12 +166,11 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () {
-                    _resendCode(_data);
-                  },
-                  child: const Text(
-                    'Resend code',
-                    style: TextStyle(color: Colors.grey),
+                  onPressed: () {},
+                  child: Text(
+                    'Back',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 18),
                   ),
                 )
               ],

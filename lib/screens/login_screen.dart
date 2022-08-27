@@ -3,6 +3,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
+import 'package:travel_app/screens/confirm_reset_password_screen.dart';
+import 'package:travel_app/screens/tabs_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,6 +16,27 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isSignedIn = false;
   SignupData? _signupData;
+
+  Future<bool> isAuthenticated() async {
+    try {
+      await Amplify.Auth.getCurrentUser();
+      return true;
+    } on AuthException catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      final auth = await isAuthenticated();
+      if (auth) {
+        Navigator.pushReplacementNamed(context, TabsScreen.routeName);
+      }
+    });
+
+    super.initState();
+  }
 
   Future<String?>? _onLogin(LoginData data) async {
     try {
@@ -50,6 +73,22 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<String?>? _onRecoverPassword(String email) async {
+    try {
+      final res = await Amplify.Auth.resetPassword(username: email);
+
+      if (res.nextStep.updateStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
+        Navigator.of(context).pushReplacementNamed(
+          ConfirmResetPasswordScreen.routeName,
+          arguments: LoginData(name: email, password: ''),
+        );
+      }
+      return null;
+    } on AuthException catch (e) {
+      return '${e.message} - ${e.recoverySuggestion}';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,17 +102,15 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
         onLogin: _onLogin,
-        onRecoverPassword: (String email) async {
-          return 'sss';
-        },
+        onRecoverPassword: _onRecoverPassword,
         onSignup: (data) => _onSignup(data),
         theme: LoginTheme(
           primaryColor: Theme.of(context).primaryColor,
         ),
         onSubmitAnimationCompleted: () {
           Navigator.of(context).pushReplacementNamed(
-            _isSignedIn ? '/dashboard' : ConfirmEmailScreen.routeName,
-            arguments: SignupData,
+            _isSignedIn ? TabsScreen.routeName : ConfirmEmailScreen.routeName,
+            arguments: _signupData,
           );
         },
       ),

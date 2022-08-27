@@ -5,6 +5,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/amplifyconfiguration.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
+import 'package:travel_app/screens/confirm_reset_password_screen.dart';
 import 'package:travel_app/screens/login_screen.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
@@ -46,12 +47,24 @@ class _MyAppState extends State<MyApp> {
             : const CircularProgressIndicator(),
         routes: {
           ConfirmEmailScreen.routeName: (_) => const ConfirmEmailScreen(),
+          ConfirmResetPasswordScreen.routeName: (_) =>
+              const ConfirmResetPasswordScreen(),
+          TabsScreen.routeName: (_) => const TabsScreen(),
           SearchResultScreen.routeName: (_) => const SearchResultScreen(),
           TripDetailsScreen.routeName: (_) => const TripDetailsScreen(),
           SaveTripScreen.routeName: (_) => const SaveTripScreen(),
         },
       ),
     );
+  }
+
+  Future<bool> isSignedIn() async {
+    try {
+      await Amplify.Auth.getCurrentUser();
+      return true;
+    } on AuthException catch (e) {
+      return false;
+    }
   }
 
   Future<void> _configureAmplify() async {
