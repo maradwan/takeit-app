@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:travel_app/providers/trip_provider.dart';
 import 'package:travel_app/screens/sent_packages_screen.dart';
 import 'package:travel_app/screens/profile_screen.dart';
 import 'package:travel_app/screens/received_packages_screen.dart';
@@ -11,17 +13,20 @@ class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
 
   @override
-  _TabsScreenState createState() => _TabsScreenState();
+  TabsScreenState createState() => TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
 
   List<Widget> screens = [
     const SearchScreen(),
     const RecievedPackagesScreen(),
     const SentPackagesScreen(),
-    const ProfileScreen(),
+    ChangeNotifierProvider(
+      create: (_) => TripProvider(''),
+      child: const ProfileScreen(),
+    ),
   ];
 
   @override

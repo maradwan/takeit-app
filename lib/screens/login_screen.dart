@@ -17,16 +17,11 @@ class LoginScreenState extends State<LoginScreen> {
   bool _isSignedIn = false;
   SignupData? _signupData;
 
-  Future<bool> isAuthenticated() async {
-    final session = await Amplify.Auth.fetchAuthSession();
-    return session.isSignedIn;
-  }
-
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      final auth = await isAuthenticated();
-      if (auth && mounted) {
+      final session = await Amplify.Auth.fetchAuthSession();
+      if (session.isSignedIn && mounted) {
         Navigator.pushReplacementNamed(context, TabsScreen.routeName);
       }
     });
