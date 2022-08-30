@@ -1,6 +1,7 @@
-import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
+import 'package:travel_app/widgets/city_search_delegate.dart';
+import 'package:travel_app/widgets/input_place_holder.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -45,6 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   InputPlaceholder(
+                    padding: 15,
                     text: '$takeoffCity, $takeoffCountry',
                     placeholderText: 'From: City',
                     showPlaceHolder:
@@ -53,7 +55,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     onClick: () async {
                       final result = await showSearch(
                         context: context,
-                        delegate: CustomSearchDelegate(),
+                        delegate: CitySearchDelegate(),
                       );
                       if (result != null) {
                         setState(() {
@@ -65,6 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   const SizedBox(height: 15),
                   InputPlaceholder(
+                    padding: 15,
                     text: '$landingCity, $landingCountry',
                     placeholderText: 'To: City',
                     showPlaceHolder:
@@ -73,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     onClick: () async {
                       final result = await showSearch(
                         context: context,
-                        delegate: CustomSearchDelegate(),
+                        delegate: CitySearchDelegate(),
                       );
                       if (result != null) {
                         setState(() {
@@ -109,163 +112,5 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
-  }
-}
-
-class InputPlaceholder extends StatelessWidget {
-  final String text;
-  final IconData icon;
-  final String placeholderText;
-  final bool showPlaceHolder;
-  final Function() onClick;
-
-  const InputPlaceholder({
-    Key? key,
-    required this.text,
-    required this.icon,
-    required this.placeholderText,
-    required this.showPlaceHolder,
-    required this.onClick,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onClick,
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Icon(icon),
-            const SizedBox(width: 10),
-            Text(
-              showPlaceHolder ? placeholderText : text,
-              style: showPlaceHolder
-                  ? TextStyle(fontSize: 18, color: Colors.grey[500])
-                  : const TextStyle(fontSize: 18),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomSearchDelegate extends SearchDelegate {
-  final List<Map<String, String>> cities = [
-    {"country": "Egypt", "city": "Cairo"},
-    {"country": "Egypt", "city": "Alexandria"},
-    {"country": "Egypt", "city": "Aswan"},
-    {"country": "Egypt", "city": "Hurghada"},
-    {"country": "Egypt", "city": "Tanta"},
-    {"country": "Egypt", "city": "Ismailia"},
-    {"country": "Germany", "city": "Berlin"},
-    {"country": "Germany", "city": "Hanover"},
-    {"country": "Germany", "city": "Munich"},
-    {"country": "Germany", "city": "Hamburg"},
-    {"country": "Germany", "city": "Düsseldorf"},
-    {"country": "Germany", "city": "Stuttgart"},
-  ];
-  List<Map<String, String>> filtered = [];
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return ListView.separated(
-        padding: const EdgeInsets.all(15),
-        itemBuilder: (_, i) => ListTile(
-              leading: const Icon(Icons.flag),
-              title: RichText(
-                text: TextSpan(
-                  text: filtered[i]['city']!,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18),
-                  children: [
-                    TextSpan(
-                        text: "  ${filtered[i]['country']!}",
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ))
-                  ],
-                ),
-              ),
-            ),
-        separatorBuilder: (_, i) => const Divider(),
-        itemCount: filtered.length);
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    filtered = query.isEmpty
-        ? cities
-        : cities
-            .where((item) =>
-                item['city']!.toLowerCase().startsWith(query.toLowerCase()))
-            .toList();
-    return ListView.separated(
-        padding: const EdgeInsets.all(15),
-        itemBuilder: (_, i) => GestureDetector(
-              onTap: () {
-                Navigator.pop(context, {
-                  'country': filtered[i]['country']!,
-                  'city': filtered[i]['city']!
-                });
-              },
-              child: ListTile(
-                leading: Flag.fromCode(
-                    filtered[i]['country']! == 'Egypt'
-                        ? FlagsCode.EG
-                        : FlagsCode.DE,
-                    height: 24,
-                    width: 24),
-                title: RichText(
-                  text: TextSpan(
-                    text: filtered[i]['city']!,
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18),
-                    children: [
-                      TextSpan(
-                          text: "  ${filtered[i]['country']!}",
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                          ))
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        separatorBuilder: (_, i) => const Divider(),
-        itemCount: filtered.length);
   }
 }
