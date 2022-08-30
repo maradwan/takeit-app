@@ -6,12 +6,15 @@ import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:http/http.dart' as http;
+import 'package:travel_app/service/amplify_auth_service.dart';
 
 class TripService {
   static const gatewayUrl =
       'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging/';
 
-  Future<Trip?> save(Trip trip, String authToken) async {
+  final amplifyAuthService = AmplifyAuthService();
+
+  Future<Trip?> save(Trip trip) async {
     const url = '$gatewayUrl/weight';
 
     try {
@@ -20,7 +23,7 @@ class TripService {
         body: json.encode(trip),
         headers: {
           'content-type': 'application/json',
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
         },
       );
 
@@ -36,7 +39,7 @@ class TripService {
     }
   }
 
-  Future<List<Trip>> findTrips(String authToken) async {
+  Future<List<Trip>> findTrips() async {
     const url = '$gatewayUrl/weight';
 
     try {
@@ -44,7 +47,7 @@ class TripService {
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
         },
       );
 
@@ -92,7 +95,4 @@ class TripService {
     }
     return items;
   }
-
-  final token =
-      "eyJraWQiOiJcL3duekhcL0xvUGhUV3R4cDVHUnBDeTZHWUNlSFBrODNCaHNta1FWZzFUaU09IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoiT1JYTTdGMHFnbG8tTTk0eWdYZHozdyIsInN1YiI6IjcwODU4YzU0LWFmYTYtNDVhMS1hYjQ1LWE0NTdjOGQ5MzQwOSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV8wMnRZdTRwVXQiLCJjb2duaXRvOnVzZXJuYW1lIjoiYW1ya2hhbGVkIiwiYXVkIjoiN3FxZ29lanJqNHVtcGhxbHNzOTlrZWQ0cWoiLCJldmVudF9pZCI6IjgwNTk0Y2E2LWVmNGYtNDI3OS05MTFkLWI4OTc4ZWZmNmQ3OCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjYxNzgxMDA5LCJuYW1lIjoiQW1yIEtoYWxlZCIsImV4cCI6MTY2MTc4NDYwOSwiaWF0IjoxNjYxNzgxMDA5LCJqdGkiOiIwMjQzMTNkZi0yYWEwLTQ1ZGUtOTkxNS0xMTI5ZjYyYWJmNWQiLCJlbWFpbCI6ImFtcmtoYWxlZGNjZEBob3RtYWlsLmNvbSJ9.DdH_QdMroqOYraw4bwAJIL0WAkjOcAh957QhxwWpTOqDicUHaryif9NEGPncdLZxPPQkirBqdAb41RS-mek2B7tuAlr_hiEKvmZrAsgZedS-hVQnLEX_--0AKtGYaidqcTDIQRBH_V8OS6y2QcZ14JQTyUHEtK5dWc79K0aX36W4hoeYm2xxZt-L_V3iqcloEJxxwMF519GExCCuilSVuI5Y_6bTFLlLAWO2BU0HJatTmJi6n2wWmM9ugCUezdesGRDgGqNcfCKhXiGZym0l5RhGK337jbZ4Qi7BnGgGNh8WQ7Qoqw3PLame1VDzwGd9eSZu7NgvWsT2YT6LskxLiQ";
 }

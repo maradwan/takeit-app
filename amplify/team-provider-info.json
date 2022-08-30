@@ -1,19 +1,24 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-takeit-dev-05149-authRole",
-      "UnauthRoleArn": "arn:aws:iam::117698054570:role/amplify-takeit-dev-05149-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::117698054570:role/amplify-takeit-dev-05149-authRole",
+      "AuthRoleName": "amplify-takeit-dev-234535-authRole",
+      "UnauthRoleArn": "arn:aws:iam::479349229188:role/amplify-takeit-dev-234535-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::479349229188:role/amplify-takeit-dev-234535-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-takeit-dev-05149-deployment",
-      "UnauthRoleName": "amplify-takeit-dev-05149-unauthRole",
-      "StackName": "amplify-takeit-dev-05149",
-      "StackId": "arn:aws:cloudformation:eu-west-1:117698054570:stack/amplify-takeit-dev-05149/0dffe9a0-259a-11ed-9ddf-0a5a2f9b3831",
-      "AmplifyAppId": "d3l5uzw8s7w9d1"
+      "DeploymentBucketName": "amplify-takeit-dev-234535-deployment",
+      "UnauthRoleName": "amplify-takeit-dev-234535-unauthRole",
+      "StackName": "amplify-takeit-dev-234535",
+      "StackId": "arn:aws:cloudformation:eu-west-1:479349229188:stack/amplify-takeit-dev-234535/4c618ce0-27ec-11ed-8c06-0a32778a94d9",
+      "AmplifyAppId": "d383ojrsvjq5s1"
     },
     "categories": {
       "auth": {
-        "takeitdev": {}
+        "takeit8968ef2c": {
+          "userPoolId": "eu-west-1_1vDh1VG69",
+          "userPoolName": "takeit-dev",
+          "webClientId": "4svrer63qastb8lgav5fi67am0",
+          "nativeClientId": "4svrer63qastb8lgav5fi67am0"
+        }
       }
     }
   }

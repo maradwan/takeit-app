@@ -24,7 +24,7 @@ class TabsScreenState extends State<TabsScreen> {
     const RecievedPackagesScreen(),
     const SentPackagesScreen(),
     ChangeNotifierProvider(
-      create: (_) => TripProvider(''),
+      create: (_) => TripProvider(),
       child: const ProfileScreen(),
     ),
   ];
@@ -32,10 +32,7 @@ class TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: screens,
-      ),
+      body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => _selectedIndex = index),
         type: BottomNavigationBarType.fixed,

@@ -1,0 +1,20 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "takeit8968ef2c",
+  "serviceType": "imported",
+  "region": "eu-west-1",
+  "usernameAttributes": [
+    "email"
+  ],
+  "requiredAttributes": [
+    "name",
+    "email"
+  ],
+  "passwordPolicyMinLength": 6,
+  "passwordPolicyCharacters": [],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaTypes": []
+}

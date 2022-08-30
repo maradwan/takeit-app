@@ -68,32 +68,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             icon: const Icon(FontAwesomeIcons.gear),
           ),
-          // IconButton(
-          //   onPressed: () async {
-          //     final session = await Amplify.Auth.fetchAuthSession(
-          //       options: CognitoSessionOptions(getAWSCredentials: true),
-          //     ) as CognitoAuthSession;
-          //     final idToken = session.userPoolTokens!.idToken;
+          IconButton(
+            onPressed: () async {
+              final items = [
+                Item('Paper', 0, 0),
+                Item('Medicine', 0, 0),
+                Item('Clothes', 10, 5),
+                Item('Bag', 10, 23),
+                Item('Other', 10, 9),
+              ];
+              final trip = Trip(
+                DateTime.now(),
+                DateTime.now().add(const Duration(days: 4)),
+                DateTime.now().add(const Duration(days: 6)),
+                'berlin',
+                'cairo',
+                'euro',
+                items,
+              );
 
-          //     final items = [
-          //       Item('Paper', 0, 0),
-          //       Item('Medicine', 0, 0),
-          //       Item('Clothes', 10, 5),
-          //     ];
-          //     final trip = Trip(
-          //       DateTime.now(),
-          //       DateTime.now().add(const Duration(days: 4)),
-          //       DateTime.now().add(const Duration(days: 6)),
-          //       'berlin',
-          //       'cairo',
-          //       'euro',
-          //       items,
-          //     );
-
-          //     TripService().save(trip, idToken);
-          //   },
-          //   icon: const Icon(FontAwesomeIcons.bicycle),
-          // ),
+              TripService().save(trip);
+            },
+            icon: const Icon(FontAwesomeIcons.bicycle),
+          ),
         ],
       ),
       body: Padding(

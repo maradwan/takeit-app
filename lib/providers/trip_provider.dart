@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/service/amplify_auth_service.dart';
 import 'package:travel_app/service/trip_service.dart';
 
 class TripProvider with ChangeNotifier {
-  TripProvider(this.token);
+  TripProvider();
 
-  String? token;
   final tripService = TripService();
+  final amplifyAuthService = AmplifyAuthService();
   List<Trip> _items = [];
 
   List<Trip> get trips {
@@ -14,7 +15,7 @@ class TripProvider with ChangeNotifier {
   }
 
   Future<void> fetchTrips() async {
-    _items = await tripService.findTrips(token!);
+    _items = await tripService.findTrips();
     notifyListeners();
   }
 }
