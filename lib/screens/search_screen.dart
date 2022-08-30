@@ -49,6 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     padding: 15,
                     text: '$takeoffCity, $takeoffCountry',
                     placeholderText: 'From: City',
+                    fontSize: 18,
                     showPlaceHolder:
                         takeoffCountry == null || takeoffCountry == null,
                     icon: Icons.flight_takeoff,
@@ -69,6 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   InputPlaceholder(
                     padding: 15,
                     text: '$landingCity, $landingCountry',
+                    fontSize: 18,
                     placeholderText: 'To: City',
                     showPlaceHolder:
                         landingCountry == null || landingCity == null,

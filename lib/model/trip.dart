@@ -26,7 +26,7 @@ class Trip {
     for (var item in allowedItems) {
       itemsMap.putIfAbsent(item.name, () => item.toJson());
     }
-    final DateFormat formatter = DateFormat('dd.MM.yyyy');
+    final DateFormat formatter = DateFormat('yyyy.MM.dd');
 
     return {
       'acceptfrom': formatter.format(acceptFrom),

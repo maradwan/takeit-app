@@ -70,7 +70,7 @@ class TripService {
   }
 
   Trip _mapToTrip(Map<String, dynamic> tripResponse) {
-    final DateFormat formatter = DateFormat('dd.MM.yyyy');
+    final DateFormat formatter = DateFormat('yyyy.MM.dd');
 
     return Trip(
       formatter.parse(tripResponse['acceptfrom']),
