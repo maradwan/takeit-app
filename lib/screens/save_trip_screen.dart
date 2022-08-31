@@ -1,8 +1,10 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
+import 'package:travel_app/util/app_theme.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/form_section.dart';
 import 'package:travel_app/widgets/info_label.dart';
@@ -51,7 +53,21 @@ class SaveTripScreenState extends State<SaveTripScreen> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Save Trip'),
+        title: const Text('Add Trip'),
+        actions: [
+          SizedBox(
+            width: 60,
+            child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Save',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -260,66 +276,68 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                     ),
                     if (items.length > 1)
                       const InfoLabel(label: 'Long press to reorder the list'),
-                    // ReorderableListView(
-                    //   shrinkWrap: true,
-                    //   children: [
-                    //     for (int index = 0;
-                    //         index < _ingredients.length;
-                    //         index += 1)
-                    //       Column(
-                    //         key: Key('$index'),
-                    //         children: [
-                    //           Slidable(
-                    //             key: Key('$index'),
-                    //             endActionPane: ActionPane(
-                    //               motion: const ScrollMotion(),
-                    //               children: [
-                    //                 SlidableAction(
-                    //                   onPressed: (_) =>
-                    //                       _showIngredientsDialog(context,
-                    //                           _ingredients[index], index),
-                    //                   foregroundColor:
-                    //                       FitnessAppTheme.nearlyBlue,
-                    //                   icon: Icons.edit,
-                    //                   label: 'Edit',
-                    //                 ),
-                    //                 SlidableAction(
-                    //                   onPressed: (_) => setState(() {
-                    //                     _ingredients.removeAt(index);
-                    //                   }),
-                    //                   foregroundColor: Color(0xFFFE4A49),
-                    //                   icon: Icons.delete,
-                    //                   label: 'Delete',
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //             child: ListTile(
-                    //               title:
-                    //                   Text('${_ingredients[index].name}'),
-                    //               subtitle: Text(
-                    //                   '${_ingredients[index].amount} ${_ingredients[index].unit}'),
-                    //             ),
-                    //           ),
-                    //           if (index < _ingredients.length - 1)
-                    //             Divider(
-                    //               color: Colors.black12,
-                    //             ),
-                    //         ],
-                    //       ),
-                    //   ],
-                    //   onReorder: (int oldIndex, int newIndex) {
-                    //     setState(() {
-                    //       if (oldIndex < newIndex) {
-                    //         newIndex -= 1;
-                    //       }
-                    //       final Ingredient item =
-                    //           _ingredients.removeAt(oldIndex);
-                    //       _ingredients.insert(newIndex, item);
-                    //     });
-                    //   },
-                    // ),
+                    ReorderableListView(
+                      shrinkWrap: true,
+                      children: [
+                        for (int index = 0; index < items.length; index += 1)
+                          Column(
+                            key: Key('$index'),
+                            children: [
+                              Slidable(
+                                key: Key('$index'),
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) => _showItemsDialog(
+                                          context, items[index], index),
+                                      foregroundColor: Colors.blue,
+                                      icon: Icons.edit,
+                                      label: 'Edit',
+                                    ),
+                                    SlidableAction(
+                                      onPressed: (_) => setState(() {
+                                        items.removeAt(index);
+                                      }),
+                                      foregroundColor: const Color(0xFFFE4A49),
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                    ),
+                                  ],
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    items[index].name,
+                                    style: AppTheme.title,
+                                  ),
+                                  subtitle: Text(
+                                      'Avaliable  ${items[index].kg.toStringAsFixed(items[index].kg.truncateToDouble() == items[index].kg ? 0 : 1)} KG'),
+                                  trailing: Text(
+                                    '${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)}/KG',
+                                    style: AppTheme.title,
+                                  ),
+                                ),
+                              ),
+                              if (index < items.length - 1)
+                                const Divider(
+                                  color: Colors.black38,
+                                ),
+                            ],
+                          ),
+                      ],
+                      onReorder: (int oldIndex, int newIndex) {
+                        setState(() {
+                          if (oldIndex < newIndex) {
+                            newIndex -= 1;
+                          }
+                          final Item item = items.removeAt(oldIndex);
+                          items.insert(newIndex, item);
+                        });
+                      },
+                    ),
                   ],
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
