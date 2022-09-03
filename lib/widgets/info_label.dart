@@ -15,7 +15,7 @@ class InfoLabel extends StatelessWidget {
         children: [
           Icon(
             Icons.info,
-            color: Colors.teal[300],
+            color: Colors.blue[300],
             size: 20,
           ),
           const SizedBox(width: 5),

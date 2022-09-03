@@ -5,10 +5,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
 import 'package:travel_app/util/app_theme.dart';
+import 'package:travel_app/widgets/add_item.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/form_section.dart';
 import 'package:travel_app/widgets/info_label.dart';
 import 'package:travel_app/widgets/input_place_holder.dart';
+import 'package:travel_app/widgets/item_type_option_list.dart';
 
 class SaveTripScreen extends StatefulWidget {
   static const String routeName = '/save-trip';
@@ -362,44 +364,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
             insetPadding: const EdgeInsets.all(20),
             content: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Form(
-                //key: _ingredientsFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    InputPlaceholder(
-                      padding: 10,
-                      text: '',
-                      placeholderText: 'Item type',
-                      fontSize: 16,
-                      showPlaceHolder: true,
-                      icon: FontAwesomeIcons.box,
-                      onClick: () async {},
-                    ),
-                    const SizedBox(height: 10),
-                    InputPlaceholder(
-                      padding: 10,
-                      text: '',
-                      placeholderText: 'Avaliable KGs',
-                      fontSize: 16,
-                      showPlaceHolder: true,
-                      icon: FontAwesomeIcons.weightHanging,
-                      onClick: () async {},
-                    ),
-                    const SizedBox(height: 10),
-                    InputPlaceholder(
-                      padding: 10,
-                      text: '',
-                      placeholderText: 'Price per KG',
-                      fontSize: 16,
-                      showPlaceHolder: true,
-                      icon: FontAwesomeIcons.dollarSign,
-                      onClick: () async {},
-                    ),
-                  ],
-                ),
-              ),
+              child: const AddItem(),
             ),
             actionsPadding: const EdgeInsets.all(15),
             actions: [
