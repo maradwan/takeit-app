@@ -51,10 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ));
   }
 
-  Future<void> _deleteTrip(String created) async {
+  Future<void> _deleteTrip(String created, int index) async {
     final tripProvider = Provider.of<TripProvider>(context, listen: false);
     try {
-      await tripProvider.deleteTrip(created);
+      await tripProvider.deleteTrip(created, index);
+      _showSnackbar('Trip deleted successfully', 'success');
     } on HttpException catch (error) {
       _showSnackbar(error.message, 'error');
     } catch (error) {
@@ -134,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               label: 'Edit',
                             ),
                             SlidableAction(
-                              onPressed: (_) => _deleteTrip(trip.created!),
+                              onPressed: (_) => _deleteTrip(trip.created!, i),
                               backgroundColor: const Color(0xFFFE4A49),
                               foregroundColor: Colors.white,
                               icon: Icons.delete,
