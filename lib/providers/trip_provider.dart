@@ -38,6 +38,9 @@ class TripProvider with ChangeNotifier {
   }
 
   Future<void> fetchTrips() async {
+    _activeTrips.clear();
+    _archivedTrips.clear();
+
     final trips = await tripService.findTrips();
     for (var trip in trips) {
       final today = DateTime(

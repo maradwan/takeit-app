@@ -43,19 +43,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         isLoadingTrips = true;
       });
-      try {
-        final tripProvider = Provider.of<TripProvider>(context, listen: false);
-        await tripProvider.fetchTrips();
-      } on HttpException catch (e) {
-        debugPrint(e.message);
-      }
-
+      await fetchTrips();
       setState(() {
         isLoadingTrips = false;
       });
     });
 
     super.initState();
+  }
+
+  Future<void> fetchTrips() async {
+    try {
+      final tripProvider = Provider.of<TripProvider>(context, listen: false);
+      await tripProvider.fetchTrips();
+    } on HttpException catch (e) {
+      debugPrint(e.message);
+    }
   }
 
   void _showSnackbar(String message, String type) {
@@ -129,106 +132,110 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             )
-          : Padding(
-              padding: const EdgeInsets.only(
-                bottom: 0,
-                top: 10,
-                left: 10,
-                right: 10,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FilterChip(
-                          label: const Text('Active'),
-                          selected: tripsType == TripsType.active,
-                          onSelected: (selected) {
-                            if (tripsType == TripsType.archived) {
-                              setState(() {
-                                tripsType = TripsType.active;
-                              });
-                            }
-                          }),
-                      const SizedBox(width: 15),
-                      FilterChip(
-                          label: const Text('Archived'),
-                          selected: tripsType == TripsType.archived,
-                          onSelected: (selected) {
-                            if (tripsType == TripsType.active) {
-                              setState(() {
-                                tripsType = TripsType.archived;
-                              });
-                            }
-                          })
-                    ],
-                  ),
-                  Expanded(
-                    child: Consumer<TripProvider>(
-                      builder: (ctx, tripProvider, _) {
-                        final trips = tripsType == TripsType.active
-                            ? tripProvider.activeTrips
-                            : tripProvider.archivedTrips;
-
-                        return trips.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'You don\'t have any ${tripsType == TripsType.active ? 'upcomming' : 'archived'} trips',
-                                  style: TextStyle(color: Colors.grey[600]),
-                                ),
-                              )
-                            : ListView.separated(
-                                itemCount: trips.length,
-                                separatorBuilder: (_, i) => const Divider(
-                                  thickness: 1,
-                                ),
-                                itemBuilder: (ctx, i) {
-                                  final trip = trips[i];
-                                  return Slidable(
-                                    endActionPane: tripsType ==
-                                            TripsType.archived
-                                        ? null
-                                        : ActionPane(
-                                            motion: const ScrollMotion(),
-                                            children: [
-                                              SlidableAction(
-                                                onPressed: (_) =>
-                                                    _navigateToAddTripScreen(
-                                                        {'trip': trip},
-                                                        i,
-                                                        true),
-                                                backgroundColor: Colors.blue,
-                                                foregroundColor: Colors.white,
-                                                icon: Icons.edit,
-                                                label: 'Edit',
-                                              ),
-                                              SlidableAction(
-                                                onPressed: (_) => _deleteTrip(
-                                                    trip.created!, i),
-                                                backgroundColor:
-                                                    const Color(0xFFFE4A49),
-                                                foregroundColor: Colors.white,
-                                                icon: Icons.delete,
-                                                label: 'Delete',
-                                              ),
-                                            ],
-                                          ),
-                                    child: ProfileWeightCard(
-                                      onPressed: tripsType == TripsType.archived
-                                          ? (Map<String, dynamic> args,
-                                              int index, bool isEdit) {}
-                                          : _navigateToAddTripScreen,
-                                      trip: trip,
-                                      index: i,
-                                    ),
-                                  );
-                                },
-                              );
-                      },
+          : RefreshIndicator(
+              onRefresh: fetchTrips,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 0,
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FilterChip(
+                            label: const Text('Active'),
+                            selected: tripsType == TripsType.active,
+                            onSelected: (selected) {
+                              if (tripsType == TripsType.archived) {
+                                setState(() {
+                                  tripsType = TripsType.active;
+                                });
+                              }
+                            }),
+                        const SizedBox(width: 15),
+                        FilterChip(
+                            label: const Text('Archived'),
+                            selected: tripsType == TripsType.archived,
+                            onSelected: (selected) {
+                              if (tripsType == TripsType.active) {
+                                setState(() {
+                                  tripsType = TripsType.archived;
+                                });
+                              }
+                            })
+                      ],
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: Consumer<TripProvider>(
+                        builder: (ctx, tripProvider, _) {
+                          final trips = tripsType == TripsType.active
+                              ? tripProvider.activeTrips
+                              : tripProvider.archivedTrips;
+
+                          return trips.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    'You don\'t have any ${tripsType == TripsType.active ? 'upcomming' : 'archived'} trips',
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
+                                )
+                              : ListView.separated(
+                                  itemCount: trips.length,
+                                  separatorBuilder: (_, i) => const Divider(
+                                    thickness: 1,
+                                  ),
+                                  itemBuilder: (ctx, i) {
+                                    final trip = trips[i];
+                                    return Slidable(
+                                      endActionPane: tripsType ==
+                                              TripsType.archived
+                                          ? null
+                                          : ActionPane(
+                                              motion: const ScrollMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (_) =>
+                                                      _navigateToAddTripScreen(
+                                                          {'trip': trip},
+                                                          i,
+                                                          true),
+                                                  backgroundColor: Colors.blue,
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.edit,
+                                                  label: 'Edit',
+                                                ),
+                                                SlidableAction(
+                                                  onPressed: (_) => _deleteTrip(
+                                                      trip.created!, i),
+                                                  backgroundColor:
+                                                      const Color(0xFFFE4A49),
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.delete,
+                                                  label: 'Delete',
+                                                ),
+                                              ],
+                                            ),
+                                      child: ProfileWeightCard(
+                                        onPressed:
+                                            tripsType == TripsType.archived
+                                                ? (Map<String, dynamic> args,
+                                                    int index, bool isEdit) {}
+                                                : _navigateToAddTripScreen,
+                                        trip: trip,
+                                        index: i,
+                                      ),
+                                    );
+                                  },
+                                );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );
