@@ -30,16 +30,16 @@ class ProfileWeightCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                from,
-                style: const TextStyle(fontSize: 22),
+                from.split(',')[0],
+                style: const TextStyle(fontSize: 20),
               ),
               const Icon(
                 FontAwesomeIcons.plane,
                 color: Colors.teal,
               ),
               Text(
-                to,
-                style: const TextStyle(fontSize: 22),
+                to.split(',')[0],
+                style: const TextStyle(fontSize: 20),
               ),
               Row(
                 children: [

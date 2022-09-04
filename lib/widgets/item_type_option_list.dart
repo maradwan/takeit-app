@@ -3,7 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ItemTypeOptionList extends StatefulWidget {
   final String? selectedValue;
-  const ItemTypeOptionList({Key? key, this.selectedValue}) : super(key: key);
+  final Set<String> disabledValues;
+  const ItemTypeOptionList({
+    Key? key,
+    this.selectedValue,
+    required this.disabledValues,
+  }) : super(key: key);
 
   @override
   State<ItemTypeOptionList> createState() => _ItemTypeOptionListState();
@@ -22,7 +27,7 @@ class _ItemTypeOptionListState extends State<ItemTypeOptionList> {
 
   final _options = [
     [
-      {'title': 'Parper', 'icon': FontAwesomeIcons.file},
+      {'title': 'Paper', 'icon': FontAwesomeIcons.file},
       {'title': 'Medicine', 'icon': FontAwesomeIcons.capsules},
       {'title': 'Clothes', 'icon': FontAwesomeIcons.shirt},
     ],
@@ -46,25 +51,30 @@ class _ItemTypeOptionListState extends State<ItemTypeOptionList> {
                 children: row
                     .map(
                       (option) => ChoiceChip(
-                          labelPadding: const EdgeInsets.all(3),
-                          label: Text(option['title'] as String),
-                          selected: _selectedValue == option['title'] as String,
-                          avatar: Icon(
-                            option['icon'] as IconData,
-                            size: 20,
-                          ),
-                          selectedColor: Colors.teal[200],
-                          labelStyle: TextStyle(
-                            color: _selectedValue == option['title'] as String
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                          onSelected: (bool selected) {
-                            setState(() {
-                              _selectedValue =
-                                  selected ? option['title'] as String : null;
-                            });
-                          }),
+                        labelPadding: const EdgeInsets.all(3),
+                        label: Text(option['title'] as String),
+                        selected: _selectedValue == option['title'] as String,
+                        avatar: Icon(
+                          option['icon'] as IconData,
+                          size: 20,
+                        ),
+                        selectedColor: Colors.teal[200],
+                        labelStyle: TextStyle(
+                          color: _selectedValue == option['title'] as String
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        onSelected:
+                            !widget.disabledValues.contains(option['title'])
+                                ? (bool selected) {
+                                    setState(() {
+                                      _selectedValue = selected
+                                          ? option['title'] as String
+                                          : null;
+                                    });
+                                  }
+                                : null,
+                      ),
                     )
                     .toList(),
               ),
@@ -74,7 +84,7 @@ class _ItemTypeOptionListState extends State<ItemTypeOptionList> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            child: const Text('Select'),
+            child: const Text('Done'),
             onPressed: () => Navigator.pop(context, _selectedValue),
           ),
         ),

@@ -4,13 +4,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
+import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/util/app_theme.dart';
 import 'package:travel_app/widgets/add_item.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/form_section.dart';
 import 'package:travel_app/widgets/info_label.dart';
 import 'package:travel_app/widgets/input_place_holder.dart';
-import 'package:travel_app/widgets/item_type_option_list.dart';
 
 class SaveTripScreen extends StatefulWidget {
   static const String routeName = '/save-trip';
@@ -34,7 +35,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
     'acceptTo': null,
     'currencyName': null,
     'currencyCode': null,
-    'items': <Item>[Item('Clothes', 10, 5), Item('Electronics', 20, 25)],
+    'items': <Item>[],
   };
 
   bool validateAcceptDates(String? from, String? to) {
@@ -60,7 +61,39 @@ class SaveTripScreenState extends State<SaveTripScreen> {
           SizedBox(
             width: 60,
             child: TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (_formData['fromCountry'] == null ||
+                      _formData['fromCity'] == null ||
+                      _formData['toCountry'] == null ||
+                      _formData['toCity'] == null ||
+                      _formData['deptDate'] == null ||
+                      _formData['acceptFrom'] == null ||
+                      _formData['acceptTo'] == null ||
+                      _formData['currencyCode'] == null) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text('All fields are required'),
+                      backgroundColor: Colors.red[700],
+                    ));
+                    return;
+                  }
+                  final DateFormat formatter = DateFormat('yyyy.MM.dd');
+                  final trip = Trip(
+                    formatter.parse(_formData['acceptFrom']),
+                    formatter.parse(_formData['acceptTo']),
+                    formatter.parse(_formData['deptDate']),
+                    '${_formData['fromCity']}, ${_formData['fromCountry']}',
+                    '${_formData['toCity']}, ${_formData['toCountry']}',
+                    _formData['currencyCode'],
+                    items,
+                  );
+
+                  await TripService().save(trip);
+                  if (!mounted) {
+                    return;
+                  }
+                  Navigator.pop(context);
+                },
                 child: const Text(
                   'Save',
                   style: TextStyle(
@@ -312,11 +345,20 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                     items[index].name,
                                     style: AppTheme.title,
                                   ),
-                                  subtitle: Text(
-                                      'Avaliable  ${items[index].kg.toStringAsFixed(items[index].kg.truncateToDouble() == items[index].kg ? 0 : 1)} KG'),
-                                  trailing: Text(
-                                    '${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)}/KG',
-                                    style: AppTheme.title,
+                                  subtitle: Text(items[index].name == 'Paper'
+                                      ? ''
+                                      : 'Avaliable  ${items[index].kg.toStringAsFixed(items[index].kg.truncateToDouble() == items[index].kg ? 0 : 1)} KG'),
+                                  trailing: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text('Price'),
+                                      Text(
+                                        items[index].price == 0
+                                            ? 'Free'
+                                            : '${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)}/KG',
+                                        style: AppTheme.title,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -349,38 +391,22 @@ class SaveTripScreenState extends State<SaveTripScreen> {
   }
 
   void _showItemsDialog(BuildContext context, Item? item, int index) {
-    final items = _formData['items'] as List<Item>;
-
-    String name = item != null ? item.name : "";
-    double kg = item != null ? item.kg : 0;
-    double price = item != null ? item.price : 0;
-
     showDialog(
         context: context,
         builder: (_) {
           return AlertDialog(
             scrollable: true,
-            title: const Text('Items'),
+            title: Text(item == null ? 'Add Item' : 'Edit ${item.name}'),
             insetPadding: const EdgeInsets.all(20),
             content: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: const AddItem(),
+              child: AddItem(
+                itemType: item?.name,
+                kg: item?.kg,
+                price: item?.price,
+                items: _formData['items'] as List<Item>,
+              ),
             ),
-            actionsPadding: const EdgeInsets.all(15),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      child: const Text('close'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                ],
-              )
-            ],
           );
         });
   }
