@@ -23,21 +23,36 @@ class SaveTripScreen extends StatefulWidget {
 
 class SaveTripScreenState extends State<SaveTripScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final DateFormat formatter = DateFormat('dd.MM.yyyy');
+  final DateFormat formatter = DateFormat('dd-MM-yyyy');
   var isSaving = false;
+  bool isInit = true;
+  late Map<String, dynamic> _formData;
 
-  final Map<String, dynamic> _formData = {
-    'fromCountry': null,
-    'fromCity': null,
-    'toCountry': null,
-    'toCity': null,
-    'deptDate': null,
-    'acceptFrom': null,
-    'acceptTo': null,
-    'currencyName': null,
-    'currencyCode': null,
-    'items': <Item>[],
-  };
+  @override
+  void didChangeDependencies() {
+    if (isInit) {
+      final argMap =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      final trip = argMap['trip'] as Trip?;
+      final currencyService = CurrencyService();
+
+      _formData = {
+        'created': trip?.created,
+        'fromCountry': trip?.fromCity.split(',')[1],
+        'fromCity': trip?.fromCity.split(',')[0],
+        'toCountry': trip?.toCity.split(',')[1],
+        'toCity': trip?.toCity.split(',')[0],
+        'deptDate': trip == null ? null : formatter.format(trip.trDate),
+        'acceptFrom': trip == null ? null : formatter.format(trip.acceptFrom),
+        'acceptTo': trip == null ? null : formatter.format(trip.acceptTo),
+        'currencyName': currencyService.findByCode(trip?.currency)?.name,
+        'currencyCode': trip?.currency,
+        'items': trip == null ? <Item>[] : trip.allowedItems,
+      };
+    }
+    isInit = false;
+    super.didChangeDependencies();
+  }
 
   bool validateAcceptDates(String? from, String? to) {
     if (from == null || to == null) {
@@ -57,6 +72,58 @@ class SaveTripScreenState extends State<SaveTripScreen> {
     ));
   }
 
+  Future<void> _saveTrip() async {
+    final items = _formData['items'] as List<Item>;
+
+    if (_formData['fromCountry'] == null ||
+        _formData['fromCity'] == null ||
+        _formData['toCountry'] == null ||
+        _formData['toCity'] == null ||
+        _formData['deptDate'] == null ||
+        _formData['acceptFrom'] == null ||
+        _formData['acceptTo'] == null ||
+        _formData['currencyCode'] == null ||
+        items.isEmpty) {
+      _showSnackbar(
+          items.isEmpty
+              ? 'You must add at least one allowed item'
+              : 'Enter all trip details',
+          'error');
+      return;
+    }
+    setState(() {
+      isSaving = true;
+    });
+
+    final trip = Trip(
+      _formData['created'],
+      formatter.parse(_formData['acceptFrom']),
+      formatter.parse(_formData['acceptTo']),
+      formatter.parse(_formData['deptDate']),
+      '${_formData['fromCity']}, ${_formData['fromCountry']}',
+      '${_formData['toCity']}, ${_formData['toCountry']}',
+      _formData['currencyCode'],
+      items,
+    );
+    try {
+      final savedTrip = _formData['created'] == null
+          ? await TripService().save(trip)
+          : await TripService().updateTrip(trip);
+
+      if (!mounted) {
+        return;
+      }
+      _showSnackbar('Trip saved successfully', 'success');
+      Navigator.pop(context, savedTrip);
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      _showSnackbar('Something went wrong, please try again', 'error');
+    }
+    setState(() {
+      isSaving = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = _formData['items'] as List<Item>;
@@ -65,7 +132,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Add Trip'),
+        title: Text(_formData['created'] == null ? 'Add Trip' : 'Edit Trip'),
         foregroundColor: Colors.white,
         actions: [
           isSaving
@@ -84,56 +151,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
               : SizedBox(
                   width: 60,
                   child: TextButton(
-                      onPressed: () async {
-                        final items = _formData['items'] as List<Item>;
-
-                        if (_formData['fromCountry'] == null ||
-                            _formData['fromCity'] == null ||
-                            _formData['toCountry'] == null ||
-                            _formData['toCity'] == null ||
-                            _formData['deptDate'] == null ||
-                            _formData['acceptFrom'] == null ||
-                            _formData['acceptTo'] == null ||
-                            _formData['currencyCode'] == null ||
-                            items.isEmpty) {
-                          _showSnackbar(
-                              items.isEmpty
-                                  ? 'You must add at least one allowed item'
-                                  : 'Enter all trip details',
-                              'error');
-                          return;
-                        }
-                        setState(() {
-                          isSaving = true;
-                        });
-
-                        final trip = Trip(
-                          null,
-                          formatter.parse(_formData['acceptFrom']),
-                          formatter.parse(_formData['acceptTo']),
-                          formatter.parse(_formData['deptDate']),
-                          '${_formData['fromCity']}, ${_formData['fromCountry']}',
-                          '${_formData['toCity']}, ${_formData['toCountry']}',
-                          _formData['currencyCode'],
-                          items,
-                        );
-                        try {
-                          await TripService().save(trip);
-                          if (!mounted) {
-                            return;
-                          }
-                          _showSnackbar('Trip added successfully', 'success');
-                          Navigator.pop(context);
-                        } on Exception catch (e) {
-                          debugPrint(e.toString());
-                          _showSnackbar(
-                              'Something went wrong, please try again',
-                              'error');
-                        }
-                        setState(() {
-                          isSaving = false;
-                        });
-                      },
+                      onPressed: _saveTrip,
                       child: const Text(
                         'Save',
                         style: TextStyle(

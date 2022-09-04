@@ -14,11 +14,36 @@ class TripService {
 
   final amplifyAuthService = AmplifyAuthService();
 
-  Future<Trip?> save(Trip trip) async {
+  Future<Trip> save(Trip trip) async {
     const url = '$gatewayUrl/weight';
 
     try {
       final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(trip),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+      final body = json.decode(response.body);
+
+      return _mapToTrip(body);
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<Trip> updateTrip(Trip trip) async {
+    final url = '$gatewayUrl/weight/${trip.created}';
+
+    try {
+      final response = await http.put(
         Uri.parse(url),
         body: json.encode(trip),
         headers: {
@@ -91,7 +116,7 @@ class TripService {
   }
 
   Trip _mapToTrip(Map<String, dynamic> tripResponse) {
-    final DateFormat formatter = DateFormat('yyyy.MM.dd');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     return Trip(
       tripResponse['created'],
