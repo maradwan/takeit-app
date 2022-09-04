@@ -14,6 +14,12 @@ class TripProvider with ChangeNotifier {
     return [..._items];
   }
 
+  Future<void> deleteTrip(String created) async {
+    await tripService.deleteTrip(created);
+    _items.removeWhere((item) => item.created == created);
+    notifyListeners();
+  }
+
   Future<void> fetchTrips() async {
     _items = await tripService.findTrips();
     notifyListeners();

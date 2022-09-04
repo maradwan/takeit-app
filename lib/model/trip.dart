@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
 
 class Trip {
+  final String? created;
   final DateTime acceptFrom;
   final DateTime acceptTo;
   final DateTime trDate;
@@ -11,6 +12,7 @@ class Trip {
   final List<Item> allowedItems;
 
   Trip(
+    this.created,
     this.acceptFrom,
     this.acceptTo,
     this.trDate,

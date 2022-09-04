@@ -39,6 +39,26 @@ class TripService {
     }
   }
 
+  Future<void> deleteTrip(String created) async {
+    final url = '$gatewayUrl/weight/$created';
+
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<Trip>> findTrips() async {
     const url = '$gatewayUrl/weight';
 
@@ -56,6 +76,7 @@ class TripService {
       }
 
       final body = json.decode(response.body);
+
       List<Trip> trips = [];
       final fetchedTrips = body['Items'] as List;
       for (var tripResponse in fetchedTrips) {
@@ -73,6 +94,7 @@ class TripService {
     final DateFormat formatter = DateFormat('yyyy.MM.dd');
 
     return Trip(
+      tripResponse['created'],
       formatter.parse(tripResponse['acceptfrom']),
       formatter.parse(tripResponse['acceptto']),
       formatter.parse(tripResponse['trdate']),

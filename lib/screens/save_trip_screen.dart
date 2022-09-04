@@ -108,6 +108,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                         });
 
                         final trip = Trip(
+                          null,
                           formatter.parse(_formData['acceptFrom']),
                           formatter.parse(_formData['acceptTo']),
                           formatter.parse(_formData['deptDate']),

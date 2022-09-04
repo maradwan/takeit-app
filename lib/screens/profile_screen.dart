@@ -1,14 +1,13 @@
+import 'dart:io';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:travel_app/model/item.dart';
-import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/providers/trip_provider.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
-import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/widgets/profile_weight_card.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -44,6 +43,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
+  void _showSnackbar(String message, String type) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: type == 'error' ? Colors.red[700] : Colors.teal[700],
+    ));
+  }
+
+  Future<void> _deleteTrip(String created) async {
+    final tripProvider = Provider.of<TripProvider>(context, listen: false);
+    try {
+      await tripProvider.deleteTrip(created);
+    } on HttpException catch (error) {
+      _showSnackbar(error.message, 'error');
+    } catch (error) {
+      _showSnackbar('Something went wrong, try again later', 'error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,29 +84,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pushReplacementNamed(context, '/');
             },
             icon: const Icon(FontAwesomeIcons.gear),
-          ),
-          IconButton(
-            onPressed: () async {
-              final items = [
-                Item('Paper', 0, 0),
-                Item('Medicine', 0, 0),
-                Item('Clothes', 10, 5),
-                Item('Bag', 10, 23),
-                Item('Other', 10, 9),
-              ];
-              final trip = Trip(
-                DateTime.now(),
-                DateTime.now().add(const Duration(days: 4)),
-                DateTime.now().add(const Duration(days: 6)),
-                'berlin',
-                'cairo',
-                'euro',
-                items,
-              );
-
-              TripService().save(trip);
-            },
-            icon: const Icon(FontAwesomeIcons.bicycle),
           ),
         ],
       ),
@@ -139,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               label: 'Edit',
                             ),
                             SlidableAction(
-                              onPressed: (_) {},
+                              onPressed: (_) => _deleteTrip(trip.created!),
                               backgroundColor: const Color(0xFFFE4A49),
                               foregroundColor: Colors.white,
                               icon: Icons.delete,
