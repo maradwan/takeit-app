@@ -24,6 +24,7 @@ class SaveTripScreen extends StatefulWidget {
 class SaveTripScreenState extends State<SaveTripScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final DateFormat formatter = DateFormat('dd.MM.yyyy');
+  var isSaving = false;
 
   final Map<String, dynamic> _formData = {
     'fromCountry': null,
@@ -48,6 +49,14 @@ class SaveTripScreenState extends State<SaveTripScreen> {
     return fromDate.isAtSameMomentAs(toDate) || fromDate.isBefore(toDate);
   }
 
+  void _showSnackbar(String message, String type) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: type == 'error' ? Colors.red[700] : Colors.teal[700],
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = _formData['items'] as List<Item>;
@@ -57,51 +66,81 @@ class SaveTripScreenState extends State<SaveTripScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text('Add Trip'),
+        foregroundColor: Colors.white,
         actions: [
-          SizedBox(
-            width: 60,
-            child: TextButton(
-                onPressed: () async {
-                  if (_formData['fromCountry'] == null ||
-                      _formData['fromCity'] == null ||
-                      _formData['toCountry'] == null ||
-                      _formData['toCity'] == null ||
-                      _formData['deptDate'] == null ||
-                      _formData['acceptFrom'] == null ||
-                      _formData['acceptTo'] == null ||
-                      _formData['currencyCode'] == null) {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: const Text('All fields are required'),
-                      backgroundColor: Colors.red[700],
-                    ));
-                    return;
-                  }
-                  final DateFormat formatter = DateFormat('yyyy.MM.dd');
-                  final trip = Trip(
-                    formatter.parse(_formData['acceptFrom']),
-                    formatter.parse(_formData['acceptTo']),
-                    formatter.parse(_formData['deptDate']),
-                    '${_formData['fromCity']}, ${_formData['fromCountry']}',
-                    '${_formData['toCity']}, ${_formData['toCountry']}',
-                    _formData['currencyCode'],
-                    items,
-                  );
-
-                  await TripService().save(trip);
-                  if (!mounted) {
-                    return;
-                  }
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Save',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+          isSaving
+              ? Container(
+                  width: 60,
+                  alignment: Alignment.center,
+                  child: const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   ),
-                )),
-          )
+                )
+              : SizedBox(
+                  width: 60,
+                  child: TextButton(
+                      onPressed: () async {
+                        final items = _formData['items'] as List<Item>;
+
+                        if (_formData['fromCountry'] == null ||
+                            _formData['fromCity'] == null ||
+                            _formData['toCountry'] == null ||
+                            _formData['toCity'] == null ||
+                            _formData['deptDate'] == null ||
+                            _formData['acceptFrom'] == null ||
+                            _formData['acceptTo'] == null ||
+                            _formData['currencyCode'] == null ||
+                            items.isEmpty) {
+                          _showSnackbar(
+                              items.isEmpty
+                                  ? 'You must add at least one allowed item'
+                                  : 'Enter all trip details',
+                              'error');
+                          return;
+                        }
+                        setState(() {
+                          isSaving = true;
+                        });
+
+                        final trip = Trip(
+                          formatter.parse(_formData['acceptFrom']),
+                          formatter.parse(_formData['acceptTo']),
+                          formatter.parse(_formData['deptDate']),
+                          '${_formData['fromCity']}, ${_formData['fromCountry']}',
+                          '${_formData['toCity']}, ${_formData['toCountry']}',
+                          _formData['currencyCode'],
+                          items,
+                        );
+                        try {
+                          await TripService().save(trip);
+                          if (!mounted) {
+                            return;
+                          }
+                          _showSnackbar('Trip added successfully', 'success');
+                          Navigator.pop(context);
+                        } on Exception catch (e) {
+                          debugPrint(e.toString());
+                          _showSnackbar(
+                              'Something went wrong, please try again',
+                              'error');
+                        }
+                        setState(() {
+                          isSaving = false;
+                        });
+                      },
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                )
         ],
       ),
       body: SingleChildScrollView(
@@ -206,15 +245,9 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                 if (!validateAcceptDates(
                                     formatter.format(pickedDate),
                                     _formData['acceptTo'])) {
-                                  if (!mounted) return;
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: const Text(
-                                        'Accept from date should be before or equal to accept to date'),
-                                    backgroundColor: Colors.red[700],
-                                  ));
+                                  _showSnackbar(
+                                      'Accept from date should be before or equal to accept to date',
+                                      'error');
                                   return;
                                 }
                                 setState(() {
@@ -249,15 +282,9 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                 if (!validateAcceptDates(
                                     _formData['acceptFrom'],
                                     formatter.format(pickedDate))) {
-                                  if (!mounted) return;
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: const Text(
-                                        'Accept from date should be before or equal to accept to date'),
-                                    backgroundColor: Colors.red[700],
-                                  ));
+                                  _showSnackbar(
+                                      'Accept from date should be before or equal to accept to date',
+                                      'error');
                                   return;
                                 }
                                 setState(() {
