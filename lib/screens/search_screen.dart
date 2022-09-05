@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
-import 'package:travel_app/service/search_service.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/input_place_holder.dart';
 
@@ -54,6 +53,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     showPlaceHolder:
                         takeoffCountry == null || takeoffCountry == null,
                     icon: Icons.flight_takeoff,
+                    onClear: () {
+                      setState(() {
+                        takeoffCountry = null;
+                        takeoffCity = null;
+                      });
+                    },
                     onClick: () async {
                       final result = await showSearch(
                         context: context,
@@ -76,6 +81,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     showPlaceHolder:
                         landingCountry == null || landingCity == null,
                     icon: Icons.flight_land,
+                    onClear: () {
+                      setState(() {
+                        landingCountry = null;
+                        landingCity = null;
+                      });
+                    },
                     onClick: () async {
                       final result = await showSearch(
                         context: context,

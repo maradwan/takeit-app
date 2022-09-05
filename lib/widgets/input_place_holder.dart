@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/widgets/round_icon.dart';
 
 class InputPlaceholder extends StatelessWidget {
   final String text;
@@ -8,6 +9,7 @@ class InputPlaceholder extends StatelessWidget {
   final double padding;
   final double fontSize;
   final Function() onClick;
+  final Function()? onClear;
 
   const InputPlaceholder({
     Key? key,
@@ -18,6 +20,7 @@ class InputPlaceholder extends StatelessWidget {
     required this.padding,
     required this.fontSize,
     required this.onClick,
+    this.onClear,
   }) : super(key: key);
 
   @override
@@ -43,8 +46,17 @@ class InputPlaceholder extends StatelessWidget {
                     : TextStyle(fontSize: fontSize),
               ),
             ),
-            Icon(Icons.close_rounded),
-            const SizedBox(width: 10),
+            if (!showPlaceHolder && onClear != null)
+              GestureDetector(
+                onTap: onClear,
+                child: const RoundIcon(
+                  icon: Icons.clear,
+                  radius: 10,
+                  iconSize: 14,
+                  backgroundColor: Color.fromARGB(255, 122, 125, 138),
+                  iconColor: Colors.white,
+                ),
+              ),
           ],
         ),
       ),

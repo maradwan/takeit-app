@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
 
 class WeightCard extends StatelessWidget {
   final String from;
   final String to;
-  final String arrival;
-  final String weight;
+  final DateTime arrival;
+  final double kg;
 
   const WeightCard({
     Key? key,
     required this.from,
     required this.to,
     required this.arrival,
-    required this.weight,
+    required this.kg,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -48,7 +51,7 @@ class WeightCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 3),
                     Text(
-                      weight,
+                      kg.toStringAsFixed(kg.truncateToDouble() == kg ? 0 : 1),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -72,7 +75,7 @@ class WeightCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      arrival,
+                      formatter.format(arrival),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
