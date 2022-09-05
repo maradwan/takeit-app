@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
+import 'package:travel_app/service/search_service.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/input_place_holder.dart';
 
@@ -98,7 +99,15 @@ class _SearchScreenState extends State<SearchScreen> {
                       onPressed: takeoffCity != null || landingCity != null
                           ? () {
                               Navigator.pushNamed(
-                                  context, SearchResultScreen.routeName);
+                                  context, SearchResultScreen.routeName,
+                                  arguments: {
+                                    'fromCity': takeoffCity == null
+                                        ? null
+                                        : '$takeoffCity, $takeoffCountry',
+                                    'toCity': landingCity == null
+                                        ? null
+                                        : '$landingCity, $landingCountry',
+                                  });
                             }
                           : null,
                       child: const Text(

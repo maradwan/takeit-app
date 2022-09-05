@@ -43,6 +43,8 @@ class InputPlaceholder extends StatelessWidget {
                     : TextStyle(fontSize: fontSize),
               ),
             ),
+            Icon(Icons.close_rounded),
+            const SizedBox(width: 10),
           ],
         ),
       ),

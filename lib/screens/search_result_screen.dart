@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
-class SearchResultScreen extends StatelessWidget {
+class SearchResultScreen extends StatefulWidget {
   static const String routeName = '/search-result';
 
   const SearchResultScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SearchResultScreen> createState() => _SearchResultScreenState();
+}
+
+class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
