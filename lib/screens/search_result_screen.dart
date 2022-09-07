@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:travel_app/model/trip.dart';
-import 'package:travel_app/service/search_service.dart';
+import 'package:provider/provider.dart';
+import 'package:travel_app/providers/search_provider.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -15,7 +17,6 @@ class SearchResultScreen extends StatefulWidget {
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
   bool isInit = true;
-  List<Trip> trips = [];
   bool isLoading = false;
 
   @override
@@ -26,9 +27,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final fromCity = argMap['fromCity'] as String?;
       final toCity = argMap['toCity'] as String?;
-      final result = await SearchService().search(fromCity, toCity);
+
+      try {
+        final searchProvider =
+            Provider.of<SearchProvider>(context, listen: false);
+        searchProvider.searchTrips(fromCity, toCity);
+      } on HttpException catch (e) {
+        debugPrint(e.message);
+      }
+
       setState(() {
-        trips = result;
         isLoading = false;
       });
     }
@@ -57,22 +65,26 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             )
           : Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
-              child: ListView.builder(
-                itemCount: trips.length,
-                itemBuilder: (ctx, i) {
-                  final kg = trips[i]
-                      .allowedItems
-                      .map((item) => item.kg)
-                      .reduce((prev, current) => prev + current);
-                  return WeightCard(
-                    from: trips[i].fromCity.split(',')[0],
-                    to: trips[i].toCity.split(',')[0],
-                    arrival: trips[i].trDate,
-                    kg: kg,
+              child: Consumer<SearchProvider>(
+                builder: (ctx, searchProvider, _) {
+                  final trips = searchProvider.trips;
+                  return ListView.builder(
+                    itemCount: trips.length,
+                    itemBuilder: (ctx, i) {
+                      final kg = trips[i]
+                          .allowedItems
+                          .map((item) => item.kg)
+                          .reduce((prev, current) => prev + current);
+                      return WeightCard(
+                        from: trips[i].fromCity.split(',')[0],
+                        to: trips[i].toCity.split(',')[0],
+                        arrival: trips[i].trDate,
+                        kg: kg,
+                      );
+                    },
                   );
                 },
-              ),
-            ),
+              )),
     );
   }
 }

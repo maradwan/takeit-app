@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travel_app/amplifyconfiguration.dart';
+import 'package:travel_app/providers/search_provider.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
 import 'package:travel_app/screens/confirm_reset_password_screen.dart';
 import 'package:travel_app/screens/login_screen.dart';
@@ -50,7 +52,10 @@ class _MyAppState extends State<MyApp> {
           ConfirmResetPasswordScreen.routeName: (_) =>
               const ConfirmResetPasswordScreen(),
           TabsScreen.routeName: (_) => const TabsScreen(),
-          SearchResultScreen.routeName: (_) => const SearchResultScreen(),
+          SearchResultScreen.routeName: (_) => ChangeNotifierProvider(
+                create: (_) => SearchProvider(),
+                child: const SearchResultScreen(),
+              ),
           TripDetailsScreen.routeName: (_) => const TripDetailsScreen(),
           SaveTripScreen.routeName: (_) => const SaveTripScreen(),
         },

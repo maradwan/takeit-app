@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
+import 'package:travel_app/model/paged_result.dart';
 
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/model/trip_search_key.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
 
 class SearchService {
@@ -14,7 +16,8 @@ class SearchService {
 
   final amplifyAuthService = AmplifyAuthService();
 
-  Future<List<Trip>> search(String? fromCity, String? toCity) async {
+  Future<PagedResult<Trip, TripSearchKey>> search(String? fromCity,
+      String? toCity, int pageSize, TripSearchKey? tripSearchKey) async {
     String url = '';
     if (fromCity != null && toCity != null) {
       url = '$gatewayUrl/fromto/${fromCity}_$toCity';
@@ -25,7 +28,10 @@ class SearchService {
     } else {
       throw const HttpException('invalid arguments');
     }
+    url =
+        '$url?limit=$pageSize${tripSearchKey != null ? '&ExclusiveStartKey=${tripSearchKey.toJson()}' : ''}';
 
+    print(url);
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -46,8 +52,11 @@ class SearchService {
       for (var tripResponse in fetchedTrips) {
         trips.add(_mapToTrip(tripResponse));
       }
+      final lastKey = body['LastEvaluatedKey'];
+      print('lastkey: $lastKey');
 
-      return trips;
+      return PagedResult(
+          trips, lastKey != null ? TripSearchKey.fromJson(lastKey) : null);
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
