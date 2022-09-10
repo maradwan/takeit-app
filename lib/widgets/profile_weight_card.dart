@@ -33,7 +33,7 @@ class ProfileWeightCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trip.fromCity.split(',')[0],
+                  trip.fromCity.split('-')[0],
                   style: const TextStyle(fontSize: 20),
                 ),
                 const Icon(
@@ -41,7 +41,7 @@ class ProfileWeightCard extends StatelessWidget {
                   color: Colors.teal,
                 ),
                 Text(
-                  trip.toCity.split(',')[0],
+                  trip.toCity.split('-')[0],
                   style: const TextStyle(fontSize: 20),
                 ),
                 Row(

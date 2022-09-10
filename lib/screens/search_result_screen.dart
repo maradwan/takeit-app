@@ -76,8 +76,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                           .map((item) => item.kg)
                           .reduce((prev, current) => prev + current);
                       return WeightCard(
-                        from: trips[i].fromCity.split(',')[0],
-                        to: trips[i].toCity.split(',')[0],
+                        from: trips[i].fromCity.split('-')[0],
+                        to: trips[i].toCity.split('-')[0],
                         arrival: trips[i].trDate,
                         kg: kg,
                       );

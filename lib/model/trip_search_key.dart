@@ -14,8 +14,8 @@ class TripSearchKey {
   Map<String, dynamic> toJson() {
     return {
       'created': created,
-      'fromCity': fromCity,
-      'trDate': trDate,
+      'fromcity': fromCity,
+      'trdate': trDate,
       'username': username,
     };
   }

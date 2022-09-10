@@ -12,13 +12,13 @@ import 'package:travel_app/service/amplify_auth_service.dart';
 
 class SearchService {
   static const gatewayUrl =
-      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging/';
+      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging';
 
   final amplifyAuthService = AmplifyAuthService();
 
   Future<PagedResult<Trip, TripSearchKey>> search(String? fromCity,
       String? toCity, int pageSize, TripSearchKey? tripSearchKey) async {
-    String url = '';
+    String url;
     if (fromCity != null && toCity != null) {
       url = '$gatewayUrl/fromto/${fromCity}_$toCity';
     } else if (fromCity != null) {
@@ -28,10 +28,12 @@ class SearchService {
     } else {
       throw const HttpException('invalid arguments');
     }
-    url =
-        '$url?limit=$pageSize${tripSearchKey != null ? '&ExclusiveStartKey=${tripSearchKey.toJson()}' : ''}';
 
-    print(url);
+    String? lastkey = tripSearchKey != null
+        ? Uri.encodeComponent(json.encode(tripSearchKey.toJson()))
+        : null;
+    url = '$url?limit=$pageSize${lastkey != null ? '&lastkey=$lastkey' : ''}';
+
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -53,7 +55,6 @@ class SearchService {
         trips.add(_mapToTrip(tripResponse));
       }
       final lastKey = body['LastEvaluatedKey'];
-      print('lastkey: $lastKey');
 
       return PagedResult(
           trips, lastKey != null ? TripSearchKey.fromJson(lastKey) : null);

@@ -24,13 +24,10 @@ class SearchProvider with ChangeNotifier {
   }
 
   Future<void> searchTrips(String? fromCity, String? toCity) async {
-    var pagedTrips = await _searchService.search(fromCity, toCity, 11, null);
+    var pagedTrips = await _searchService.search(fromCity, toCity, 10, null);
     _hasMore = pagedTrips.lastEvaluatedKey != null;
     _lastKey = pagedTrips.lastEvaluatedKey;
     _trips.addAll(pagedTrips.content);
-
-    pagedTrips = await _searchService.search(fromCity, toCity, 11, _lastKey);
-    _trips = pagedTrips.content;
 
     notifyListeners();
   }

@@ -114,10 +114,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                   arguments: {
                                     'fromCity': takeoffCity == null
                                         ? null
-                                        : '$takeoffCity, $takeoffCountry',
+                                        : '$takeoffCity-$takeoffCountry',
                                     'toCity': landingCity == null
                                         ? null
-                                        : '$landingCity, $landingCountry',
+                                        : '$landingCity-$landingCountry',
                                   });
                             }
                           : null,

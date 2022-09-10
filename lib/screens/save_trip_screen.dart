@@ -38,10 +38,10 @@ class SaveTripScreenState extends State<SaveTripScreen> {
 
       _formData = {
         'created': trip?.created,
-        'fromCountry': trip?.fromCity.split(',')[1],
-        'fromCity': trip?.fromCity.split(',')[0],
-        'toCountry': trip?.toCity.split(',')[1],
-        'toCity': trip?.toCity.split(',')[0],
+        'fromCountry': trip?.fromCity.split('-')[1],
+        'fromCity': trip?.fromCity.split('-')[0],
+        'toCountry': trip?.toCity.split('-')[1],
+        'toCity': trip?.toCity.split('-')[0],
         'deptDate': trip == null ? null : formatter.format(trip.trDate),
         'acceptFrom': trip == null ? null : formatter.format(trip.acceptFrom),
         'acceptTo': trip == null ? null : formatter.format(trip.acceptTo),
@@ -100,8 +100,8 @@ class SaveTripScreenState extends State<SaveTripScreen> {
       formatter.parse(_formData['acceptFrom']),
       formatter.parse(_formData['acceptTo']),
       formatter.parse(_formData['deptDate']),
-      '${_formData['fromCity']}, ${_formData['fromCountry']}',
-      '${_formData['toCity']}, ${_formData['toCountry']}',
+      '${_formData['fromCity']}-${_formData['fromCountry']}',
+      '${_formData['toCity']}-${_formData['toCountry']}',
       _formData['currencyCode'],
       items,
     );
