@@ -20,6 +20,7 @@ class SearchProvider with ChangeNotifier {
 
   void reset() {
     _hasMore = false;
+    _lastKey = null;
     _trips = [];
   }
 

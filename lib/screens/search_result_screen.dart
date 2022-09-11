@@ -95,41 +95,46 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 ),
               ),
             )
-          : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
-              child: Consumer<SearchProvider>(
-                builder: (ctx, searchProvider, _) {
-                  final trips = searchProvider.trips;
-                  return ListView.builder(
-                    controller: _scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: trips.length,
-                    itemBuilder: (ctx, i) {
-                      if ((i == trips.length - 1) && searchProvider.hasMore) {
-                        return const Center(
-                          child: SizedBox(
-                            width: 40,
-                            child: LoadingIndicator(
-                              strokeWidth: 1,
-                              indicatorType: Indicator.ballPulse,
-                            ),
-                          ),
-                        );
-                      }
-                      final kg = trips[i]
-                          .allowedItems
-                          .map((item) => item.kg)
-                          .reduce((prev, current) => prev + current);
-                      return WeightCard(
-                        from: trips[i].fromCity.split('-')[0],
-                        to: trips[i].toCity.split('-')[0],
-                        arrival: trips[i].trDate,
-                        kg: kg,
+          : RefreshIndicator(
+              onRefresh: () => initSearchResult(),
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+                  child: Consumer<SearchProvider>(
+                    builder: (ctx, searchProvider, _) {
+                      final trips = searchProvider.trips;
+                      return ListView.builder(
+                        controller: _scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: trips.length,
+                        itemBuilder: (ctx, i) {
+                          if ((i == trips.length - 1) &&
+                              searchProvider.hasMore) {
+                            return const Center(
+                              child: SizedBox(
+                                width: 40,
+                                child: LoadingIndicator(
+                                  strokeWidth: 1,
+                                  indicatorType: Indicator.ballPulse,
+                                ),
+                              ),
+                            );
+                          }
+                          final kg = trips[i]
+                              .allowedItems
+                              .map((item) => item.kg)
+                              .reduce((prev, current) => prev + current);
+                          return WeightCard(
+                            from: trips[i].fromCity.split('-')[0],
+                            to: trips[i].toCity.split('-')[0],
+                            arrival: trips[i].trDate,
+                            kg: kg,
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              )),
+                  )),
+            ),
     );
   }
 }
