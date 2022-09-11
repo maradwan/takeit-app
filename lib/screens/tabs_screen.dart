@@ -44,25 +44,25 @@ class TabsScreenState extends State<TabsScreen> {
           BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.magnifyingGlass,
-                size: 26,
+                //size: 26,
               ),
               label: 'Search'),
           BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.suitcaseRolling,
-                size: 26,
+                //size: 26,
               ),
               label: 'Recivied'),
           BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.paperPlane,
-                size: 26,
+                //size: 26,
               ),
               label: 'Sent'),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.airplane_ticket_outlined,
-                size: 26,
+                //size: 26,
               ),
               label: 'Your Trips'),
         ],

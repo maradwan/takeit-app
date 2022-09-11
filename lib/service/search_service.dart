@@ -55,7 +55,6 @@ class SearchService {
         trips.add(_mapToTrip(tripResponse));
       }
       final lastKey = body['LastEvaluatedKey'];
-
       return PagedResult(
           trips, lastKey != null ? TripSearchKey.fromJson(lastKey) : null);
     } catch (error) {
