@@ -7,6 +7,7 @@ import 'package:travel_app/model/item.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/util/app_theme.dart';
+import 'package:travel_app/util/item_util.dart';
 import 'package:travel_app/widgets/add_item.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/form_section.dart';
@@ -387,6 +388,15 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                   ],
                                 ),
                                 child: ListTile(
+                                  leading: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        ItemUtil.itemToIcon[items[index].name],
+                                        size: 32,
+                                      ),
+                                    ],
+                                  ),
                                   title: Text(
                                     items[index].name,
                                     style: AppTheme.title,
@@ -401,7 +411,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                       Text(
                                         items[index].price == 0
                                             ? 'Free'
-                                            : '${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)}/KG',
+                                            : '${_formData['currencyCode'] ?? ''}${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)} /KG',
                                         style: AppTheme.title,
                                       ),
                                     ],
