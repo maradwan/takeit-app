@@ -21,6 +21,13 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
+      drawer: Drawer(),
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),

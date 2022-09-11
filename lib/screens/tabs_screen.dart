@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/providers/trip_provider.dart';
 import 'package:travel_app/screens/sent_packages_screen.dart';
-import 'package:travel_app/screens/profile_screen.dart';
+import 'package:travel_app/screens/your_trips_screen.dart';
 import 'package:travel_app/screens/received_packages_screen.dart';
 import 'package:travel_app/screens/search_screen.dart';
 
@@ -25,7 +25,7 @@ class TabsScreenState extends State<TabsScreen> {
     const SentPackagesScreen(),
     ChangeNotifierProvider(
       create: (_) => TripProvider(),
-      child: const ProfileScreen(),
+      child: const YourTripsScreen(),
     ),
   ];
 
@@ -42,13 +42,29 @@ class TabsScreenState extends State<TabsScreen> {
         elevation: 1,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.magnifyingGlass), label: 'Search'),
+              icon: Icon(
+                FontAwesomeIcons.magnifyingGlass,
+                size: 26,
+              ),
+              label: 'Search'),
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.suitcaseRolling), label: 'Recivied'),
+              icon: Icon(
+                FontAwesomeIcons.suitcaseRolling,
+                size: 26,
+              ),
+              label: 'Recivied'),
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.paperPlane), label: 'Sent'),
+              icon: Icon(
+                FontAwesomeIcons.paperPlane,
+                size: 26,
+              ),
+              label: 'Sent'),
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.user), label: 'Profile'),
+              icon: Icon(
+                Icons.airplane_ticket_outlined,
+                size: 26,
+              ),
+              label: 'Your Trips'),
         ],
       ),
     );

@@ -13,14 +13,14 @@ import 'package:travel_app/widgets/profile_weight_card.dart';
 
 enum TripsType { active, archived }
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class YourTripsScreen extends StatefulWidget {
+  const YourTripsScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<YourTripsScreen> createState() => _YourTripsScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _YourTripsScreenState extends State<YourTripsScreen> {
   String name = '';
   var tripsType = TripsType.active;
   var isLoadingTrips = false;
@@ -102,26 +102,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: Text(name),
-        automaticallyImplyLeading: false,
+        title: const Text('Your Trips'),
+        automaticallyImplyLeading: true,
         actions: [
           IconButton(
             onPressed: () => _navigateToAddTripScreen({}, -1, false),
             icon: const Icon(FontAwesomeIcons.plus),
           ),
-          IconButton(
-            onPressed: () async {
-              await Amplify.Auth.signOut();
-              if (!mounted) return;
+          // IconButton(
+          //   onPressed: () async {
+          //     await Amplify.Auth.signOut();
+          //     if (!mounted) return;
 
-              Navigator.pushReplacementNamed(context, '/');
-            },
-            icon: const Icon(FontAwesomeIcons.gear),
-          ),
+          //     Navigator.pushReplacementNamed(context, '/');
+          //   },
+          //   icon: const Icon(FontAwesomeIcons.gear),
+          // ),
         ],
       ),
+      drawer: Drawer(),
       body: isLoadingTrips
           ? const Center(
               child: SizedBox(
