@@ -105,7 +105,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        onSurface: Colors.teal,
+                        disabledForegroundColor: Colors.teal[200],
+                        disabledBackgroundColor: Colors.teal[50],
                       ),
                       onPressed: takeoffCity != null || landingCity != null
                           ? () {

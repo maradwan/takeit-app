@@ -16,32 +16,64 @@ class SearchResultScreen extends StatefulWidget {
 }
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
+  final _scrollController = ScrollController();
   bool isInit = true;
   bool isLoading = false;
 
   @override
-  void didChangeDependencies() async {
-    if (isInit) {
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      initSearchResult();
+      _scrollController.addListener(() {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          final searchProvider =
+              Provider.of<SearchProvider>(context, listen: false);
+
+          if (searchProvider.hasMore) {
+            searchTrips();
+          }
+        }
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> initSearchResult() async {
+    final searchProvider = Provider.of<SearchProvider>(context, listen: false);
+    searchProvider.reset();
+    setState(() {
       isLoading = true;
-      final argMap =
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      final fromCity = argMap['fromCity'] as String?;
-      final toCity = argMap['toCity'] as String?;
+    });
+    await searchTrips();
+    setState(() {
+      isLoading = false;
+    });
+  }
 
-      try {
-        final searchProvider =
-            Provider.of<SearchProvider>(context, listen: false);
-        searchProvider.searchTrips(fromCity, toCity);
-      } on HttpException catch (e) {
-        debugPrint(e.message);
-      }
+  Future<void> searchTrips() async {
+    final argMap =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final fromCity = argMap['fromCity'] as String?;
+    final toCity = argMap['toCity'] as String?;
 
+    try {
+      final searchProvider =
+          Provider.of<SearchProvider>(context, listen: false);
+      await searchProvider.searchTrips(fromCity, toCity);
+    } on HttpException catch (e) {
+      debugPrint(e.message);
       setState(() {
         isLoading = false;
       });
     }
-    isInit = false;
-    super.didChangeDependencies();
   }
 
   @override
@@ -69,8 +101,21 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 builder: (ctx, searchProvider, _) {
                   final trips = searchProvider.trips;
                   return ListView.builder(
+                    controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: trips.length,
                     itemBuilder: (ctx, i) {
+                      if ((i == trips.length - 1) && searchProvider.hasMore) {
+                        return const Center(
+                          child: SizedBox(
+                            width: 40,
+                            child: LoadingIndicator(
+                              strokeWidth: 1,
+                              indicatorType: Indicator.ballPulse,
+                            ),
+                          ),
+                        );
+                      }
                       final kg = trips[i]
                           .allowedItems
                           .map((item) => item.kg)
