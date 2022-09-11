@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/providers/trip_provider.dart';
 import 'package:travel_app/screens/sent_packages_screen.dart';
 import 'package:travel_app/screens/your_trips_screen.dart';
@@ -21,7 +22,10 @@ class TabsScreenState extends State<TabsScreen> {
 
   List<Widget> screens = [
     const SearchScreen(),
-    const RecievedPackagesScreen(),
+    ChangeNotifierProvider(
+      create: (_) => TravelerRequestsProvider(),
+      child: const RecievedPackagesScreen(),
+    ),
     const SentPackagesScreen(),
     ChangeNotifierProvider(
       create: (_) => TripProvider(),
