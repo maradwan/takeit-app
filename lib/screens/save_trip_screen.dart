@@ -39,6 +39,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
 
       _formData = {
         'created': trip?.created,
+        'username': trip?.username,
         'fromCountry': trip?.fromCity.split('-')[1],
         'fromCity': trip?.fromCity.split('-')[0],
         'toCountry': trip?.toCity.split('-')[1],
@@ -98,6 +99,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
 
     final trip = Trip(
       _formData['created'],
+      _formData['username'],
       formatter.parse(_formData['acceptFrom']),
       formatter.parse(_formData['acceptTo']),
       formatter.parse(_formData['deptDate']),
@@ -411,7 +413,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                       Text(
                                         items[index].price == 0
                                             ? 'Free'
-                                            : '${_formData['currencyCode'] ?? ''}${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)} /KG',
+                                            : '${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)} ${_formData['currencyCode'] ?? ''} /KG',
                                         style: AppTheme.title,
                                       ),
                                     ],

@@ -68,6 +68,7 @@ class SearchService {
 
     return Trip(
       tripResponse['created'],
+      tripResponse['username'],
       formatter.parse(tripResponse['acceptfrom']),
       formatter.parse(tripResponse['acceptto']),
       formatter.parse(tripResponse['trdate']),

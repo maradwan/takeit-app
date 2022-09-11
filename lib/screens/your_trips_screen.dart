@@ -112,15 +112,15 @@ class _YourTripsScreenState extends State<YourTripsScreen> {
             onPressed: () => _navigateToAddTripScreen({}, -1, false),
             icon: const Icon(FontAwesomeIcons.plus),
           ),
-          // IconButton(
-          //   onPressed: () async {
-          //     await Amplify.Auth.signOut();
-          //     if (!mounted) return;
+          IconButton(
+            onPressed: () async {
+              await Amplify.Auth.signOut();
+              if (!mounted) return;
 
-          //     Navigator.pushReplacementNamed(context, '/');
-          //   },
-          //   icon: const Icon(FontAwesomeIcons.gear),
-          // ),
+              Navigator.pushReplacementNamed(context, '/');
+            },
+            icon: const Icon(FontAwesomeIcons.gear),
+          ),
         ],
       ),
       drawer: Drawer(),

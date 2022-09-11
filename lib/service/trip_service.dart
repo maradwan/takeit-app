@@ -104,6 +104,9 @@ class TripService {
 
       List<Trip> trips = [];
       final fetchedTrips = body['Items'] as List;
+
+      print(fetchedTrips);
+
       for (var tripResponse in fetchedTrips) {
         trips.add(_mapToTrip(tripResponse));
       }
@@ -120,6 +123,7 @@ class TripService {
 
     return Trip(
       tripResponse['created'],
+      tripResponse['username'],
       formatter.parse(tripResponse['acceptfrom']),
       formatter.parse(tripResponse['acceptto']),
       formatter.parse(tripResponse['trdate']),
