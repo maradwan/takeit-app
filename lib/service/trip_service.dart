@@ -105,8 +105,6 @@ class TripService {
       List<Trip> trips = [];
       final fetchedTrips = body['Items'] as List;
 
-      print(fetchedTrips);
-
       for (var tripResponse in fetchedTrips) {
         trips.add(_mapToTrip(tripResponse));
       }

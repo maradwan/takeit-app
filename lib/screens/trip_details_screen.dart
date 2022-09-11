@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/service/share_request_service.dart';
 import 'package:travel_app/util/app_theme.dart';
 import 'package:travel_app/util/item_util.dart';
 
@@ -18,6 +21,14 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
   void initState() {
     Future.delayed(Duration.zero, () {});
     super.initState();
+  }
+
+  void _showSnackbar(String message, String type) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: type == 'error' ? Colors.red[700] : Colors.teal[700],
+    ));
   }
 
   @override
@@ -77,7 +88,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                                 : '${item.price.toStringAsFixed(item.price.truncateToDouble() == item.price ? 0 : 1)} ${trip.currency}',
                             style: AppTheme.title,
                           ),
-                          const Text('Per KG'),
+                          if (item.price > 0) const Text('Per KG'),
                         ],
                       ),
                     );
@@ -85,7 +96,20 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          await ShareRequestService().createRequest(
+                            trip.username!,
+                            trip.created!,
+                            trip.trDate,
+                          );
+                          _showSnackbar('Request sent successfully', 'success');
+                        } on HttpException catch (e) {
+                          debugPrint(e.message);
+                          _showSnackbar(
+                              'Something went wrong, try again', 'error');
+                        }
+                      },
                       child: const Text('Send Request'),
                     ),
                   )
