@@ -19,4 +19,10 @@ class AppTheme {
     letterSpacing: -0.04,
     color: darkText,
   );
+  static const TextStyle body = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    letterSpacing: -0.05,
+    color: darkText,
+  );
 }

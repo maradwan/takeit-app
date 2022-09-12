@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/screens/main_drawer.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
 import 'package:travel_app/widgets/city_search_delegate.dart';
 import 'package:travel_app/widgets/input_place_holder.dart';
@@ -27,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      drawer: Drawer(),
+      drawer: MainDrawer(),
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),

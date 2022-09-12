@@ -8,6 +8,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/providers/trip_provider.dart';
+import 'package:travel_app/screens/main_drawer.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
 import 'package:travel_app/widgets/profile_weight_card.dart';
 
@@ -21,24 +22,11 @@ class YourTripsScreen extends StatefulWidget {
 }
 
 class _YourTripsScreenState extends State<YourTripsScreen> {
-  String name = '';
   var tripsType = TripsType.active;
   var isLoadingTrips = false;
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
-      final result = await Amplify.Auth.fetchUserAttributes();
-      for (final element in result) {
-        if (element.userAttributeKey == CognitoUserAttributeKey.name) {
-          setState(() {
-            name = element.value;
-          });
-          break;
-        }
-      }
-    });
-
     Future.delayed(Duration.zero, () async {
       setState(() {
         isLoadingTrips = true;
@@ -123,7 +111,7 @@ class _YourTripsScreenState extends State<YourTripsScreen> {
           ),
         ],
       ),
-      drawer: Drawer(),
+      drawer: const MainDrawer(),
       body: isLoadingTrips
           ? const Center(
               child: SizedBox(

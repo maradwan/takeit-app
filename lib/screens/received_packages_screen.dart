@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
+import 'package:travel_app/screens/main_drawer.dart';
 
 class RecievedPackagesScreen extends StatefulWidget {
   const RecievedPackagesScreen({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
         title: const Text('Recieved Requests'),
         automaticallyImplyLeading: true,
       ),
-      drawer: Drawer(),
+      drawer: const MainDrawer(),
       body: Padding(
         padding: const EdgeInsets.only(
           bottom: 0,
