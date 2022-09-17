@@ -6,10 +6,13 @@ import 'package:travel_app/model/trip.dart';
 class WeightCard extends StatelessWidget {
   final Trip trip;
   final Function() onTap;
+  final bool showDetailsButton;
+
   const WeightCard({
     Key? key,
     required this.trip,
     required this.onTap,
+    this.showDetailsButton = true,
   }) : super(key: key);
 
   @override
@@ -82,15 +85,16 @@ class WeightCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  OutlinedButton(
-                    onPressed: onTap,
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.teal[300],
-                      elevation: 0,
-                      foregroundColor: Colors.white,
+                  if (showDetailsButton)
+                    OutlinedButton(
+                      onPressed: onTap,
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.teal[300],
+                        elevation: 0,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('View details'),
                     ),
-                    child: const Text('View details'),
-                  ),
                 ],
               ),
             ],

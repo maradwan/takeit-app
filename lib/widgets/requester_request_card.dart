@@ -39,6 +39,7 @@ class RequesterRequestCardState extends State<RequesterRequestCard> {
     return trip == null
         ? Container()
         : WeightCard(
+            showDetailsButton: false,
             trip: trip!,
             onTap: () {},
           );
