@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/screens/main_drawer.dart';
+import 'package:travel_app/widgets/traveler_request_card.dart';
 
 class RecievedPackagesScreen extends StatefulWidget {
   const RecievedPackagesScreen({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         elevation: 0,
         title: const Text('Recieved Requests'),
@@ -94,10 +95,8 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
                       )
                     : ListView.builder(
                         itemCount: requests.length,
-                        itemBuilder: (ctx, i) {
-                          final request = requests[i];
-                          return Text('hello there');
-                        },
+                        itemBuilder: (ctx, i) =>
+                            TravelerRequestCard(request: requests[i]),
                       );
               },
             ),

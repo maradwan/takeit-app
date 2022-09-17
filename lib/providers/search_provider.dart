@@ -4,7 +4,7 @@ import 'package:travel_app/model/trip_search_key.dart';
 import 'package:travel_app/service/search_service.dart';
 
 class SearchProvider with ChangeNotifier {
-  final int _pageSize = 10;
+  final int _pageSize = 20;
   bool _hasMore = false;
   TripSearchKey? _lastKey;
   final _searchService = SearchService();

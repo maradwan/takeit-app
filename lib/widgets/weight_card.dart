@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/trip.dart';
-import 'package:travel_app/screens/trip_details_screen.dart';
 
 class WeightCard extends StatelessWidget {
   final Trip trip;
-
+  final Function() onTap;
   const WeightCard({
     Key? key,
     required this.trip,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -19,10 +19,7 @@ class WeightCard extends StatelessWidget {
         .map((item) => item.kg)
         .reduce((prev, current) => prev + current);
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, TripDetailsScreen.routeName,
-            arguments: trip);
-      },
+      onTap: onTap,
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -86,10 +83,7 @@ class WeightCard extends StatelessWidget {
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, TripDetailsScreen.routeName,
-                          arguments: trip);
-                    },
+                    onPressed: onTap,
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.teal[300],
                       elevation: 0,

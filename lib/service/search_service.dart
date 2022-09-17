@@ -48,7 +48,7 @@ class SearchService {
       }
 
       final body = json.decode(response.body);
-
+      print(body);
       List<Trip> trips = [];
       final fetchedTrips = body['Items'] as List;
       for (var tripResponse in fetchedTrips) {

@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:travel_app/model/share_request.dart';
+import 'package:travel_app/model/requester_share_request.dart';
+import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
 
 class ShareRequestService {
@@ -44,7 +45,7 @@ class ShareRequestService {
     }
   }
 
-  Future<List<ShareRquest>> findTravelerPendingRequests() async {
+  Future<List<TravelerShareRquest>> findTravelerPendingRequests() async {
     const url = '$gatewayUrl/share-request/traveler/pending';
 
     try {
@@ -61,14 +62,37 @@ class ShareRequestService {
       }
 
       final body = json.decode(response.body);
-      print(body);
-      // List<ShareRquest> requests = [];
       final fetchedRequests = body['Items'] as List;
-      // for (var requestResponse in fetchedRequests) {
-      //   requests.add(ShareRquest.fromJson(requestResponse));
-      // }
       return fetchedRequests
-          .map((request) => ShareRquest.fromJson(request))
+          .map((request) => TravelerShareRquest.fromJson(request))
+          .toList();
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<List<RequesterShareRquest>> findRequesterPendingRequests() async {
+    const url = '$gatewayUrl/share-request/requester/pending';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+
+      final body = json.decode(response.body);
+      print(body);
+      final fetchedRequests = body['Items'] as List;
+      return fetchedRequests
+          .map((request) => RequesterShareRquest.fromJson(request))
           .toList();
     } catch (error) {
       debugPrint(error.toString());

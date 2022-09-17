@@ -101,6 +101,7 @@ class TripService {
       }
 
       final body = json.decode(response.body);
+      print(body);
 
       List<Trip> trips = [];
       final fetchedTrips = body['Items'] as List;
@@ -110,6 +111,36 @@ class TripService {
       }
 
       return trips;
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<Trip?> findTrip(String tripId, String username) async {
+    final url = '$gatewayUrl/trip/${tripId}_$username';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode == 404) {
+        return null;
+      }
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+
+      final body = json.decode(response.body);
+      final fetchedTrip = body['Items'] as List;
+      print(fetchedTrip);
+      return fetchedTrip.isNotEmpty ? _mapToTrip(fetchedTrip[0]) : null;
     } catch (error) {
       debugPrint(error.toString());
       rethrow;

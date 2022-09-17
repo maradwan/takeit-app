@@ -1,13 +1,14 @@
 import 'package:intl/intl.dart';
+import 'package:travel_app/model/trip.dart';
 
-class ShareRquest {
+class TravelerShareRquest {
   final String created;
   final String fromUser;
   final DateTime trDate;
   final String tripId;
   final String username;
 
-  ShareRquest(
+  TravelerShareRquest(
     this.created,
     this.fromUser,
     this.trDate,
@@ -15,10 +16,10 @@ class ShareRquest {
     this.username,
   );
 
-  static ShareRquest fromJson(Map<String, dynamic> json) {
+  static TravelerShareRquest fromJson(Map<String, dynamic> json) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    return ShareRquest(
+    return TravelerShareRquest(
       json['created'],
       json['fromuser'],
       formatter.parse(json['trdate']),

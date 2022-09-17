@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/providers/search_provider.dart';
+import 'package:travel_app/screens/trip_details_screen.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -103,32 +104,40 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   child: Consumer<SearchProvider>(
                     builder: (ctx, searchProvider, _) {
                       final trips = searchProvider.trips;
-                      return ListView.builder(
-                        controller: _scrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: trips.length,
-                        itemBuilder: (ctx, i) {
-                          if ((i == trips.length - 1) &&
-                              searchProvider.hasMore) {
-                            return const Center(
-                              child: SizedBox(
-                                width: 40,
-                                child: LoadingIndicator(
-                                  strokeWidth: 1,
-                                  indicatorType: Indicator.ballPulse,
-                                ),
+                      return trips.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No trips found',
+                                style: TextStyle(color: Colors.grey[600]),
                               ),
+                            )
+                          : ListView.builder(
+                              controller: _scrollController,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: trips.length,
+                              itemBuilder: (ctx, i) {
+                                if ((i == trips.length - 1) &&
+                                    searchProvider.hasMore) {
+                                  return const Center(
+                                    child: SizedBox(
+                                      width: 40,
+                                      child: LoadingIndicator(
+                                        strokeWidth: 1,
+                                        indicatorType: Indicator.ballPulse,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return WeightCard(
+                                  trip: trips[i],
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, TripDetailsScreen.routeName,
+                                        arguments: trips[i]);
+                                  },
+                                );
+                              },
                             );
-                          }
-                          final kg = trips[i]
-                              .allowedItems
-                              .map((item) => item.kg)
-                              .reduce((prev, current) => prev + current);
-                          return WeightCard(
-                            trip: trips[i],
-                          );
-                        },
-                      );
                     },
                   )),
             ),
