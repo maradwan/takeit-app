@@ -20,11 +20,16 @@ class RequesterRequestCardState extends State<RequesterRequestCard> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      final requestTrip = await TripService()
-          .findTrip(widget.request.tripId, widget.request.username);
-      setState(() {
-        trip = requestTrip;
-      });
+      final created = widget.request.created.split('_');
+
+      if (created.length > 1) {
+        final travelerUsername = created[2];
+        final requestTrip = await TripService()
+            .findTrip(widget.request.tripId, travelerUsername);
+        setState(() {
+          trip = requestTrip;
+        });
+      }
     });
     super.initState();
   }
@@ -32,7 +37,7 @@ class RequesterRequestCardState extends State<RequesterRequestCard> {
   @override
   Widget build(BuildContext context) {
     return trip == null
-        ? Text('deleted')
+        ? Container()
         : WeightCard(
             trip: trip!,
             onTap: () {},
