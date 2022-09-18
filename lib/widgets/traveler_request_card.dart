@@ -17,14 +17,19 @@ class TravelerRequestCard extends StatefulWidget {
 
 class TravelerRequestCardState extends State<TravelerRequestCard> {
   Trip? trip;
+  var isLoading = false;
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      setState(() {
+        isLoading = true;
+      });
       final requestTrip = await TripService()
           .findTrip(widget.request.tripId, widget.request.username);
       setState(() {
         trip = requestTrip;
+        isLoading = false;
       });
     });
     super.initState();
