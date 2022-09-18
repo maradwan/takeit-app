@@ -33,7 +33,16 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
   @override
   Widget build(BuildContext context) {
     return trip == null
-        ? Container()
+        ? Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                  child: Text(
+                'Trip is no longer avaliable',
+                style: TextStyle(color: Colors.grey[600]),
+              )),
+            ),
+          )
         : WeightCard(
             detailsButtonText: 'Contact Info',
             trip: trip!,

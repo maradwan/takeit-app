@@ -110,6 +110,9 @@ class TripService {
       final fetchedTrips = body['Items'] as List;
 
       for (var tripResponse in fetchedTrips) {
+        if (tripResponse['acceptfrom'] == null) {
+          continue;
+        }
         trips.add(_mapToTrip(tripResponse));
       }
 

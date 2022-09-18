@@ -18,11 +18,15 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      final requestProvider =
-          Provider.of<RequesterRequestsProvider>(context, listen: false);
-      await requestProvider.findRequests(requestStatus);
+      _initRequests();
     });
     super.initState();
+  }
+
+  Future<void> _initRequests() async {
+    final requestProvider =
+        Provider.of<RequesterRequestsProvider>(context, listen: false);
+    await requestProvider.findRequests(requestStatus);
   }
 
   @override
@@ -54,6 +58,7 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                       setState(() {
                         requestStatus = RequestStatus.pending;
                       });
+                      _initRequests();
                     }
                   }),
               const SizedBox(width: 15),
@@ -65,6 +70,7 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                       setState(() {
                         requestStatus = RequestStatus.accepted;
                       });
+                      _initRequests();
                     }
                   }),
               const SizedBox(width: 15),
@@ -76,6 +82,7 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                     setState(() {
                       requestStatus = RequestStatus.declined;
                     });
+                    _initRequests();
                   }
                 },
               )

@@ -12,7 +12,7 @@ class TravelerRequestsProvider with ChangeNotifier {
   }
 
   Future<void> findRequests(RequestStatus requestStatus) async {
-    _requests = await _shareRequestService.findTravelerPendingRequests();
+    _requests = await _shareRequestService.findTravelerRequests(requestStatus);
     notifyListeners();
   }
 

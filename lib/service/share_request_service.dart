@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
@@ -101,8 +102,9 @@ class ShareRequestService {
     }
   }
 
-  Future<List<TravelerShareRquest>> findTravelerPendingRequests() async {
-    const url = '$gatewayUrl/share-request/traveler/pending';
+  Future<List<TravelerShareRquest>> findTravelerRequests(
+      RequestStatus requestStatus) async {
+    final url = '$gatewayUrl/share-request/traveler/${requestStatus.name}';
 
     try {
       final response = await http.get(
@@ -132,8 +134,9 @@ class ShareRequestService {
     }
   }
 
-  Future<List<RequesterShareRquest>> findRequesterPendingRequests() async {
-    const url = '$gatewayUrl/share-request/requester/pending';
+  Future<List<RequesterShareRquest>> findRequesterRequests(
+      RequestStatus requestStatus) async {
+    final url = '$gatewayUrl/share-request/requester/${requestStatus.name}';
 
     try {
       final response = await http.get(
