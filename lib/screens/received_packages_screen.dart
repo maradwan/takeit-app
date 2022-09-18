@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/screens/main_drawer.dart';
+import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/widgets/traveler_request_card.dart';
 
 class RecievedPackagesScreen extends StatefulWidget {
@@ -139,9 +140,23 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
                             : ListView.builder(
                                 itemCount: requests.length,
                                 itemBuilder: (ctx, i) => TravelerRequestCard(
-                                  request: requests[i],
-                                  requestStatus: requestStatus,
-                                ),
+                                    requestsProvider: requestsProvider,
+                                    request: requests[i],
+                                    requestStatus: requestStatus,
+                                    onTap: () async {
+                                      final result = await Navigator.pushNamed(
+                                        context,
+                                        TravelerRequestContactInfoScreen
+                                            .routeName,
+                                        arguments: {
+                                          'request': requests[i],
+                                          'status': requestStatus,
+                                        },
+                                      );
+                                      if (result == true) {
+                                        _initRequests(true);
+                                      }
+                                    }),
                               );
                       },
                     ),

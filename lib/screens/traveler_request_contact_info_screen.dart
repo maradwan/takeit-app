@@ -118,7 +118,7 @@ class TravelerRequestContactInfoScreenState
                                   .declineRequest(request.created);
                               if (!mounted) return;
                               _showSnackbar('Request declined', 'success');
-                              Navigator.pop(context);
+                              Navigator.pop(context, true);
                             } on HttpException catch (e) {
                               debugPrint(e.message);
                               setState(() {
@@ -172,7 +172,7 @@ class TravelerRequestContactInfoScreenState
                                   .acceptRequest(request.created);
                               if (!mounted) return;
                               _showSnackbar('Request accepted', 'success');
-                              Navigator.pop(context);
+                              Navigator.pop(context, true);
                             } on HttpException catch (e) {
                               debugPrint(e.message);
                               setState(() {

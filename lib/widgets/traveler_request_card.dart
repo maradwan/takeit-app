@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/widgets/skeleton.dart';
@@ -12,11 +13,15 @@ import 'package:travel_app/widgets/weight_card.dart';
 class TravelerRequestCard extends StatefulWidget {
   final TravelerShareRquest request;
   final RequestStatus requestStatus;
+  final TravelerRequestsProvider requestsProvider;
+  final Function() onTap;
 
   const TravelerRequestCard({
     Key? key,
     required this.request,
     required this.requestStatus,
+    required this.requestsProvider,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -81,16 +86,7 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
             : WeightCard(
                 detailsButtonText: 'Contact Info',
                 trip: trip!,
-                onTap: () async {
-                  await Navigator.pushNamed(
-                    context,
-                    TravelerRequestContactInfoScreen.routeName,
-                    arguments: {
-                      'request': widget.request,
-                      'status': widget.requestStatus,
-                    },
-                  );
-                },
+                onTap: widget.onTap,
               );
   }
 }
