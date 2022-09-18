@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/service/trip_service.dart';
+import 'package:travel_app/widgets/skeleton.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
 class TravelerRequestCard extends StatefulWidget {
@@ -17,18 +20,21 @@ class TravelerRequestCard extends StatefulWidget {
 
 class TravelerRequestCardState extends State<TravelerRequestCard> {
   Trip? trip;
-  var isLoading = false;
+  var isLoading = true;
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
+      try {
+        final requestTrip = await TripService()
+            .findTrip(widget.request.tripId, widget.request.username);
+        setState(() {
+          trip = requestTrip;
+        });
+      } on HttpException catch (e) {
+        debugPrint(e.message);
+      }
       setState(() {
-        isLoading = true;
-      });
-      final requestTrip = await TripService()
-          .findTrip(widget.request.tripId, widget.request.username);
-      setState(() {
-        trip = requestTrip;
         isLoading = false;
       });
     });
@@ -37,27 +43,46 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
 
   @override
   Widget build(BuildContext context) {
-    return trip == null
+    return isLoading
         ? Card(
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: Center(
-                  child: Text(
-                'Trip is no longer avaliable',
-                style: TextStyle(color: Colors.grey[600]),
-              )),
+              child: Column(
+                children: const [
+                  Skeleton(
+                    width: double.infinity,
+                    height: 20,
+                  ),
+                  SizedBox(height: 20),
+                  Skeleton(
+                    width: double.infinity,
+                    height: 20,
+                  ),
+                ],
+              ),
             ),
           )
-        : WeightCard(
-            detailsButtonText: 'Contact Info',
-            trip: trip!,
-            onTap: () async {
-              await Navigator.pushNamed(
-                context,
-                TravelerRequestContactInfoScreen.routeName,
-                arguments: widget.request,
+        : trip == null
+            ? Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                      child: Text(
+                    'Trip is no longer avaliable',
+                    style: TextStyle(color: Colors.grey[600]),
+                  )),
+                ),
+              )
+            : WeightCard(
+                detailsButtonText: 'Contact Info',
+                trip: trip!,
+                onTap: () async {
+                  await Navigator.pushNamed(
+                    context,
+                    TravelerRequestContactInfoScreen.routeName,
+                    arguments: widget.request,
+                  );
+                },
               );
-            },
-          );
   }
 }
