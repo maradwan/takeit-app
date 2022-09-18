@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
@@ -34,8 +35,15 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
     return trip == null
         ? Container()
         : WeightCard(
+            detailsButtonText: 'Contact Info',
             trip: trip!,
-            onTap: () {},
+            onTap: () async {
+              await Navigator.pushNamed(
+                context,
+                TravelerRequestContactInfoScreen.routeName,
+                arguments: widget.request,
+              );
+            },
           );
   }
 }

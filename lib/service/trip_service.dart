@@ -96,12 +96,15 @@ class TripService {
         },
       );
 
+      if (response.statusCode == 404) {
+        return [];
+      }
+
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
 
       final body = json.decode(response.body);
-      print(body);
 
       List<Trip> trips = [];
       final fetchedTrips = body['Items'] as List;
@@ -139,7 +142,7 @@ class TripService {
 
       final body = json.decode(response.body);
       final fetchedTrip = body['Items'] as List;
-      print(fetchedTrip);
+
       return fetchedTrip.isNotEmpty ? _mapToTrip(fetchedTrip[0]) : null;
     } catch (error) {
       debugPrint(error.toString());

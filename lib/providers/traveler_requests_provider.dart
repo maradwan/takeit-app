@@ -15,4 +15,9 @@ class TravelerRequestsProvider with ChangeNotifier {
     _requests = await _shareRequestService.findTravelerPendingRequests();
     notifyListeners();
   }
+
+  Future<void> removeRequest(String requestId) async {
+    _requests.removeWhere((request) => request.created == requestId);
+    notifyListeners();
+  }
 }

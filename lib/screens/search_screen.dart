@@ -28,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),

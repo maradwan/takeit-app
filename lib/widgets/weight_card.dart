@@ -7,12 +7,14 @@ class WeightCard extends StatelessWidget {
   final Trip trip;
   final Function() onTap;
   final bool showDetailsButton;
+  final String detailsButtonText;
 
   const WeightCard({
     Key? key,
     required this.trip,
     required this.onTap,
     this.showDetailsButton = true,
+    this.detailsButtonText = 'View Details',
   }) : super(key: key);
 
   @override
@@ -93,7 +95,7 @@ class WeightCard extends StatelessWidget {
                         elevation: 0,
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('View details'),
+                      child: Text(detailsButtonText),
                     ),
                 ],
               ),

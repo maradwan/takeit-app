@@ -28,7 +28,7 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 0,
         title: const Text('Recieved Requests'),

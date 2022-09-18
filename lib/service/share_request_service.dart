@@ -36,9 +36,65 @@ class ShareRequestService {
         },
       );
 
+      if (response.statusCode == 404) {
+        return;
+      }
+
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> acceptRequest(String requestId) async {
+    final url = '$gatewayUrl/share-request/traveler/$requestId';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+      print(json.decode(response.body));
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> declineRequest(String requestId) async {
+    final url = '$gatewayUrl/share-request/traveler/$requestId';
+
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode == 404) {
+        return;
+      }
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+      print(json.decode(response.body));
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
@@ -56,6 +112,10 @@ class ShareRequestService {
           "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
         },
       );
+
+      if (response.statusCode == 404) {
+        return [];
+      }
 
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
@@ -84,12 +144,15 @@ class ShareRequestService {
         },
       );
 
+      if (response.statusCode == 404) {
+        return [];
+      }
+
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
 
       final body = json.decode(response.body);
-      print(body);
       final fetchedRequests = body['Items'] as List;
       return fetchedRequests
           .map((request) => RequesterShareRquest.fromJson(request))

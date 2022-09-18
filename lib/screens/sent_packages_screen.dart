@@ -89,7 +89,7 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                 return requests.isEmpty
                     ? Center(
                         child: Text(
-                          'You didn\'t recieve any requests yet',
+                          'You didn\'t send any requests yet',
                           style: TextStyle(color: Colors.grey[600]),
                         ),
                       )

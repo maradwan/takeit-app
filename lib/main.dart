@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/amplifyconfiguration.dart';
 import 'package:travel_app/providers/search_provider.dart';
+import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
 import 'package:travel_app/screens/confirm_reset_password_screen.dart';
 import 'package:travel_app/screens/login_screen.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
+import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
 
 void main() {
@@ -58,6 +60,11 @@ class _MyAppState extends State<MyApp> {
               ),
           TripDetailsScreen.routeName: (_) => const TripDetailsScreen(),
           SaveTripScreen.routeName: (_) => const SaveTripScreen(),
+          TravelerRequestContactInfoScreen.routeName: (_) =>
+              ChangeNotifierProvider(
+                create: (_) => TravelerRequestsProvider(),
+                child: const TravelerRequestContactInfoScreen(),
+              ),
         },
       ),
     );
