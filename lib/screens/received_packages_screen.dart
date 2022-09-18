@@ -138,8 +138,10 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
                               )
                             : ListView.builder(
                                 itemCount: requests.length,
-                                itemBuilder: (ctx, i) =>
-                                    TravelerRequestCard(request: requests[i]),
+                                itemBuilder: (ctx, i) => TravelerRequestCard(
+                                  request: requests[i],
+                                  requestStatus: requestStatus,
+                                ),
                               );
                       },
                     ),

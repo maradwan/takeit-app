@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/service/share_request_service.dart';
 
@@ -33,8 +33,10 @@ class TravelerRequestContactInfoScreenState
 
   @override
   Widget build(BuildContext context) {
-    final request =
-        ModalRoute.of(context)!.settings.arguments as TravelerShareRquest;
+    final argsMap =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final request = argsMap['request'] as TravelerShareRquest;
+    final requestStatus = argsMap['status'] as RequestStatus;
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -88,109 +90,114 @@ class TravelerRequestContactInfoScreenState
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
-                  child: AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    child: SizedBox(
-                      width: declineWidth,
-                      height: 40,
-                      child: ElevatedButton.icon(
-                        icon: isUpdating
-                            ? Container()
-                            : const Icon(FontAwesomeIcons.xmark),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red[600]),
-                        onPressed: () async {
-                          if (isUpdating) {
-                            return;
-                          }
-                          setState(() {
-                            isUpdating = true;
-                            declineWidth = 235;
-                            acceptWidth = 0;
-                          });
-                          try {
-                            await ShareRequestService()
-                                .declineRequest(request.created);
-                            if (!mounted) return;
-                            _showSnackbar('Request declined', 'success');
-                            Navigator.pop(context);
-                          } on HttpException catch (e) {
-                            debugPrint(e.message);
+                if (requestStatus == RequestStatus.pending ||
+                    requestStatus == RequestStatus.accepted)
+                  Flexible(
+                    child: AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      child: SizedBox(
+                        width: declineWidth,
+                        height: 40,
+                        child: ElevatedButton.icon(
+                          icon: isUpdating
+                              ? Container()
+                              : const Icon(FontAwesomeIcons.xmark),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[600]),
+                          onPressed: () async {
+                            if (isUpdating) {
+                              return;
+                            }
                             setState(() {
-                              isUpdating = false;
-                              declineWidth = 110;
-                              acceptWidth = 110;
+                              isUpdating = true;
+                              declineWidth = 235;
+                              acceptWidth = 0;
                             });
-                            _showSnackbar(
-                                'Something went wrong, try again', 'error');
-                          }
-                        },
-                        label: isUpdating
-                            ? const SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Text('Decline'),
+                            try {
+                              await ShareRequestService()
+                                  .declineRequest(request.created);
+                              if (!mounted) return;
+                              _showSnackbar('Request declined', 'success');
+                              Navigator.pop(context);
+                            } on HttpException catch (e) {
+                              debugPrint(e.message);
+                              setState(() {
+                                isUpdating = false;
+                                declineWidth = 110;
+                                acceptWidth = 110;
+                              });
+                              _showSnackbar(
+                                  'Something went wrong, try again', 'error');
+                            }
+                          },
+                          label: isUpdating
+                              ? const SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Decline'),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 15),
-                Flexible(
-                  child: AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    child: SizedBox(
-                      width: acceptWidth,
-                      height: 40,
-                      child: ElevatedButton.icon(
-                        icon: isUpdating
-                            ? Container()
-                            : const Icon(FontAwesomeIcons.check),
-                        onPressed: () async {
-                          if (isUpdating) {
-                            return;
-                          }
-                          setState(() {
-                            isUpdating = true;
-                            declineWidth = 0;
-                            acceptWidth = 235;
-                          });
-                          try {
-                            await ShareRequestService()
-                                .acceptRequest(request.created);
-                            if (!mounted) return;
-                            _showSnackbar('Request accepted', 'success');
-                            Navigator.pop(context);
-                          } on HttpException catch (e) {
-                            debugPrint(e.message);
+                if (requestStatus == RequestStatus.pending)
+                  const SizedBox(width: 15),
+                if (requestStatus == RequestStatus.pending ||
+                    requestStatus == RequestStatus.declined)
+                  Flexible(
+                    child: AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      child: SizedBox(
+                        width: acceptWidth,
+                        height: 40,
+                        child: ElevatedButton.icon(
+                          icon: isUpdating
+                              ? Container()
+                              : const Icon(FontAwesomeIcons.check),
+                          onPressed: () async {
+                            if (isUpdating) {
+                              return;
+                            }
                             setState(() {
-                              isUpdating = false;
-                              declineWidth = 110;
-                              acceptWidth = 110;
+                              isUpdating = true;
+                              declineWidth = 0;
+                              acceptWidth = 235;
                             });
-                            _showSnackbar(
-                                'Something went wrong, try again', 'error');
-                          }
-                        },
-                        label: isUpdating
-                            ? const SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Text('Accept'),
+                            try {
+                              await ShareRequestService()
+                                  .acceptRequest(request.created);
+                              if (!mounted) return;
+                              _showSnackbar('Request accepted', 'success');
+                              Navigator.pop(context);
+                            } on HttpException catch (e) {
+                              debugPrint(e.message);
+                              setState(() {
+                                isUpdating = false;
+                                declineWidth = 110;
+                                acceptWidth = 110;
+                              });
+                              _showSnackbar(
+                                  'Something went wrong, try again', 'error');
+                            }
+                          },
+                          label: isUpdating
+                              ? const SizedBox(
+                                  height: 25,
+                                  width: 25,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Accept'),
+                        ),
                       ),
                     ),
-                  ),
-                )
+                  )
               ],
             ),
             const SizedBox(height: 20),
