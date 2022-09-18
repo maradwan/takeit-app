@@ -15,4 +15,9 @@ class RequesterRequestsProvider with ChangeNotifier {
     _requests = await _shareRequestService.findRequesterRequests(requestStatus);
     notifyListeners();
   }
+
+  Future<void> removeRequest(String requestId) async {
+    _requests.removeWhere((request) => request.created == requestId);
+    notifyListeners();
+  }
 }

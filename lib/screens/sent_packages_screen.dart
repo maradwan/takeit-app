@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/providers/requester_requests_provider.dart';
@@ -14,19 +17,35 @@ class SentPackagesScreen extends StatefulWidget {
 
 class _SentPackagesScreenState extends State<SentPackagesScreen> {
   var requestStatus = RequestStatus.pending;
+  var isLoading = false;
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      _initRequests();
+      _initRequests(true);
     });
     super.initState();
   }
 
-  Future<void> _initRequests() async {
-    final requestProvider =
-        Provider.of<RequesterRequestsProvider>(context, listen: false);
-    await requestProvider.findRequests(requestStatus);
+  Future<void> _initRequests(bool showLoadingProgress) async {
+    if (showLoadingProgress) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
+    try {
+      final requestProvider =
+          Provider.of<RequesterRequestsProvider>(context, listen: false);
+      await requestProvider.findRequests(requestStatus);
+    } on HttpException catch (e) {
+      debugPrint(e.message);
+    }
+    if (showLoadingProgress) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -58,7 +77,7 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                       setState(() {
                         requestStatus = RequestStatus.pending;
                       });
-                      _initRequests();
+                      _initRequests(true);
                     }
                   }),
               const SizedBox(width: 15),
@@ -70,7 +89,7 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                       setState(() {
                         requestStatus = RequestStatus.accepted;
                       });
-                      _initRequests();
+                      _initRequests(true);
                     }
                   }),
               const SizedBox(width: 15),
@@ -82,32 +101,47 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                     setState(() {
                       requestStatus = RequestStatus.declined;
                     });
-                    _initRequests();
+                    _initRequests(true);
                   }
                 },
               )
             ],
           ),
-          Expanded(
-            child: Consumer<RequesterRequestsProvider>(
-              builder: (ctx, requestsProvider, _) {
-                final requests = requestsProvider.requests;
-
-                return requests.isEmpty
-                    ? Center(
-                        child: Text(
-                          'You didn\'t send any requests yet',
-                          style: TextStyle(color: Colors.grey[600]),
+          isLoading
+              ? const Expanded(
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: Center(
+                      child: SizedBox(
+                        width: 60,
+                        child: LoadingIndicator(
+                          strokeWidth: 1,
+                          indicatorType: Indicator.ballPulse,
                         ),
-                      )
-                    : ListView.builder(
-                        itemCount: requests.length,
-                        itemBuilder: (ctx, i) =>
-                            RequesterRequestCard(request: requests[i]),
-                      );
-              },
-            ),
-          ),
+                      ),
+                    ),
+                  ),
+                )
+              : Expanded(
+                  child: Consumer<RequesterRequestsProvider>(
+                    builder: (ctx, requestsProvider, _) {
+                      final requests = requestsProvider.requests;
+
+                      return requests.isEmpty
+                          ? Center(
+                              child: Text(
+                                'You didn\'t send any requests yet',
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: requests.length,
+                              itemBuilder: (ctx, i) =>
+                                  RequesterRequestCard(request: requests[i]),
+                            );
+                    },
+                  ),
+                ),
         ]),
       ),
     );
