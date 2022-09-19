@@ -2,6 +2,8 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:provider/provider.dart';
+import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
 import 'package:travel_app/screens/confirm_reset_password_screen.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
@@ -22,6 +24,10 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(Duration.zero, () async {
       final session = await Amplify.Auth.fetchAuthSession();
       if (session.isSignedIn && mounted) {
+        final globalProvider =
+            Provider.of<GlobalProvider>(context, listen: false);
+        await globalProvider.loadUserdata();
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, TabsScreen.routeName);
       }
     });

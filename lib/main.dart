@@ -5,6 +5,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/amplifyconfiguration.dart';
+import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/providers/search_provider.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
@@ -15,6 +16,7 @@ import 'package:travel_app/screens/search_result_screen.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
+import 'package:travel_app/service/contacts_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,34 +40,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Take it',
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
+    return ChangeNotifierProvider(
+      create: (_) => GlobalProvider(),
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Take it',
+          theme: ThemeData(
+            primarySwatch: Colors.teal,
+          ),
+          home: _amplifyConfigured
+              ? const LoginScreen()
+              : const CircularProgressIndicator(),
+          routes: {
+            ConfirmEmailScreen.routeName: (_) => const ConfirmEmailScreen(),
+            ConfirmResetPasswordScreen.routeName: (_) =>
+                const ConfirmResetPasswordScreen(),
+            TabsScreen.routeName: (_) => const TabsScreen(),
+            SearchResultScreen.routeName: (_) => ChangeNotifierProvider(
+                  create: (_) => SearchProvider(),
+                  child: const SearchResultScreen(),
+                ),
+            TripDetailsScreen.routeName: (_) => const TripDetailsScreen(),
+            SaveTripScreen.routeName: (_) => const SaveTripScreen(),
+            TravelerRequestContactInfoScreen.routeName: (_) =>
+                ChangeNotifierProvider(
+                  create: (_) => TravelerRequestsProvider(),
+                  child: const TravelerRequestContactInfoScreen(),
+                ),
+            ContactsScreen.routeName: (_) => ContactsScreen(),
+          },
         ),
-        home: _amplifyConfigured
-            ? const LoginScreen()
-            : const CircularProgressIndicator(),
-        routes: {
-          ConfirmEmailScreen.routeName: (_) => const ConfirmEmailScreen(),
-          ConfirmResetPasswordScreen.routeName: (_) =>
-              const ConfirmResetPasswordScreen(),
-          TabsScreen.routeName: (_) => const TabsScreen(),
-          SearchResultScreen.routeName: (_) => ChangeNotifierProvider(
-                create: (_) => SearchProvider(),
-                child: const SearchResultScreen(),
-              ),
-          TripDetailsScreen.routeName: (_) => const TripDetailsScreen(),
-          SaveTripScreen.routeName: (_) => const SaveTripScreen(),
-          TravelerRequestContactInfoScreen.routeName: (_) =>
-              ChangeNotifierProvider(
-                create: (_) => TravelerRequestsProvider(),
-                child: const TravelerRequestContactInfoScreen(),
-              ),
-        },
       ),
     );
   }
