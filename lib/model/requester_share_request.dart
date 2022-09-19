@@ -14,7 +14,7 @@ class RequesterShareRquest {
   );
 
   static RequesterShareRquest fromJson(Map<String, dynamic> json) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd-hh-mm-ss');
 
     return RequesterShareRquest(
       json['created'],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/trip_service.dart';
+import 'package:travel_app/widgets/info_label.dart';
 import 'package:travel_app/widgets/skeleton.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
@@ -69,6 +70,10 @@ class RequesterRequestCardState extends State<RequesterRequestCard> {
             ? Container()
             : WeightCard(
                 showDetailsButton: false,
+                info: trip!.updated != null &&
+                        trip!.updated!.isAfter(widget.request.dtime)
+                    ? const InfoLabel(label: 'Traveler updated trip details')
+                    : null,
                 trip: trip!,
                 onTap: () {},
               );

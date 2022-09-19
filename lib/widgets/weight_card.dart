@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/widgets/info_label.dart';
 
 class WeightCard extends StatelessWidget {
   final Trip trip;
   final Function() onTap;
   final bool showDetailsButton;
   final String detailsButtonText;
+  final Widget? info;
 
   const WeightCard({
     Key? key,
@@ -15,6 +17,7 @@ class WeightCard extends StatelessWidget {
     required this.onTap,
     this.showDetailsButton = true,
     this.detailsButtonText = 'View Details',
+    this.info,
   }) : super(key: key);
 
   @override
@@ -31,6 +34,8 @@ class WeightCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (info != null) info!,
+              if (info != null) const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

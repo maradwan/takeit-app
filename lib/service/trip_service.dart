@@ -153,6 +153,7 @@ class TripService {
 
   Trip _mapToTrip(Map<String, dynamic> tripResponse) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final DateFormat updatedFormatter = DateFormat('yyyy-MM-dd-hh-mm-ss');
 
     return Trip(
       tripResponse['created'],
@@ -165,7 +166,7 @@ class TripService {
       tripResponse['currency'],
       _mapToItems(tripResponse['allowed'] as Map<String, dynamic>),
       tripResponse['updated'] != null
-          ? formatter.parse(tripResponse['updated'])
+          ? updatedFormatter.parse(tripResponse['updated'])
           : null,
     );
   }
