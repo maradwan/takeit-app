@@ -141,9 +141,7 @@ class TripService {
 
       final body = json.decode(response.body);
       final fetchedTrip = body['Items'] as List;
-      print('++++++++');
-      print(body);
-      print('++++++++');
+
       return fetchedTrip.isNotEmpty ? _mapToTrip(fetchedTrip[0]) : null;
     } catch (error) {
       debugPrint(error.toString());
