@@ -87,11 +87,10 @@ class TravelerRequestContactInfoScreenState
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (requestStatus == RequestStatus.pending ||
-                    requestStatus == RequestStatus.accepted)
+            if (requestStatus == RequestStatus.pending)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Flexible(
                     child: AnimatedSize(
                       duration: const Duration(milliseconds: 300),
@@ -144,10 +143,7 @@ class TravelerRequestContactInfoScreenState
                       ),
                     ),
                   ),
-                if (requestStatus == RequestStatus.pending)
                   const SizedBox(width: 15),
-                if (requestStatus == RequestStatus.pending ||
-                    requestStatus == RequestStatus.declined)
                   Flexible(
                     child: AnimatedSize(
                       duration: const Duration(milliseconds: 300),
@@ -198,8 +194,8 @@ class TravelerRequestContactInfoScreenState
                       ),
                     ),
                   )
-              ],
-            ),
+                ],
+              ),
             const SizedBox(height: 20),
           ],
         ),
