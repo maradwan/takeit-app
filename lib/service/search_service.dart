@@ -75,6 +75,9 @@ class SearchService {
       tripResponse['tocity'],
       tripResponse['currency'],
       _mapToItems(tripResponse['allowed'] as Map<String, dynamic>),
+      tripResponse['updated'] != null
+          ? formatter.parse(tripResponse['updated'])
+          : null,
     );
   }
 

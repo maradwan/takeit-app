@@ -11,6 +11,7 @@ class Trip {
   final String toCity;
   final String currency;
   final List<Item> allowedItems;
+  final DateTime? updated;
 
   Trip(
     this.created,
@@ -22,6 +23,7 @@ class Trip {
     this.toCity,
     this.currency,
     this.allowedItems,
+    this.updated,
   );
 
   Map<String, dynamic> toJson() {

@@ -107,6 +107,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
       '${_formData['toCity']}-${_formData['toCountry']}',
       _formData['currencyCode'],
       items,
+      null,
     );
     try {
       final savedTrip = _formData['created'] == null

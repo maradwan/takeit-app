@@ -69,7 +69,6 @@ class ShareRequestService {
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
-      print(json.decode(response.body));
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
@@ -95,7 +94,6 @@ class ShareRequestService {
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
-      print(json.decode(response.body));
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
@@ -160,6 +158,51 @@ class ShareRequestService {
       return fetchedRequests
           .map((request) => RequesterShareRquest.fromJson(request))
           .toList();
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<RequesterShareRquest?> findRequesterRequest(
+      String tripId, String traveler, RequestStatus requestStatus) async {
+    String status;
+    if (requestStatus == RequestStatus.accepted) {
+      status = 'traveleraccepted';
+    } else if (requestStatus == RequestStatus.declined) {
+      status = 'travelerdeclined';
+    } else {
+      status = 'request';
+    }
+
+    final url =
+        '$gatewayUrl/share-request/requester/${status}_${tripId}_$traveler';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode >= 404) {
+        return null;
+      }
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+
+      final body = json.decode(response.body);
+      final fetchedRequests = body['Items'] as List;
+
+      if (fetchedRequests.isEmpty) {
+        return null;
+      }
+
+      return RequesterShareRquest.fromJson(fetchedRequests[0]);
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
