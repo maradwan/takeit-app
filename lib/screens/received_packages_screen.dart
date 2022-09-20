@@ -143,7 +143,7 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
                                     requestsProvider: requestsProvider,
                                     request: requests[i],
                                     requestStatus: requestStatus,
-                                    onTap: () async {
+                                    onTap: (trip) async {
                                       final result = await Navigator.pushNamed(
                                         context,
                                         TravelerRequestContactInfoScreen
@@ -151,6 +151,7 @@ class _RecievedPackagesScreenState extends State<RecievedPackagesScreen> {
                                         arguments: {
                                           'request': requests[i],
                                           'status': requestStatus,
+                                          'trip': trip,
                                         },
                                       );
                                       if (result == true) {

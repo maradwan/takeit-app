@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/providers/global_provider.dart';
-import 'package:travel_app/service/contacts_screen.dart';
+import 'package:travel_app/screens/contacts_screen.dart';
 import 'package:travel_app/util/app_theme.dart';
 
 class MainDrawer extends StatelessWidget {

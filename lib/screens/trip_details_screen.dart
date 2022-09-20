@@ -70,14 +70,29 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 0,
-        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(trip.fromCity.split('-')[0]),
-            const SizedBox(width: 20),
-            const Icon(FontAwesomeIcons.plane, size: 14),
-            const SizedBox(width: 20),
-            Text(trip.toCity.split('-')[0]),
+            Row(
+              children: [
+                Text(trip.fromCity.split('-')[0]),
+                const SizedBox(width: 15),
+                const Icon(FontAwesomeIcons.plane, size: 14),
+                const SizedBox(width: 15),
+                Text(trip.toCity.split('-')[0]),
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(Icons.flight_land),
+                const SizedBox(width: 5),
+                Text(formatter.format(trip.trDate)),
+              ],
+            ),
           ],
         ),
       ),

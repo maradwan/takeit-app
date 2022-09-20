@@ -37,7 +37,6 @@ class Contacts {
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
       'mobile': mobile,
       'e-mail': email,
       'facebook': facebook,

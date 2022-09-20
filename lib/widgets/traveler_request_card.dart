@@ -5,7 +5,6 @@ import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
-import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/widgets/skeleton.dart';
 import 'package:travel_app/widgets/weight_card.dart';
@@ -14,7 +13,7 @@ class TravelerRequestCard extends StatefulWidget {
   final TravelerShareRquest request;
   final RequestStatus requestStatus;
   final TravelerRequestsProvider requestsProvider;
-  final Function() onTap;
+  final Function(Trip trip) onTap;
 
   const TravelerRequestCard({
     Key? key,
@@ -86,7 +85,7 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
             : WeightCard(
                 detailsButtonText: 'Contact Info',
                 trip: trip!,
-                onTap: widget.onTap,
+                onTap: () => widget.onTap(trip!),
               );
   }
 }

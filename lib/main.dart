@@ -16,7 +16,7 @@ import 'package:travel_app/screens/search_result_screen.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
-import 'package:travel_app/service/contacts_screen.dart';
+import 'package:travel_app/screens/contacts_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
+import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/share_request_service.dart';
+import 'package:travel_app/widgets/form_section.dart';
 
 class TravelerRequestContactInfoScreen extends StatefulWidget {
   static const String routeName = '/traveler-request-contact';
@@ -33,58 +36,79 @@ class TravelerRequestContactInfoScreenState
 
   @override
   Widget build(BuildContext context) {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
     final argsMap =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final request = argsMap['request'] as TravelerShareRquest;
     final requestStatus = argsMap['status'] as RequestStatus;
+    final trip = argsMap['trip'] as Trip;
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Contact info'),
+        titleTextStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Text(trip.fromCity.split('-')[0]),
+                const SizedBox(width: 10),
+                const Icon(FontAwesomeIcons.plane, size: 14),
+                const SizedBox(width: 10),
+                Text(trip.toCity.split('-')[0]),
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(Icons.flight_land),
+                const SizedBox(width: 5),
+                Text(formatter.format(trip.trDate)),
+              ],
+            ),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.all(8).copyWith(top: 20),
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.phone),
-                        title: const Text('+440757512781'),
-                        trailing: InkWell(
-                            onTap: () {}, child: const Icon(Icons.copy)),
-                      ),
-                      ListTile(
-                        leading: const Icon(FontAwesomeIcons.envelope),
-                        title: const Text('akhaled.saleh@gmail.com'),
-                        trailing: InkWell(
-                            onTap: () {}, child: const Icon(Icons.copy)),
-                      ),
-                      ListTile(
-                        leading: const Icon(FontAwesomeIcons.facebookSquare),
-                        title: const Text('amr.khaled.505960'),
-                        trailing: InkWell(
-                            onTap: () {}, child: const Icon(Icons.copy)),
-                      ),
-                      ListTile(
-                        leading: const Icon(FontAwesomeIcons.instagramSquare),
-                        title: const Text('amrkhaled135'),
-                        trailing: InkWell(
-                            onTap: () {
-                              Clipboard.setData(
-                                  const ClipboardData(text: 'amrkhaled135'));
-                            },
-                            child: const Icon(Icons.copy)),
-                      ),
-                    ],
+              margin: const EdgeInsets.all(15),
+              child: FormSection(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.phone),
+                    title: const Text('+440757512781'),
+                    trailing:
+                        InkWell(onTap: () {}, child: const Icon(Icons.copy)),
                   ),
-                ),
+                  ListTile(
+                    leading: const Icon(FontAwesomeIcons.envelope),
+                    title: const Text('akhaled.saleh@gmail.com'),
+                    trailing:
+                        InkWell(onTap: () {}, child: const Icon(Icons.copy)),
+                  ),
+                  ListTile(
+                    leading: const Icon(FontAwesomeIcons.facebookSquare),
+                    title: const Text('amr.khaled.505960'),
+                    trailing:
+                        InkWell(onTap: () {}, child: const Icon(Icons.copy)),
+                  ),
+                  ListTile(
+                    leading: const Icon(FontAwesomeIcons.instagramSquare),
+                    title: const Text('amrkhaled135'),
+                    trailing: InkWell(
+                        onTap: () {
+                          Clipboard.setData(
+                              const ClipboardData(text: 'amrkhaled135'));
+                        },
+                        child: const Icon(Icons.copy)),
+                  ),
+                ],
               ),
             ),
             if (requestStatus == RequestStatus.pending)
