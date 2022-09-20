@@ -71,18 +71,19 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       appBar: AppBar(
         elevation: 0,
         titleTextStyle: const TextStyle(
-          fontSize: 14,
+          fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
+        titleSpacing: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
                 Text(trip.fromCity.split('-')[0]),
-                const SizedBox(width: 15),
+                const SizedBox(width: 10),
                 const Icon(FontAwesomeIcons.plane, size: 14),
-                const SizedBox(width: 15),
+                const SizedBox(width: 10),
                 Text(trip.toCity.split('-')[0]),
               ],
             ),
@@ -91,6 +92,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                 const Icon(Icons.flight_land),
                 const SizedBox(width: 5),
                 Text(formatter.format(trip.trDate)),
+                const SizedBox(width: 10),
               ],
             ),
           ],

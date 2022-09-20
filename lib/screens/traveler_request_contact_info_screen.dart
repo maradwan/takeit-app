@@ -48,9 +48,10 @@ class TravelerRequestContactInfoScreenState
       appBar: AppBar(
         elevation: 0,
         titleTextStyle: const TextStyle(
-          fontSize: 14,
+          fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
+        titleSpacing: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -68,6 +69,7 @@ class TravelerRequestContactInfoScreenState
                 const Icon(Icons.flight_land),
                 const SizedBox(width: 5),
                 Text(formatter.format(trip.trDate)),
+                const SizedBox(width: 10),
               ],
             ),
           ],
