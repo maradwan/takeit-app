@@ -27,7 +27,7 @@ class Contacts {
       json['name'],
       json['mobile'],
       json['e-mail'],
-      json['facebook'],
+      json['fb'],
       json['instagram'],
       json['linkedin'],
       json['telegram'],
@@ -39,7 +39,7 @@ class Contacts {
     return {
       'mobile': mobile,
       'e-mail': email,
-      'facebook': facebook,
+      'fb': facebook,
       'instagram': instagram,
       'linkedin': linkedIn,
       'telegram': telegram,
