@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:travel_app/model/contacts.dart';
+import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/service/contacts_service.dart';
 import 'package:travel_app/widgets/form_section.dart';
 import 'package:travel_app/widgets/input_widget.dart';
@@ -39,17 +42,14 @@ class ContactsScreenState extends State<ContactsScreen> {
     Future.delayed(Duration.zero, () async {
       try {
         final existingContacts = await ContactsService().findContacts(null);
-
-        _formData['name'] = existingContacts?.name;
-        _formData['phone'] = existingContacts?.mobile;
-        _formData['email'] = existingContacts?.email;
-        _formData['facebook'] = existingContacts?.facebook;
-        _formData['instagram'] = existingContacts?.instagram;
-        _formData['twitter'] = existingContacts?.twitter;
-        _formData['linkedin'] = existingContacts?.linkedIn;
-        _formData['telegram'] = existingContacts?.telegram;
-
         setState(() {
+          _formData['phone'] = existingContacts?.mobile;
+          _formData['email'] = existingContacts?.email;
+          _formData['facebook'] = existingContacts?.facebook;
+          _formData['instagram'] = existingContacts?.instagram;
+          _formData['twitter'] = existingContacts?.twitter;
+          _formData['linkedin'] = existingContacts?.linkedIn;
+          _formData['telegram'] = existingContacts?.telegram;
           contacts = existingContacts;
         });
       } on HttpException catch (e) {
@@ -98,6 +98,14 @@ class ContactsScreenState extends State<ContactsScreen> {
         _formData['telegram'],
       );
       await ContactsService().save(contacts);
+      await Amplify.Auth.updateUserAttribute(
+        userAttributeKey: CognitoUserAttributeKey.name,
+        value: _formData['name'],
+      );
+      if (mounted) {
+        await Provider.of<GlobalProvider>(context, listen: false)
+            .loadUserdata();
+      }
       _showSnackbar('Contacts saved successfully', 'success');
     } on HttpException catch (e) {
       debugPrint(e.message);
@@ -111,6 +119,8 @@ class ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final globalProvider = Provider.of<GlobalProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -170,7 +180,7 @@ class ContactsScreenState extends State<ContactsScreen> {
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.solidUser,
                               hintText: 'Name',
-                              initialValue: contacts?.name,
+                              initialValue: globalProvider.name,
                               onchaged: (value) => _formData['name'] = value,
                             ),
                             const SizedBox(height: 10),
