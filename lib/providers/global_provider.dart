@@ -13,6 +13,7 @@ class GlobalProvider with ChangeNotifier {
     for (final element in result) {
       if (element.userAttributeKey == CognitoUserAttributeKey.name) {
         _name = element.value;
+        break;
       }
     }
     notifyListeners();

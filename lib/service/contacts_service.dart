@@ -8,7 +8,7 @@ import 'package:travel_app/service/amplify_auth_service.dart';
 
 class ContactsService {
   static const gatewayUrl =
-      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging/';
+      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging';
 
   final amplifyAuthService = AmplifyAuthService();
 
@@ -38,7 +38,7 @@ class ContactsService {
 
   Future<Contacts?> findContacts(String? username) async {
     final url = '$gatewayUrl/contacts${username != null ? '/$username' : ''}';
-
+    print(url);
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -47,7 +47,7 @@ class ContactsService {
           "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
         },
       );
-
+      print(response.statusCode);
       if (response.statusCode == 404) {
         return null;
       }

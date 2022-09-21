@@ -24,10 +24,6 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(Duration.zero, () async {
       final session = await Amplify.Auth.fetchAuthSession();
       if (session.isSignedIn && mounted) {
-        final globalProvider =
-            Provider.of<GlobalProvider>(context, listen: false);
-        await globalProvider.loadUserdata();
-        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, TabsScreen.routeName);
       }
     });
@@ -43,6 +39,12 @@ class LoginScreenState extends State<LoginScreen> {
       );
 
       _isSignedIn = res.isSignedIn;
+      if (_isSignedIn && mounted) {
+        final globalProvider =
+            Provider.of<GlobalProvider>(context, listen: false);
+        await globalProvider.loadUserdata();
+      }
+
       return null;
     } on AuthException catch (e) {
       if (e.message.contains('already a user which is signed in')) {
