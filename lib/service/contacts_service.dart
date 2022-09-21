@@ -14,7 +14,6 @@ class ContactsService {
 
   Future<Contacts> save(Contacts contact) async {
     const url = '$gatewayUrl/contacts';
-
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -58,8 +57,7 @@ class ContactsService {
       }
 
       final body = json.decode(response.body);
-
-      return Contacts.fromJson(body);
+      return Contacts.fromJson(body['Items'][0]);
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
