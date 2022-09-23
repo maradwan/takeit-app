@@ -16,9 +16,9 @@ class Contacts {
     this.email,
     this.facebook,
     this.instagram,
+    this.twitter,
     this.linkedIn,
     this.telegram,
-    this.twitter,
   );
 
   static Contacts fromJson(Map<String, dynamic> json) {
@@ -29,9 +29,9 @@ class Contacts {
       json['e-mail'],
       json['fb'],
       json['instagram'],
+      json['twitter'],
       json['linkedin'],
       json['telegram'],
-      json['twitter'],
     );
   }
 
@@ -41,9 +41,9 @@ class Contacts {
       'e-mail': email,
       'fb': facebook,
       'instagram': instagram,
+      'twitter': twitter,
       'linkedin': linkedIn,
       'telegram': telegram,
-      'twitter': twitter,
     };
   }
 }
