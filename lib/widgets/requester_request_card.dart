@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/screens/requester_request_contact_info_screen.dart';
 import 'package:travel_app/service/trip_service.dart';
 import 'package:travel_app/widgets/info_label.dart';
 import 'package:travel_app/widgets/skeleton.dart';
@@ -10,9 +12,13 @@ import 'package:travel_app/widgets/weight_card.dart';
 
 class RequesterRequestCard extends StatefulWidget {
   final RequesterShareRquest request;
+  final RequestStatus requestStatus;
 
-  const RequesterRequestCard({Key? key, required this.request})
-      : super(key: key);
+  const RequesterRequestCard({
+    Key? key,
+    required this.request,
+    required this.requestStatus,
+  }) : super(key: key);
 
   @override
   RequesterRequestCardState createState() => RequesterRequestCardState();
@@ -69,13 +75,28 @@ class RequesterRequestCardState extends State<RequesterRequestCard> {
         : trip == null
             ? Container()
             : WeightCard(
-                showDetailsButton: false,
+                showDetailsButton:
+                    widget.requestStatus == RequestStatus.accepted,
+                detailsButtonText: 'View contact info',
                 info: trip!.updated != null &&
                         trip!.updated!.isAfter(widget.request.dtime)
                     ? const InfoLabel(label: 'Traveler updated trip details')
                     : null,
                 trip: trip!,
-                onTap: () {},
+                onTap: () async {
+                  if (widget.requestStatus != RequestStatus.accepted) {
+                    return;
+                  }
+
+                  await Navigator.pushNamed(
+                    context,
+                    RequesterRequestContactInfoScreen.routeName,
+                    arguments: {
+                      'request': widget.request,
+                      'trip': trip,
+                    },
+                  );
+                },
               );
   }
 }

@@ -114,7 +114,7 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
               )
             : WeightCard(
                 name: contacts?.name,
-                detailsButtonText: 'Contact Info',
+                detailsButtonText: 'View contact info',
                 trip: trip!,
                 onTap: () => widget.onTap(trip!),
               );

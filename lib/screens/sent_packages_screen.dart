@@ -136,8 +136,10 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                             )
                           : ListView.builder(
                               itemCount: requests.length,
-                              itemBuilder: (ctx, i) =>
-                                  RequesterRequestCard(request: requests[i]),
+                              itemBuilder: (ctx, i) => RequesterRequestCard(
+                                request: requests[i],
+                                requestStatus: requestStatus,
+                              ),
                             );
                     },
                   ),
