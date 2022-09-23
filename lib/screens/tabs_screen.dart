@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/providers/requester_requests_provider.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/providers/trip_provider.dart';
@@ -20,6 +21,14 @@ class TabsScreen extends StatefulWidget {
 
 class TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      Provider.of<GlobalProvider>(context, listen: false).loadUserdata();
+    });
+    super.initState();
+  }
 
   List<Widget> screens = [
     const SearchScreen(),

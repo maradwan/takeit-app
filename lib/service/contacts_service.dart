@@ -36,9 +36,8 @@ class ContactsService {
     }
   }
 
-  Future<Contacts?> findContacts(String? username) async {
-    final url = '$gatewayUrl/contacts${username != null ? '/$username' : ''}';
-    print(url);
+  Future<Contacts?> findContacts() async {
+    const url = '$gatewayUrl/contacts';
     try {
       final response = await http.get(
         Uri.parse(url),
