@@ -36,7 +36,7 @@ class ContactsService {
     }
   }
 
-  Future<Contacts?> findContacts() async {
+  Future<Contacts?> findLoggedInUserContacts() async {
     const url = '$gatewayUrl/contacts';
     try {
       final response = await http.get(
@@ -46,7 +46,34 @@ class ContactsService {
           "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
         },
       );
-      print(response.statusCode);
+      if (response.statusCode == 404) {
+        return null;
+      }
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+
+      final body = json.decode(response.body);
+      return Contacts.fromJson(body['Items'][0]);
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
+    }
+  }
+
+  Future<Contacts?> findContacts(
+      String tripId, String username, bool isForTraveler) async {
+    final user = isForTraveler ? 'traveler' : 'requester';
+    final url = '$gatewayUrl/contacts/$user/${tripId}_$username';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
       if (response.statusCode == 404) {
         return null;
       }

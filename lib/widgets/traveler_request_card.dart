@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:travel_app/model/contacts.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
+import 'package:travel_app/service/contacts_service.dart';
 import 'package:travel_app/service/trip_service.dart';
+import 'package:travel_app/widgets/info_label.dart';
 import 'package:travel_app/widgets/skeleton.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
@@ -29,23 +32,50 @@ class TravelerRequestCard extends StatefulWidget {
 
 class TravelerRequestCardState extends State<TravelerRequestCard> {
   Trip? trip;
+  Contacts? contacts;
   var isLoading = true;
+
+  Future<dynamic> _findTrip() async {
+    try {
+      return await TripService()
+          .findTrip(widget.request.tripId, widget.request.username);
+    } on HttpException catch (e) {
+      debugPrint(e.message);
+    }
+    return null;
+  }
+
+  Future<dynamic> _findContacts() async {
+    try {
+      return await ContactsService().findContacts(
+        widget.request.tripId,
+        widget.request.created.split('_')[2],
+        false,
+      );
+    } on HttpException catch (e) {
+      debugPrint(e.message);
+    }
+    return null;
+  }
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
       try {
-        final requestTrip = await TripService()
-            .findTrip(widget.request.tripId, widget.request.username);
-        setState(() {
-          trip = requestTrip;
+        Future.wait<dynamic>([_findTrip(), _findContacts()])
+            .then((List<dynamic> result) {
+          setState(() {
+            trip = result[0] is Trip ? result[0] : result[1];
+            contacts = result[0] is Contacts ? result[0] : result[1];
+            isLoading = false;
+          });
         });
       } on HttpException catch (e) {
         debugPrint(e.message);
+        setState(() {
+          isLoading = false;
+        });
       }
-      setState(() {
-        isLoading = false;
-      });
     });
     super.initState();
   }
@@ -83,6 +113,7 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
                 ),
               )
             : WeightCard(
+                name: contacts?.name,
                 detailsButtonText: 'Contact Info',
                 trip: trip!,
                 onTap: () => widget.onTap(trip!),

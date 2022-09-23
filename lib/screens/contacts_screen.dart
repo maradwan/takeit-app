@@ -43,7 +43,8 @@ class ContactsScreenState extends State<ContactsScreen> {
       try {
         final globalProvider =
             Provider.of<GlobalProvider>(context, listen: false);
-        final existingContacts = await ContactsService().findContacts();
+        final existingContacts =
+            await ContactsService().findLoggedInUserContacts();
         setState(() {
           _formData['name'] = globalProvider.name;
           _formData['phone'] = existingContacts?.mobile;
