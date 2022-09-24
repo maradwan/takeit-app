@@ -56,17 +56,35 @@ class WeightCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        trip.fromCity.split('-')[0],
-                        style: const TextStyle(fontSize: 22),
+                      Column(
+                        children: [
+                          Text(
+                            trip.fromCity.split('-')[0],
+                            style: const TextStyle(fontSize: 22),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            trip.fromCity.split('-')[1],
+                            style: AppTheme.subtitle,
+                          ),
+                        ],
                       ),
                       const Icon(
                         FontAwesomeIcons.plane,
                         color: Colors.teal,
                       ),
-                      Text(
-                        trip.toCity.split('-')[0],
-                        style: const TextStyle(fontSize: 22),
+                      Column(
+                        children: [
+                          Text(
+                            trip.toCity.split('-')[0],
+                            style: const TextStyle(fontSize: 22),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            trip.toCity.split('-')[1],
+                            style: AppTheme.subtitle,
+                          ),
+                        ],
                       ),
                       Row(
                         children: [

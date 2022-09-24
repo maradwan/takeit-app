@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/trip.dart';
+import 'package:travel_app/util/app_theme.dart';
 
 class ProfileWeightCard extends StatelessWidget {
   final Trip trip;
@@ -32,17 +33,35 @@ class ProfileWeightCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  trip.fromCity.split('-')[0],
-                  style: const TextStyle(fontSize: 20),
+                Column(
+                  children: [
+                    Text(
+                      trip.fromCity.split('-')[0],
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      trip.fromCity.split('-')[1],
+                      style: AppTheme.subtitle,
+                    ),
+                  ],
                 ),
                 const Icon(
                   FontAwesomeIcons.plane,
                   color: Colors.teal,
                 ),
-                Text(
-                  trip.toCity.split('-')[0],
-                  style: const TextStyle(fontSize: 20),
+                Column(
+                  children: [
+                    Text(
+                      trip.toCity.split('-')[0],
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      trip.toCity.split('-')[1],
+                      style: AppTheme.subtitle,
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
