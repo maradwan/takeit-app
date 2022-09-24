@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
+import 'package:travel_app/util/app_theme.dart';
 
 class ConfirmEmailScreen extends StatefulWidget {
   static const String routeName = '/confirm-email';
@@ -13,58 +16,56 @@ class ConfirmEmailScreen extends StatefulWidget {
 }
 
 class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
-  late final SignupData _data;
-  final _controller = TextEditingController();
-  bool _isEnabled = false;
+  late final String? _username;
+  late final String? _password;
+  late final Timer? timer;
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      final argMap = ModalRoute.of(context)!.settings.arguments as SignupData;
+      final argMap =
+          ModalRoute.of(context)!.settings.arguments as Map<String, String>;
       setState(() {
-        _data = argMap;
+        _username = argMap['username'];
+        _password = argMap['password'];
       });
-    });
-
-    _controller.addListener(() {
-      setState(() {
-        _isEnabled = _controller.text.isNotEmpty;
-      });
+      timer = Timer.periodic(const Duration(seconds: 3), (_) => tryToLogin());
     });
     super.initState();
   }
 
-  void _verifyCode(SignupData data, String code) async {
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void tryToLogin() async {
     try {
       await Amplify.Auth.signOut();
-      final res = await Amplify.Auth.confirmSignUp(
-        username: data.name!,
-        confirmationCode: code,
+      final user = await Amplify.Auth.signIn(
+        username: _username!,
+        password: _password,
       );
 
-      if (res.isSignUpComplete) {
-        // Login user
-        final user = await Amplify.Auth.signIn(
-            username: data.name!, password: data.password);
-
-        if (user.isSignedIn && mounted) {
-          Navigator.pushReplacementNamed(context, TabsScreen.routeName);
-        }
+      if (user.isSignedIn && mounted) {
+        timer?.cancel();
+        Navigator.pushReplacementNamed(context, TabsScreen.routeName);
       }
-    } on AuthException catch (e) {
-      _showError(context, e.message);
+    } on AuthException catch (_) {
+      return;
     }
   }
 
-  void _resendCode(SignupData data) async {
+  void _resendCode(String? username) async {
     try {
-      await Amplify.Auth.resendSignUpCode(username: data.name!);
+      await Amplify.Auth.resendSignUpCode(username: username ?? '');
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.blueAccent,
-          content: Text('Confirmation code resent. Check your email',
+          content: Text('Confirmation link resent. Check your email',
               style: TextStyle(fontSize: 15)),
         ),
       );
@@ -86,12 +87,6 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -107,26 +102,25 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text(
+                  'Confirm Email',
+                  style: AppTheme.title.copyWith(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'We sent a confirmation link to your email',
+                  style: AppTheme.body,
+                ),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 4.0),
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: 'Enter confirmation code',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                    ),
-                  ),
+                const Text(
+                  'Click on the link to confirm your email',
+                  style: AppTheme.body,
                 ),
                 const SizedBox(height: 10),
                 MaterialButton(
-                  onPressed: _isEnabled
-                      ? () {
-                          _verifyCode(_data, _controller.text);
-                        }
-                      : null,
+                  onPressed: () {
+                    _resendCode(_username);
+                  },
                   elevation: 4,
                   color: Theme.of(context).primaryColor,
                   disabledColor: Colors.teal.shade200,
@@ -134,7 +128,7 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   child: const Text(
-                    'VERIFY',
+                    'Resend',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -142,11 +136,11 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () {
-                    _resendCode(_data);
+                  onPressed: () async {
+                    await Navigator.pushReplacementNamed(context, '/');
                   },
                   child: const Text(
-                    'Resend code',
+                    'Sign In',
                     style: TextStyle(color: Colors.grey),
                   ),
                 )

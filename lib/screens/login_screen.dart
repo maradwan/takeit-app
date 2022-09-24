@@ -50,8 +50,16 @@ class LoginScreenState extends State<LoginScreen> {
       if (e.message.contains('already a user which is signed in')) {
         await Amplify.Auth.signOut();
         return 'Problem logging in. Please try again.';
+      } else if (e.message.contains('User not confirmed')) {
+        Navigator.of(context).pushReplacementNamed(
+          _isSignedIn ? TabsScreen.routeName : ConfirmEmailScreen.routeName,
+          arguments: {
+            'username': data.name,
+            'password': data.password,
+          },
+        );
       }
-      return '${e.message} - ${e.recoverySuggestion}';
+      return 'Incorrect Email or Password';
     }
   }
 
@@ -108,9 +116,13 @@ class LoginScreenState extends State<LoginScreen> {
           primaryColor: Theme.of(context).primaryColor,
         ),
         onSubmitAnimationCompleted: () {
+          Map<String, String> args = {
+            'username': _signupData!.name!,
+            'password': _signupData!.password!,
+          };
           Navigator.of(context).pushReplacementNamed(
             _isSignedIn ? TabsScreen.routeName : ConfirmEmailScreen.routeName,
-            arguments: _signupData,
+            arguments: args,
           );
         },
       ),
