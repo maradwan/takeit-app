@@ -204,7 +204,8 @@ class TravelerRequestContactInfoScreenState
                               ),
                             if (contacts!.instagram != null)
                               ListTile(
-                                leading: const Icon(FontAwesomeIcons.instagram),
+                                leading: const Icon(
+                                    FontAwesomeIcons.instagramSquare),
                                 title: Text(contacts!.instagram!),
                                 trailing: InkWell(
                                     onTap: () {
