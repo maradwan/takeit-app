@@ -10,6 +10,7 @@ import 'package:travel_app/providers/search_provider.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
 import 'package:travel_app/screens/confirm_reset_password_screen.dart';
+import 'package:travel_app/screens/delete_account_screen.dart';
 import 'package:travel_app/screens/login_screen.dart';
 import 'package:travel_app/screens/requester_request_contact_info_screen.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
             ContactsScreen.routeName: (_) => const ContactsScreen(),
             RequesterRequestContactInfoScreen.routeName: (_) =>
                 const RequesterRequestContactInfoScreen(),
+            DeleteAccountScreen.routeName: (_) => const DeleteAccountScreen(),
           },
         ),
       ),

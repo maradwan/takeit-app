@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/screens/contacts_screen.dart';
+import 'package:travel_app/screens/delete_account_screen.dart';
 import 'package:travel_app/util/app_theme.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -100,6 +101,10 @@ class MainDrawer extends StatelessWidget {
             color: Colors.red[300],
             padding: const EdgeInsets.all(10.0),
             child: ListTile(
+              onTap: () async {
+                await Navigator.pushNamed(
+                    context, DeleteAccountScreen.routeName);
+              },
               iconColor: Colors.white,
               textColor: Colors.white,
               horizontalTitleGap: 0,
