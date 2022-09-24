@@ -170,8 +170,8 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                                       onPressed: (_) => _deleteRequest(
                                           requests[i].created, i),
                                       borderRadius: BorderRadius.circular(5),
-                                      backgroundColor: const Color(0xFFFE4A49),
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.grey[100]!,
+                                      foregroundColor: const Color(0xFFFE4A49),
                                       icon: Icons.delete,
                                       label: 'Delete',
                                     ),
