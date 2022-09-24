@@ -41,12 +41,10 @@ class ContactsScreenState extends State<ContactsScreen> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       try {
-        final globalProvider =
-            Provider.of<GlobalProvider>(context, listen: false);
         final existingContacts =
             await ContactsService().findLoggedInUserContacts();
         setState(() {
-          _formData['name'] = globalProvider.name;
+          _formData['name'] = existingContacts?.name;
           _formData['phone'] = existingContacts?.mobile;
           _formData['email'] = existingContacts?.email;
           _formData['facebook'] = existingContacts?.facebook;
@@ -92,7 +90,7 @@ class ContactsScreenState extends State<ContactsScreen> {
     try {
       final contacts = Contacts(
         null,
-        null,
+        _formData['name'],
         _formData['phone'],
         _formData['email'],
         _formData['facebook'],
@@ -123,8 +121,6 @@ class ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final globalProvider = Provider.of<GlobalProvider>(context, listen: false);
-
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -184,7 +180,7 @@ class ContactsScreenState extends State<ContactsScreen> {
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.solidUser,
                               hintText: 'Name',
-                              initialValue: globalProvider.name,
+                              initialValue: contacts?.name,
                               onchaged: (value) => _formData['name'] = value,
                             ),
                             const SizedBox(height: 10),

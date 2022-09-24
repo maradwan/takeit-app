@@ -24,9 +24,9 @@ class Contacts {
   static Contacts fromJson(Map<String, dynamic> json) {
     return Contacts(
       json['created'],
-      json['name'],
+      json['cname'],
       json['mobile'],
-      json['e-mail'],
+      json['email'],
       json['fb'],
       json['instagram'],
       json['twitter'],
@@ -37,8 +37,9 @@ class Contacts {
 
   Map<String, dynamic> toJson() {
     return {
+      'cname': name,
       'mobile': mobile,
-      'e-mail': email,
+      'email': email,
       'fb': facebook,
       'instagram': instagram,
       'twitter': twitter,

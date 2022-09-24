@@ -210,7 +210,7 @@ class ShareRequestService {
   }
 
   Future<void> deleteRequesterRequest(String created) async {
-    final url = '$gatewayUrl/share-request/request/$created';
+    final url = '$gatewayUrl/share-request/requester/request/$created';
 
     try {
       final response = await http.delete(
