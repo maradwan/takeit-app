@@ -112,11 +112,13 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
                   )),
                 ),
               )
-            : WeightCard(
-                name: contacts?.name,
-                detailsButtonText: 'View contact info',
-                trip: trip!,
-                onTap: () => widget.onTap(trip!),
-              );
+            : contacts == null
+                ? const SizedBox()
+                : WeightCard(
+                    name: contacts?.name,
+                    detailsButtonText: 'View contact info',
+                    trip: trip!,
+                    onTap: () => widget.onTap(trip!),
+                  );
   }
 }
