@@ -74,6 +74,7 @@ class ContactsService {
           "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
         },
       );
+
       if (response.statusCode == 404) {
         return null;
       }
@@ -83,7 +84,11 @@ class ContactsService {
       }
 
       final body = json.decode(response.body);
-      return Contacts.fromJson(body['Items'][0]);
+      final fetchRequests = body['Items'] as List;
+
+      return fetchRequests.isNotEmpty
+          ? Contacts.fromJson(fetchRequests[0])
+          : null;
     } catch (error) {
       debugPrint(error.toString());
       rethrow;

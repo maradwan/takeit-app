@@ -33,8 +33,8 @@ class RequesterRequestContactInfoScreenState
         request.created.split('_')[2],
         true,
       );
-    } on HttpException catch (e) {
-      debugPrint(e.message);
+    } on Exception catch (e) {
+      debugPrint(e.toString());
     }
     return null;
   }
