@@ -120,8 +120,8 @@ class LoginScreenState extends State<LoginScreen> {
         ),
         onSubmitAnimationCompleted: () {
           Map<String, String> args = {
-            'username': _signupData!.name!,
-            'password': _signupData!.password!,
+            'username': _signupData?.name ?? '',
+            'password': _signupData?.password ?? '',
           };
           Navigator.of(context).pushReplacementNamed(
             _isSignedIn ? TabsScreen.routeName : ConfirmEmailScreen.routeName,

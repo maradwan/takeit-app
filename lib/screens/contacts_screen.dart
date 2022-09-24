@@ -121,6 +121,7 @@ class ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final globalProvider = Provider.of<GlobalProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -180,7 +181,8 @@ class ContactsScreenState extends State<ContactsScreen> {
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.solidUser,
                               hintText: 'Name',
-                              initialValue: contacts?.name,
+                              initialValue:
+                                  contacts?.name ?? globalProvider.name,
                               onchaged: (value) => _formData['name'] = value,
                             ),
                             const SizedBox(height: 10),
