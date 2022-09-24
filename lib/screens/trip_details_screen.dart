@@ -206,7 +206,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
               if (!isLoading && existingShareRquest != null)
                 RichText(
                   text: TextSpan(
-                    text: 'Request is sent on ',
+                    text: 'Request sent on ',
                     style: TextStyle(color: Colors.grey[600]),
                     children: [
                       TextSpan(

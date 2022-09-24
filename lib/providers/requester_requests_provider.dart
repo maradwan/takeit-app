@@ -16,8 +16,8 @@ class RequesterRequestsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeRequest(String requestId) async {
-    _requests.removeWhere((request) => request.created == requestId);
+  Future<void> removeRequest(int index) async {
+    _requests.removeAt(index);
     notifyListeners();
   }
 }

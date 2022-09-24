@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/providers/requester_requests_provider.dart';
 import 'package:travel_app/screens/main_drawer.dart';
+import 'package:travel_app/service/share_request_service.dart';
 import 'package:travel_app/widgets/requester_request_card.dart';
 
 class SentPackagesScreen extends StatefulWidget {
@@ -45,6 +47,29 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  void _showSnackbar(String message, String type) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: type == 'error' ? Colors.red[700] : Colors.teal[700],
+    ));
+  }
+
+  Future<void> _deleteRequest(String created, int index) async {
+    print(created);
+    final requestProvider =
+        Provider.of<RequesterRequestsProvider>(context, listen: false);
+    try {
+      await ShareRequestService().deleteRequesterRequest(created);
+      await requestProvider.removeRequest(index);
+      _showSnackbar('Trip deleted successfully', 'success');
+    } on HttpException catch (error) {
+      _showSnackbar(error.message, 'error');
+    } catch (error) {
+      _showSnackbar('Something went wrong, try again later', 'error');
     }
   }
 
@@ -136,9 +161,26 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
                             )
                           : ListView.builder(
                               itemCount: requests.length,
-                              itemBuilder: (ctx, i) => RequesterRequestCard(
-                                request: requests[i],
-                                requestStatus: requestStatus,
+                              itemBuilder: (ctx, i) => Slidable(
+                                endActionPane: ActionPane(
+                                  extentRatio: 0.2,
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) => _deleteRequest(
+                                          requests[i].created, i),
+                                      borderRadius: BorderRadius.circular(5),
+                                      backgroundColor: const Color(0xFFFE4A49),
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                    ),
+                                  ],
+                                ),
+                                child: RequesterRequestCard(
+                                  request: requests[i],
+                                  requestStatus: requestStatus,
+                                ),
                               ),
                             );
                     },

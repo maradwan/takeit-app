@@ -208,4 +208,24 @@ class ShareRequestService {
       rethrow;
     }
   }
+
+  Future<void> deleteRequesterRequest(String created) async {
+    final url = '$gatewayUrl/share-request/request/$created';
+
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          "Authorization": "Bearer ${await amplifyAuthService.getToken()}",
+        },
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
