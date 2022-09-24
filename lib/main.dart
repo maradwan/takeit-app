@@ -54,7 +54,35 @@ class _MyAppState extends State<MyApp> {
           ),
           home: _amplifyConfigured
               ? const LoginScreen()
-              : const CircularProgressIndicator(),
+              : Scaffold(
+                  backgroundColor: Colors.teal,
+                  body: Stack(
+                    children: [
+                      Center(
+                        child: SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 10,
+                            color: Colors.teal[300],
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 85,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Image.asset(
+                              "assets/images/take_it.png",
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
           routes: {
             ConfirmEmailScreen.routeName: (_) => const ConfirmEmailScreen(),
             ConfirmResetPasswordScreen.routeName: (_) =>
