@@ -76,7 +76,10 @@ class LoginScreenState extends State<LoginScreen> {
       _signupData = data;
       return null;
     } on AuthException catch (e) {
-      return '${e.message} - ${e.recoverySuggestion}';
+      if (e.message.contains('Username already exists')) {
+        return 'Email already exists';
+      }
+      return 'Something went wrong, try again';
     }
   }
 
