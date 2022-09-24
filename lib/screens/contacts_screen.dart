@@ -43,8 +43,15 @@ class ContactsScreenState extends State<ContactsScreen> {
       try {
         final existingContacts =
             await ContactsService().findLoggedInUserContacts();
+
+        if (!mounted) {
+          return;
+        }
+
+        final globalProvider =
+            Provider.of<GlobalProvider>(context, listen: false);
         setState(() {
-          _formData['name'] = existingContacts?.name;
+          _formData['name'] = existingContacts?.name ?? globalProvider.name;
           _formData['phone'] = existingContacts?.mobile;
           _formData['email'] = existingContacts?.email;
           _formData['facebook'] = existingContacts?.facebook;
