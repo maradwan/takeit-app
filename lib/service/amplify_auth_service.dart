@@ -6,7 +6,6 @@ class AmplifyAuthService {
     final session = await Amplify.Auth.fetchAuthSession(
       options: CognitoSessionOptions(getAWSCredentials: true),
     ) as CognitoAuthSession;
-
     return session.userPoolTokens!.idToken;
   }
 }

@@ -2,10 +2,15 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 class GlobalProvider with ChangeNotifier {
+  String _userId = '';
   String _name = '';
 
   String get name {
     return _name;
+  }
+
+  String get userId {
+    return _userId;
   }
 
   Future<void> loadUserdata() async {
@@ -16,6 +21,8 @@ class GlobalProvider with ChangeNotifier {
         break;
       }
     }
+    final currentUser = await Amplify.Auth.getCurrentUser();
+    _userId = currentUser.userId;
     notifyListeners();
   }
 }

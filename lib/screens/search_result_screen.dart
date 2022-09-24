@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/providers/search_provider.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
+import 'package:travel_app/widgets/info_label.dart';
 import 'package:travel_app/widgets/weight_card.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -79,6 +81,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final globalProvider = Provider.of<GlobalProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -130,6 +134,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 }
                                 return WeightCard(
                                   trip: trips[i],
+                                  info:
+                                      globalProvider.userId == trips[i].username
+                                          ? const InfoLabel(
+                                              label: 'Your trip',
+                                            )
+                                          : null,
                                   onTap: () {
                                     Navigator.pushNamed(
                                         context, TripDetailsScreen.routeName,
