@@ -30,7 +30,11 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Delete Account')),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.red[600],
+        title: const Text('Delete Account'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +55,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
             ),
             const SizedBox(height: 15),
             const Text(
-              'Contacts, trips, sent/recieed requests',
+              'Contacts, trips, sent/received requests',
               style: AppTheme.body,
             ),
             const SizedBox(height: 5),
