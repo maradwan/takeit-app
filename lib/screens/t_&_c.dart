@@ -41,7 +41,7 @@ class _TAndCState extends State<TAndC> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: const Text('Terms And Policies'),
+          title: const Text('Terms And Conditions'),
         ),
         body: isLoading
             ? const Center(

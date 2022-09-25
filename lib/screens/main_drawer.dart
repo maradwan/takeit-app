@@ -79,7 +79,7 @@ class MainDrawer extends StatelessWidget {
                     contentPadding: const EdgeInsets.all(0),
                     leading: const Icon(Icons.security),
                     title: const Text(
-                      "Terms and Policies",
+                      "Terms and Conditions",
                       style: AppTheme.body,
                     ),
                   ),
