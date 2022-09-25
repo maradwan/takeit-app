@@ -78,22 +78,56 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Text(trip.fromCity.split('-')[0]),
-                const SizedBox(width: 10),
-                const Icon(FontAwesomeIcons.plane, size: 14),
-                const SizedBox(width: 10),
-                Text(trip.toCity.split('-')[0]),
-              ],
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.55,
+              child: FittedBox(
+                child: Row(
+                  children: [
+                    Center(
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        trip.fromCity.split('-')[0],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 7),
+                    const Icon(FontAwesomeIcons.plane, size: 14),
+                    const SizedBox(width: 7),
+                    Center(
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        trip.toCity.split('-')[0],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Row(
-              children: [
-                const Icon(Icons.flight_land),
-                const SizedBox(width: 5),
-                Text(formatter.format(trip.trDate)),
-                const SizedBox(width: 10),
-              ],
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.25,
+              child: FittedBox(
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.flight_land,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      formatter.format(trip.trDate),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 5),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

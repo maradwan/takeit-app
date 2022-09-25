@@ -36,7 +36,7 @@ class ProfileWeightCard extends StatelessWidget {
                 Column(
                   children: [
                     SizedBox(
-                      width: 120,
+                      width: MediaQuery.of(context).size.width * 0.30,
                       child: Center(
                         child: FittedBox(
                           child: Text(
@@ -60,11 +60,12 @@ class ProfileWeightCard extends StatelessWidget {
                 const Icon(
                   FontAwesomeIcons.plane,
                   color: Colors.teal,
+                  size: 18,
                 ),
                 Column(
                   children: [
                     SizedBox(
-                      width: 120,
+                      width: MediaQuery.of(context).size.width * 0.30,
                       child: Center(
                         child: FittedBox(
                           child: Text(

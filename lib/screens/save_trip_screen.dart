@@ -84,15 +84,16 @@ class SaveTripScreenState extends State<SaveTripScreen> {
         _formData['deptDate'] == null ||
         _formData['acceptFrom'] == null ||
         _formData['acceptTo'] == null ||
-        _formData['currencyCode'] == null ||
-        items.isEmpty) {
-      _showSnackbar(
-          items.isEmpty
-              ? 'You must add at least one allowed item'
-              : 'Enter all trip details',
-          'error');
+        _formData['currencyCode'] == null) {
+      _showSnackbar('Enter all trip details', 'error');
       return;
     }
+
+    if (items.isEmpty) {
+      _showSnackbar('You must add at least one item', 'error');
+      return;
+    }
+
     setState(() {
       isSaving = true;
     });
@@ -226,7 +227,7 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                     InputPlaceholder(
                       padding: 10,
                       text: '${_formData['deptDate']}',
-                      placeholderText: 'Departure date',
+                      placeholderText: 'Arrival date',
                       fontSize: 16,
                       showPlaceHolder: _formData['deptDate'] == null,
                       icon: Icons.calendar_month,

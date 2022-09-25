@@ -58,9 +58,20 @@ class WeightCard extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          Text(
-                            trip.fromCity.split('-')[0],
-                            style: const TextStyle(fontSize: 22),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.30,
+                            child: Center(
+                              child: FittedBox(
+                                child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  trip.fromCity.split('-')[0],
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 3),
                           Text(
@@ -72,12 +83,24 @@ class WeightCard extends StatelessWidget {
                       const Icon(
                         FontAwesomeIcons.plane,
                         color: Colors.teal,
+                        size: 18,
                       ),
                       Column(
                         children: [
-                          Text(
-                            trip.toCity.split('-')[0],
-                            style: const TextStyle(fontSize: 22),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.30,
+                            child: Center(
+                              child: FittedBox(
+                                child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  trip.toCity.split('-')[0],
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 3),
                           Text(
