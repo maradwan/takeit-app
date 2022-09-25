@@ -35,9 +35,20 @@ class ProfileWeightCard extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Text(
-                      trip.fromCity.split('-')[0],
-                      style: const TextStyle(fontSize: 20),
+                    SizedBox(
+                      width: 120,
+                      child: Center(
+                        child: FittedBox(
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            trip.fromCity.split('-')[0],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 3),
                     Text(
@@ -52,9 +63,20 @@ class ProfileWeightCard extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    Text(
-                      trip.toCity.split('-')[0],
-                      style: const TextStyle(fontSize: 20),
+                    SizedBox(
+                      width: 120,
+                      child: Center(
+                        child: FittedBox(
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            trip.toCity.split('-')[0],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 3),
                     Text(

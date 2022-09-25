@@ -1,21 +1,8 @@
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_app/util/country_city_util.dart';
 
 class CitySearchDelegate extends SearchDelegate {
-  final List<Map<String, String>> cities = [
-    {"country": "Egypt", "city": "Cairo"},
-    {"country": "Egypt", "city": "Alexandria"},
-    {"country": "Egypt", "city": "Aswan"},
-    {"country": "Egypt", "city": "Hurghada"},
-    {"country": "Egypt", "city": "Tanta"},
-    {"country": "Egypt", "city": "Ismailia"},
-    {"country": "Germany", "city": "Berlin"},
-    {"country": "Germany", "city": "Hanover"},
-    {"country": "Germany", "city": "Munich"},
-    {"country": "Germany", "city": "Hamburg"},
-    {"country": "Germany", "city": "Düsseldorf"},
-    {"country": "Germany", "city": "Stuttgart"},
-  ];
   List<Map<String, String>> filtered = [];
 
   @override
