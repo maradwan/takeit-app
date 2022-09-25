@@ -15,6 +15,7 @@ import 'package:travel_app/screens/login_screen.dart';
 import 'package:travel_app/screens/requester_request_contact_info_screen.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
+import 'package:travel_app/screens/t_&_c.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
@@ -103,6 +104,7 @@ class _MyAppState extends State<MyApp> {
             RequesterRequestContactInfoScreen.routeName: (_) =>
                 const RequesterRequestContactInfoScreen(),
             DeleteAccountScreen.routeName: (_) => const DeleteAccountScreen(),
+            TAndC.routeName: (_) => const TAndC(),
           },
         ),
       ),

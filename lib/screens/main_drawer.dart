@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/screens/contacts_screen.dart';
 import 'package:travel_app/screens/delete_account_screen.dart';
+import 'package:travel_app/screens/t_&_c.dart';
 import 'package:travel_app/util/app_theme.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -70,12 +71,15 @@ class MainDrawer extends StatelessWidget {
                       style: AppTheme.body,
                     ),
                   ),
-                  const ListTile(
+                  ListTile(
+                    onTap: () async {
+                      await Navigator.pushNamed(context, TAndC.routeName);
+                    },
                     horizontalTitleGap: 0,
-                    contentPadding: EdgeInsets.all(0),
-                    leading: Icon(Icons.security),
-                    title: Text(
-                      "Terms and Polices",
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: const Icon(Icons.security),
+                    title: const Text(
+                      "Terms and Policies",
                       style: AppTheme.body,
                     ),
                   ),
