@@ -4,6 +4,8 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:travel_app/amplifyconfiguration.dart';
 import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/providers/search_provider.dart';
@@ -121,6 +123,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _configureAmplify() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
     final authPlugin = AmplifyAuthCognito();
     await Amplify.addPlugin(authPlugin);
 

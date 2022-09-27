@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/http_util.dart';
 
 class ShareRequestService {
   static const gatewayUrl =
@@ -24,7 +24,7 @@ class ShareRequestService {
     const url = '$gatewayUrl/share-request';
 
     try {
-      final response = await http.post(
+      final response = await httpClient.post(
         Uri.parse(url),
         body: json.encode({
           'traveleruser': traveler,
@@ -54,7 +54,7 @@ class ShareRequestService {
     final url = '$gatewayUrl/share-request/traveler/$requestId';
 
     try {
-      final response = await http.post(
+      final response = await httpClient.post(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -79,7 +79,7 @@ class ShareRequestService {
     final url = '$gatewayUrl/share-request/traveler/$requestId';
 
     try {
-      final response = await http.delete(
+      final response = await httpClient.delete(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -103,9 +103,8 @@ class ShareRequestService {
   Future<List<TravelerShareRquest>> findTravelerRequests(
       RequestStatus requestStatus) async {
     final url = '$gatewayUrl/share-request/traveler/${requestStatus.name}';
-
     try {
-      final response = await http.get(
+      final response = await httpClient.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -137,7 +136,7 @@ class ShareRequestService {
     final url = '$gatewayUrl/share-request/requester/${requestStatus.name}';
 
     try {
-      final response = await http.get(
+      final response = await httpClient.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -179,7 +178,7 @@ class ShareRequestService {
         '$gatewayUrl/share-request/requester/${status}_${tripId}_$traveler';
 
     try {
-      final response = await http.get(
+      final response = await httpClient.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -213,7 +212,7 @@ class ShareRequestService {
     final url = '$gatewayUrl/share-request/requester/request/$created';
 
     try {
-      final response = await http.delete(
+      final response = await httpClient.delete(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',

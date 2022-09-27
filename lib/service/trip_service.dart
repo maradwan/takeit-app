@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
 import 'package:travel_app/model/trip.dart';
-import 'package:http/http.dart' as http;
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/http_util.dart';
 
 class TripService {
   static const gatewayUrl =
@@ -18,7 +19,7 @@ class TripService {
     const url = '$gatewayUrl/weight';
 
     try {
-      final response = await http.post(
+      final response = await httpClient.post(
         Uri.parse(url),
         body: json.encode(trip),
         headers: {
@@ -43,7 +44,7 @@ class TripService {
     final url = '$gatewayUrl/weight/${trip.created}';
 
     try {
-      final response = await http.put(
+      final response = await httpClient.put(
         Uri.parse(url),
         body: json.encode(trip),
         headers: {
@@ -68,7 +69,7 @@ class TripService {
     final url = '$gatewayUrl/weight/$created';
 
     try {
-      final response = await http.delete(
+      final response = await httpClient.delete(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -88,7 +89,7 @@ class TripService {
     const url = '$gatewayUrl/weight';
 
     try {
-      final response = await http.get(
+      final response = await httpClient.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -123,7 +124,7 @@ class TripService {
     final url = '$gatewayUrl/trip/${tripId}_$username';
 
     try {
-      final response = await http.get(
+      final response = await httpClient.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',

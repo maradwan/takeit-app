@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1079270040096",
+    "project_id": "takeit-821b3",
+    "storage_bucket": "takeit-821b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079270040096:android:e04a29d3795869e1d91245",
+        "android_client_info": {
+          "package_name": "com.example.travel_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079270040096-lh15a30nnetl39pqd53f7nq3s0inu13g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_EZM5DaWzG7oZXxF5TLbp9OX9PkVADrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079270040096-lh15a30nnetl39pqd53f7nq3s0inu13g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1079270040096-04roiuantsrc19dglbm4t3k3p2bueubt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.travelApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -85,6 +85,18 @@ class MainDrawer extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
+                      await Navigator.pushNamed(context, TAndC.routeName);
+                    },
+                    horizontalTitleGap: 0,
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: const Icon(Icons.lock),
+                    title: const Text(
+                      "Privacy Policy",
+                      style: AppTheme.body,
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () async {
                       await Amplify.Auth.signOut();
                       // ignore: use_build_context_synchronously
                       await Navigator.pushReplacementNamed(context, '/');

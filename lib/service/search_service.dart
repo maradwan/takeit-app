@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
 import 'package:travel_app/model/paged_result.dart';
@@ -9,6 +8,7 @@ import 'package:travel_app/model/paged_result.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/model/trip_search_key.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/http_util.dart';
 
 class SearchService {
   static const gatewayUrl =
@@ -35,7 +35,7 @@ class SearchService {
     url = '$url?limit=$pageSize${lastkey != null ? '&lastkey=$lastkey' : ''}';
 
     try {
-      final response = await http.get(
+      final response = await httpClient.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
