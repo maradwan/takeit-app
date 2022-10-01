@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gotake-it.take_it">
+    package="com.gotakeit.take_it">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Take It"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
