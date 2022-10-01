@@ -5,16 +5,16 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:travel_app/service/t_c_service.dart';
 
-class TAndC extends StatefulWidget {
-  static const String routeName = '/t-and-c';
+class PrivacyScreen extends StatefulWidget {
+  static const String routeName = '/privacy';
 
-  const TAndC({Key? key}) : super(key: key);
+  const PrivacyScreen({Key? key}) : super(key: key);
 
   @override
-  State<TAndC> createState() => _TAndCState();
+  State<PrivacyScreen> createState() => _PrivacyScreenState();
 }
 
-class _TAndCState extends State<TAndC> {
+class _PrivacyScreenState extends State<PrivacyScreen> {
   bool isLoading = true;
   String htmlData = '';
 
@@ -41,7 +41,7 @@ class _TAndCState extends State<TAndC> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: const Text('Terms And Conditions'),
+          title: const Text('Privacy Policy'),
         ),
         body: isLoading
             ? const Center(
@@ -56,7 +56,7 @@ class _TAndCState extends State<TAndC> {
             : SingleChildScrollView(
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10.0).copyWith(top: 0),
                     child: Html(
                       data: htmlData,
                       style: {

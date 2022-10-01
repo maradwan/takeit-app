@@ -5,6 +5,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:travel_app/screens/privacy_screen.dart';
 import 'firebase_options.dart';
 import 'package:travel_app/amplifyconfiguration.dart';
 import 'package:travel_app/providers/global_provider.dart';
@@ -107,6 +108,7 @@ class _MyAppState extends State<MyApp> {
                 const RequesterRequestContactInfoScreen(),
             DeleteAccountScreen.routeName: (_) => const DeleteAccountScreen(),
             TAndC.routeName: (_) => const TAndC(),
+            PrivacyScreen.routeName: (_) => const PrivacyScreen(),
           },
         ),
       ),

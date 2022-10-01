@@ -1,4 +1,4 @@
-package com.example.travel_app
+package com.gotake-it.take_it
 
 import io.flutter.embedding.android.FlutterActivity
 
