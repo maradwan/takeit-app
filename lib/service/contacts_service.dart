@@ -11,7 +11,7 @@ class ContactsService {
   final amplifyAuthService = AmplifyAuthService();
 
   Future<Contacts> save(Contacts contact) async {
-    const url = '$gatewayUrl/contacts';
+    final url = '$gatewayUrl/contacts';
     try {
       final response = await httpClient.post(
         Uri.parse(url),
@@ -35,7 +35,8 @@ class ContactsService {
   }
 
   Future<Contacts?> findLoggedInUserContacts() async {
-    const url = '$gatewayUrl/contacts';
+    final url = '$gatewayUrl/contacts';
+    print(url);
     try {
       final response = await httpClient.get(
         Uri.parse(url),

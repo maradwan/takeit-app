@@ -8,7 +8,7 @@ class AccountService {
   final amplifyAuthService = AmplifyAuthService();
 
   Future<void> deleteAccount() async {
-    const url = '$gatewayUrl/account';
+    final url = '$gatewayUrl/account';
 
     try {
       final response = await http.delete(

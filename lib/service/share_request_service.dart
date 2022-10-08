@@ -19,7 +19,7 @@ class ShareRequestService {
     String tripId,
     DateTime arrivalDate,
   ) async {
-    const url = '$gatewayUrl/share-request';
+    final url = '$gatewayUrl/share-request';
 
     try {
       final response = await httpClient.post(

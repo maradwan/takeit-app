@@ -13,7 +13,7 @@ class TripService {
   final amplifyAuthService = AmplifyAuthService();
 
   Future<Trip> save(Trip trip) async {
-    const url = '$gatewayUrl/weight';
+    final url = '$gatewayUrl/weight';
 
     try {
       final response = await httpClient.post(
@@ -83,7 +83,7 @@ class TripService {
   }
 
   Future<List<Trip>> findTrips() async {
-    const url = '$gatewayUrl/weight';
+    final url = '$gatewayUrl/weight';
 
     try {
       final response = await httpClient.get(

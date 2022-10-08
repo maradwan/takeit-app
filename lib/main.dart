@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_app/amplifyconfiguration_prod.dart';
 import 'package:travel_app/screens/privacy_screen.dart';
+import 'package:travel_app/util/env_config.dart';
 import 'firebase_options.dart';
 import 'package:travel_app/amplifyconfiguration_dev.dart';
 import 'package:travel_app/providers/global_provider.dart';
@@ -134,7 +135,10 @@ class _MyAppState extends State<MyApp> {
     await Amplify.addPlugin(authPlugin);
 
     try {
-      await Amplify.configure(amplifyconfig_dev);
+      print('active profile: $activeProfile');
+      await Amplify.configure(activeProfile == Profile.dev
+          ? amplifyconfig_dev
+          : amplifyconfig_prod);
       setState(() {
         _amplifyConfigured = true;
       });
