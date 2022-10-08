@@ -33,6 +33,7 @@ class TravelerRequestCard extends StatefulWidget {
 class TravelerRequestCardState extends State<TravelerRequestCard> {
   Trip? trip;
   Contacts? contacts;
+  bool showRequestCard = true;
   var isLoading = true;
 
   Future<dynamic> _findTrip() async {
@@ -53,6 +54,11 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
         false,
       );
     } on HttpException catch (e) {
+      if (!e.message.contains('You are not allowed')) {
+        setState(() {
+          showRequestCard = false;
+        });
+      }
       debugPrint(e.message);
     }
     return null;
@@ -112,7 +118,7 @@ class TravelerRequestCardState extends State<TravelerRequestCard> {
                   )),
                 ),
               )
-            : contacts == null
+            : !showRequestCard
                 ? const SizedBox()
                 : WeightCard(
                     name: contacts?.name,

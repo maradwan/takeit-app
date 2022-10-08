@@ -28,7 +28,8 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
         _username = argMap['username'];
         _password = argMap['password'];
       });
-      timer = Timer.periodic(const Duration(seconds: 1), (_) => tryToLogin());
+      timer = Timer.periodic(
+          const Duration(milliseconds: 500), (_) => tryToLogin());
     });
     super.initState();
   }
