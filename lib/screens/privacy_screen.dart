@@ -22,7 +22,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       try {
-        final html = await TAndCService().scrapTC();
+        final html = await TAndCService().scrapPrivacy();
         setState(() {
           htmlData = html;
         });
