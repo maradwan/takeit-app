@@ -9,7 +9,7 @@ class AccountService {
 
   Future<void> deleteAccount() async {
     final url = '$gatewayUrl/account';
-
+    print(url);
     try {
       final response = await http.delete(
         Uri.parse(url),

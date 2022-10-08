@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
 import 'package:travel_app/util/app_theme.dart';
 
@@ -29,7 +28,7 @@ class ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
         _username = argMap['username'];
         _password = argMap['password'];
       });
-      timer = Timer.periodic(const Duration(seconds: 3), (_) => tryToLogin());
+      timer = Timer.periodic(const Duration(seconds: 1), (_) => tryToLogin());
     });
     super.initState();
   }

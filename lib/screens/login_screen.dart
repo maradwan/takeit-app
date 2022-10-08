@@ -33,6 +33,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future<String?>? _onLogin(LoginData data) async {
     try {
+      await Amplify.Auth.signOut();
       final res = await Amplify.Auth.signIn(
         username: data.name,
         password: data.password,
