@@ -116,11 +116,18 @@ class LoginScreenState extends State<LoginScreen> {
             displayName: 'Name',
           ),
         ],
+        passwordValidator: (password) {
+          if (password == null || password.length < 6) {
+            return 'Password should be at least 6 charcters';
+          }
+          return null;
+        },
         onLogin: _onLogin,
         onRecoverPassword: _onRecoverPassword,
         onSignup: (data) => _onSignup(data),
         theme: LoginTheme(
           primaryColor: Theme.of(context).primaryColor,
+          textFieldStyle: TextStyle(color: Colors.black),
         ),
         onSubmitAnimationCompleted: () {
           Map<String, String> args = {
