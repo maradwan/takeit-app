@@ -101,7 +101,14 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                         });
                       },
                 icon: const Icon(FontAwesomeIcons.skull),
-                label: const Text('Delete'),
+                label: isDeleting
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ))
+                    : const Text('Delete'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red[600],
                   disabledForegroundColor: Colors.red[200],
