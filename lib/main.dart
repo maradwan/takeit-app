@@ -134,7 +134,7 @@ class _MyAppState extends State<MyApp> {
     await Amplify.addPlugin(authPlugin);
 
     try {
-      await Amplify.configure(amplifyconfig_prod);
+      await Amplify.configure(amplifyconfig_dev);
       setState(() {
         _amplifyConfigured = true;
       });
