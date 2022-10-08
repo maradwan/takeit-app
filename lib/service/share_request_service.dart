@@ -7,12 +7,10 @@ import 'package:travel_app/model/request_status.dart';
 import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/traveler_share_request.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/env_config.dart';
 import 'package:travel_app/util/http_util.dart';
 
 class ShareRequestService {
-  static const gatewayUrl =
-      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging';
-
   final amplifyAuthService = AmplifyAuthService();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 

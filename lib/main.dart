@@ -5,9 +5,10 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:travel_app/amplifyconfiguration_prod.dart';
 import 'package:travel_app/screens/privacy_screen.dart';
 import 'firebase_options.dart';
-import 'package:travel_app/amplifyconfiguration.dart';
+import 'package:travel_app/amplifyconfiguration_dev.dart';
 import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/providers/search_provider.dart';
 import 'package:travel_app/providers/traveler_requests_provider.dart';
@@ -133,7 +134,7 @@ class _MyAppState extends State<MyApp> {
     await Amplify.addPlugin(authPlugin);
 
     try {
-      await Amplify.configure(amplifyconfig);
+      await Amplify.configure(amplifyconfig_prod);
       setState(() {
         _amplifyConfigured = true;
       });

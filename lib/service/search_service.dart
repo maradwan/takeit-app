@@ -8,12 +8,10 @@ import 'package:travel_app/model/paged_result.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/model/trip_search_key.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/env_config.dart';
 import 'package:travel_app/util/http_util.dart';
 
 class SearchService {
-  static const gatewayUrl =
-      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging';
-
   final amplifyAuthService = AmplifyAuthService();
 
   Future<PagedResult<Trip, TripSearchKey>> search(String? fromCity,

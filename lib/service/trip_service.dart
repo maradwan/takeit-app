@@ -1,18 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_app/model/item.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/env_config.dart';
 import 'package:travel_app/util/http_util.dart';
 
 class TripService {
-  static const gatewayUrl =
-      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging/';
-
   final amplifyAuthService = AmplifyAuthService();
 
   Future<Trip> save(Trip trip) async {

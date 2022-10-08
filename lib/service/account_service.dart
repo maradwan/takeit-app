@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:travel_app/service/amplify_auth_service.dart';
+import 'package:travel_app/util/env_config.dart';
 
 class AccountService {
-  static const gatewayUrl =
-      'https://ayaibnebo9.execute-api.eu-west-1.amazonaws.com/staging';
-
   final amplifyAuthService = AmplifyAuthService();
 
   Future<void> deleteAccount() async {
