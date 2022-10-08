@@ -160,7 +160,7 @@ class _YourTripsScreenState extends State<YourTripsScreen> {
                           return trips.isEmpty
                               ? Center(
                                   child: Text(
-                                    'You don\'t have any ${tripsType == TripsType.active ? 'upcomming' : 'archived'} trips',
+                                    'You don\'t have any ${tripsType == TripsType.active ? 'upcoming' : 'archived'} trips',
                                     style: TextStyle(color: Colors.grey[600]),
                                   ),
                                 )

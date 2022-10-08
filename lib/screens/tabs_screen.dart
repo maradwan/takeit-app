@@ -69,7 +69,7 @@ class TabsScreenState extends State<TabsScreen> {
                 FontAwesomeIcons.suitcaseRolling,
                 //size: 26,
               ),
-              label: 'Recivied'),
+              label: 'Received'),
           BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.paperPlane,

@@ -76,8 +76,11 @@ class LoginScreenState extends State<LoginScreen> {
       _signupData = data;
       return null;
     } on AuthException catch (e) {
+      print(e.message);
       if (e.message.contains('Username already exists')) {
         return 'Email already exists';
+      } else if (e.message.contains('The password given is invalid')) {
+        return 'Password should be at least 6 characters';
       }
       return 'Something went wrong, try again';
     }
