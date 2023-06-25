@@ -6,7 +6,7 @@ import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/screens/contacts_screen.dart';
 import 'package:travel_app/screens/delete_account_screen.dart';
 import 'package:travel_app/screens/privacy_screen.dart';
-import 'package:travel_app/screens/t_&_c.dart';
+import 'package:travel_app/screens/t_and_c.dart';
 import 'package:travel_app/util/app_theme.dart';
 
 class MainDrawer extends StatelessWidget {

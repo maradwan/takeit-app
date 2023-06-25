@@ -35,7 +35,8 @@ class ContactsScreenState extends State<ContactsScreen> {
     'linkedin': null,
     'telegram': null,
   };
-  late Contacts? contacts;
+  Contacts contacts =
+      Contacts(null, null, null, null, null, null, null, null, null);
 
   @override
   void initState() {
@@ -59,7 +60,8 @@ class ContactsScreenState extends State<ContactsScreen> {
           _formData['twitter'] = existingContacts?.twitter;
           _formData['linkedin'] = existingContacts?.linkedIn;
           _formData['telegram'] = existingContacts?.telegram;
-          contacts = existingContacts;
+          contacts = existingContacts ??
+              Contacts(null, null, null, null, null, null, null, null, null);
         });
       } on HttpException catch (e) {
         debugPrint(e.message);
@@ -189,7 +191,7 @@ class ContactsScreenState extends State<ContactsScreen> {
                               suffixIcon: FontAwesomeIcons.solidUser,
                               hintText: 'Name',
                               initialValue:
-                                  contacts?.name ?? globalProvider.name,
+                                  contacts.name ?? globalProvider.name,
                               onchaged: (value) => _formData['name'] = value,
                             ),
                             const SizedBox(height: 10),
@@ -197,29 +199,29 @@ class ContactsScreenState extends State<ContactsScreen> {
                               suffixIcon: FontAwesomeIcons.phone,
                               hintText: 'Phone',
                               keyboardType: TextInputType.phone,
-                              initialValue: contacts?.mobile,
+                              initialValue: contacts.mobile,
                               onchaged: (value) => _formData['phone'] = value,
                             ),
                             const SizedBox(height: 10),
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.solidEnvelope,
                               hintText: 'E-mail',
-                              initialValue: contacts?.email,
+                              initialValue: contacts.email,
                               onchaged: (value) => _formData['email'] = value,
                             ),
                             const SizedBox(height: 10),
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.facebook,
                               hintText: 'Facebook',
-                              initialValue: contacts?.facebook,
+                              initialValue: contacts.facebook,
                               onchaged: (value) =>
                                   _formData['facebook'] = value,
                             ),
                             const SizedBox(height: 10),
                             InputWidget(
-                              suffixIcon: FontAwesomeIcons.instagramSquare,
+                              suffixIcon: FontAwesomeIcons.squareInstagram,
                               hintText: 'Instagram',
-                              initialValue: contacts?.instagram,
+                              initialValue: contacts.instagram,
                               onchaged: (value) =>
                                   _formData['instagram'] = value,
                             ),
@@ -227,14 +229,14 @@ class ContactsScreenState extends State<ContactsScreen> {
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.twitter,
                               hintText: 'Twitter',
-                              initialValue: contacts?.twitter,
+                              initialValue: contacts.twitter,
                               onchaged: (value) => _formData['twitter'] = value,
                             ),
                             const SizedBox(height: 10),
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.linkedin,
                               hintText: 'LinkedIn',
-                              initialValue: contacts?.linkedIn,
+                              initialValue: contacts.linkedIn,
                               onchaged: (value) =>
                                   _formData['linkedin'] = value,
                             ),
@@ -242,7 +244,7 @@ class ContactsScreenState extends State<ContactsScreen> {
                             InputWidget(
                               suffixIcon: FontAwesomeIcons.telegram,
                               hintText: 'Telegram',
-                              initialValue: contacts?.telegram,
+                              initialValue: contacts.telegram,
                               onchaged: (value) =>
                                   _formData['telegram'] = value,
                             ),

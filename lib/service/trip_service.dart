@@ -7,16 +7,16 @@ import 'package:travel_app/model/item.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
 import 'package:travel_app/util/env_config.dart';
-import 'package:travel_app/util/http_util.dart';
+import 'package:http/http.dart' as http;
 
 class TripService {
   final amplifyAuthService = AmplifyAuthService();
 
   Future<Trip> save(Trip trip) async {
-    final url = '$gatewayUrl/weight';
+    const url = '$gatewayUrl/weight';
 
     try {
-      final response = await httpClient.post(
+      final response = await http.post(
         Uri.parse(url),
         body: json.encode(trip),
         headers: {
@@ -41,7 +41,7 @@ class TripService {
     final url = '$gatewayUrl/weight/${trip.created}';
 
     try {
-      final response = await httpClient.put(
+      final response = await http.put(
         Uri.parse(url),
         body: json.encode(trip),
         headers: {
@@ -66,7 +66,7 @@ class TripService {
     final url = '$gatewayUrl/weight/$created';
 
     try {
-      final response = await httpClient.delete(
+      final response = await http.delete(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -83,10 +83,10 @@ class TripService {
   }
 
   Future<List<Trip>> findTrips() async {
-    final url = '$gatewayUrl/weight';
+    const url = '$gatewayUrl/weight';
 
     try {
-      final response = await httpClient.get(
+      final response = await http.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -121,7 +121,7 @@ class TripService {
     final url = '$gatewayUrl/trip/${tripId}_$username';
 
     try {
-      final response = await httpClient.get(
+      final response = await http.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',

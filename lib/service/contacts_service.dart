@@ -5,15 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:travel_app/model/contacts.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
 import 'package:travel_app/util/env_config.dart';
-import 'package:travel_app/util/http_util.dart';
+import 'package:http/http.dart' as http;
 
 class ContactsService {
   final amplifyAuthService = AmplifyAuthService();
 
   Future<Contacts> save(Contacts contact) async {
-    final url = '$gatewayUrl/contacts';
+    const url = '$gatewayUrl/contacts';
     try {
-      final response = await httpClient.post(
+      final response = await http.post(
         Uri.parse(url),
         body: json.encode(contact.toJson()),
         headers: {
@@ -35,10 +35,9 @@ class ContactsService {
   }
 
   Future<Contacts?> findLoggedInUserContacts() async {
-    final url = '$gatewayUrl/contacts';
-    print(url);
+    const url = '$gatewayUrl/contacts';
     try {
-      final response = await httpClient.get(
+      final response = await http.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
@@ -66,7 +65,7 @@ class ContactsService {
     final user = isForTraveler ? 'traveler' : 'requester';
     final url = '$gatewayUrl/contacts/$user/${tripId}_$username';
     try {
-      final response = await httpClient.get(
+      final response = await http.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',

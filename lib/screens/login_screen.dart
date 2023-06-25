@@ -1,4 +1,3 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -69,7 +68,7 @@ class LoginScreenState extends State<LoginScreen> {
       await Amplify.Auth.signUp(
         username: data.name!,
         password: data.password!,
-        options: CognitoSignUpOptions(userAttributes: {
+        options: SignUpOptions(userAttributes: {
           CognitoUserAttributeKey.email: data.name!,
           CognitoUserAttributeKey.name: data.additionalSignupData!['name']!
         }),
@@ -77,7 +76,7 @@ class LoginScreenState extends State<LoginScreen> {
       _signupData = data;
       return null;
     } on AuthException catch (e) {
-      print(e.message);
+      debugPrint(e.message);
       if (e.message.contains('Username already exists')) {
         return 'Email already exists';
       } else if (e.message.contains('The password given is invalid')) {
@@ -92,7 +91,8 @@ class LoginScreenState extends State<LoginScreen> {
       final res = await Amplify.Auth.resetPassword(username: email);
       if (!mounted) return null;
 
-      if (res.nextStep.updateStep == 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
+      if (res.nextStep.updateStep ==
+          AuthResetPasswordStep.confirmResetPasswordWithCode) {
         Navigator.of(context).pushNamed(
           ConfirmResetPasswordScreen.routeName,
           arguments: LoginData(name: email, password: ''),
@@ -127,7 +127,7 @@ class LoginScreenState extends State<LoginScreen> {
         onSignup: (data) => _onSignup(data),
         theme: LoginTheme(
           primaryColor: Theme.of(context).primaryColor,
-          textFieldStyle: TextStyle(color: Colors.black),
+          textFieldStyle: const TextStyle(color: Colors.black),
         ),
         onSubmitAnimationCompleted: () {
           Map<String, String> args = {

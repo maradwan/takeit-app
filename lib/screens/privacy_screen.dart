@@ -60,8 +60,8 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                     child: Html(
                       data: htmlData,
                       style: {
-                        "body": Style(fontSize: const FontSize(18)),
-                        "span": Style(fontSize: const FontSize(16)),
+                        "body": Style(fontSize: FontSize(18)),
+                        "span": Style(fontSize: FontSize(16)),
                       },
                     ),
                   ),

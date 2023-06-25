@@ -59,7 +59,6 @@ class _SentPackagesScreenState extends State<SentPackagesScreen> {
   }
 
   Future<void> _deleteRequest(String created, int index) async {
-    print(created);
     final requestProvider =
         Provider.of<RequesterRequestsProvider>(context, listen: false);
     try {

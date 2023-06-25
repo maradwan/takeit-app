@@ -54,11 +54,11 @@ class RequesterRequestCardState extends State<RequesterRequestCard> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Card(
+        ? const Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               child: Column(
-                children: const [
+                children: [
                   Skeleton(
                     width: double.infinity,
                     height: 20,

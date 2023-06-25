@@ -6,15 +6,14 @@ class TitleView extends StatelessWidget {
 
   const TitleView({
     Key? key,
-    this.titleTxt: "",
-    this.paddingValue: 24,
+    this.titleTxt = "",
+    this.paddingValue = 24,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.only(left: this.paddingValue, right: this.paddingValue),
+      padding: EdgeInsets.only(left: paddingValue, right: paddingValue),
       child: Row(
         children: <Widget>[
           Expanded(

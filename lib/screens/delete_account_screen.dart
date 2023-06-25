@@ -102,7 +102,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                       },
                 icon: const Icon(FontAwesomeIcons.skull),
                 label: isDeleting
-                    ? SizedBox(
+                    ? const SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(

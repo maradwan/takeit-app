@@ -190,8 +190,8 @@ class TravelerRequestContactInfoScreenState
                                 title: Text(contacts!.name!),
                                 trailing: InkWell(
                                     onTap: () {
-                                      Clipboard.setData(
-                                          ClipboardData(text: contacts!.name));
+                                      Clipboard.setData(ClipboardData(
+                                          text: contacts!.name ?? ''));
                                       _showSnackbar('Name copied', 'success');
                                     },
                                     child: const Icon(Icons.copy)),
@@ -203,7 +203,7 @@ class TravelerRequestContactInfoScreenState
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
-                                          text: contacts!.mobile));
+                                          text: contacts!.mobile ?? ''));
                                       _showSnackbar('Mobile copied', 'success');
                                     },
                                     child: const Icon(Icons.copy)),
@@ -215,8 +215,8 @@ class TravelerRequestContactInfoScreenState
                                 title: Text(contacts!.email!),
                                 trailing: InkWell(
                                     onTap: () {
-                                      Clipboard.setData(
-                                          ClipboardData(text: contacts!.email));
+                                      Clipboard.setData(ClipboardData(
+                                          text: contacts!.email ?? ''));
                                       _showSnackbar('Email copied', 'success');
                                     },
                                     child: const Icon(Icons.copy)),
@@ -228,7 +228,7 @@ class TravelerRequestContactInfoScreenState
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
-                                          text: contacts!.facebook));
+                                          text: contacts!.facebook ?? ''));
                                       _showSnackbar(
                                           'Facebook copied', 'success');
                                     },
@@ -237,12 +237,12 @@ class TravelerRequestContactInfoScreenState
                             if (contacts!.instagram != null)
                               ListTile(
                                 leading: const Icon(
-                                    FontAwesomeIcons.instagramSquare),
+                                    FontAwesomeIcons.squareInstagram),
                                 title: Text(contacts!.instagram!),
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
-                                          text: contacts!.instagram));
+                                          text: contacts!.instagram ?? ''));
                                       _showSnackbar(
                                           'Instagram copied', 'success');
                                     },
@@ -255,7 +255,7 @@ class TravelerRequestContactInfoScreenState
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
-                                          text: contacts!.twitter));
+                                          text: contacts!.twitter ?? ''));
                                       _showSnackbar(
                                           'Twitter copied', 'success');
                                     },
@@ -268,7 +268,7 @@ class TravelerRequestContactInfoScreenState
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
-                                          text: contacts!.linkedIn));
+                                          text: contacts!.linkedIn ?? ''));
                                       _showSnackbar(
                                           'LinkedIn copied', 'success');
                                     },
@@ -281,7 +281,7 @@ class TravelerRequestContactInfoScreenState
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
-                                          text: contacts!.telegram));
+                                          text: contacts!.telegram ?? ''));
                                       _showSnackbar(
                                           'Telegram copied', 'success');
                                     },

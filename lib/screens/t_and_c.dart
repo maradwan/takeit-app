@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -26,8 +24,8 @@ class _TAndCState extends State<TAndC> {
         setState(() {
           htmlData = html;
         });
-      } on HttpException catch (e) {
-        debugPrint(e.message);
+      } catch (e) {
+        debugPrint(e.toString());
       }
       setState(() {
         isLoading = false;
@@ -60,8 +58,8 @@ class _TAndCState extends State<TAndC> {
                     child: Html(
                       data: htmlData,
                       style: {
-                        "body": Style(fontSize: const FontSize(18)),
-                        "span": Style(fontSize: const FontSize(16)),
+                        "body": Style(fontSize: FontSize(18)),
+                        "span": Style(fontSize: FontSize(16)),
                       },
                     ),
                   ),

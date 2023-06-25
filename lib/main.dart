@@ -4,11 +4,9 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_app/amplifyconfiguration_prod.dart';
 import 'package:travel_app/screens/privacy_screen.dart';
 import 'package:travel_app/util/env_config.dart';
-import 'firebase_options.dart';
 import 'package:travel_app/amplifyconfiguration_dev.dart';
 import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/providers/search_provider.dart';
@@ -20,7 +18,7 @@ import 'package:travel_app/screens/login_screen.dart';
 import 'package:travel_app/screens/requester_request_contact_info_screen.dart';
 import 'package:travel_app/screens/save_trip_screen.dart';
 import 'package:travel_app/screens/search_result_screen.dart';
-import 'package:travel_app/screens/t_&_c.dart';
+import 'package:travel_app/screens/t_and_c.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
@@ -121,24 +119,19 @@ class _MyAppState extends State<MyApp> {
     try {
       await Amplify.Auth.getCurrentUser();
       return true;
-    } on AuthException catch (e) {
+    } on AuthException catch (_) {
       return false;
     }
   }
 
   Future<void> _configureAmplify() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
     final authPlugin = AmplifyAuthCognito();
     await Amplify.addPlugin(authPlugin);
 
     try {
-      print('active profile: $activeProfile');
-      await Amplify.configure(activeProfile == Profile.dev
-          ? amplifyconfig_dev
-          : amplifyconfig_prod);
+      debugPrint('active profile: $activeProfile');
+      await Amplify.configure(
+          activeProfile == Profile.dev ? amplifyconfigDev : amplifyconfigProd);
       setState(() {
         _amplifyConfigured = true;
       });

@@ -134,7 +134,8 @@ class AddItemState extends State<AddItem> {
           width: double.infinity,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              onSurface: Colors.teal,
+              disabledForegroundColor: Colors.white,
+              disabledBackgroundColor: Colors.teal,
             ),
             onPressed: (itemType != null && kg != null && price != null) ||
                     (itemType == 'Paper' && price != null)

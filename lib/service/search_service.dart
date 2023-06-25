@@ -9,7 +9,7 @@ import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/model/trip_search_key.dart';
 import 'package:travel_app/service/amplify_auth_service.dart';
 import 'package:travel_app/util/env_config.dart';
-import 'package:travel_app/util/http_util.dart';
+import 'package:http/http.dart' as http;
 
 class SearchService {
   final amplifyAuthService = AmplifyAuthService();
@@ -33,7 +33,7 @@ class SearchService {
     url = '$url?limit=$pageSize${lastkey != null ? '&lastkey=$lastkey' : ''}';
 
     try {
-      final response = await httpClient.get(
+      final response = await http.get(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',

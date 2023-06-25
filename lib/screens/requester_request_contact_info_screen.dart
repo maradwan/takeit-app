@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -183,8 +181,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.name!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.name));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.name ?? ''));
                                   _showSnackbar('Name copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -195,8 +193,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.mobile!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.mobile));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.mobile ?? ''));
                                   _showSnackbar('Mobile copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -207,8 +205,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.email!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.email));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.email ?? ''));
                                   _showSnackbar('Email copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -219,8 +217,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.facebook!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.facebook));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.facebook ?? ''));
                                   _showSnackbar('Facebook copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -228,12 +226,12 @@ class RequesterRequestContactInfoScreenState
                         if (contacts!.instagram != null)
                           ListTile(
                             leading:
-                                const Icon(FontAwesomeIcons.instagramSquare),
+                                const Icon(FontAwesomeIcons.squareInstagram),
                             title: Text(contacts!.instagram!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.instagram));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.instagram ?? ''));
                                   _showSnackbar('Instagram copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -244,8 +242,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.twitter!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.twitter));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.twitter ?? ''));
                                   _showSnackbar('Twitter copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -256,8 +254,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.linkedIn!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.linkedIn));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.linkedIn ?? ''));
                                   _showSnackbar('LinkedIn copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
@@ -268,8 +266,8 @@ class RequesterRequestContactInfoScreenState
                             title: Text(contacts!.telegram!),
                             trailing: InkWell(
                                 onTap: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: contacts!.telegram));
+                                  Clipboard.setData(ClipboardData(
+                                      text: contacts!.telegram ?? ''));
                                   _showSnackbar('Telegram copied', 'success');
                                 },
                                 child: const Icon(Icons.copy)),
