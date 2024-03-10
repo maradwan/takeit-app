@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Take it',
           theme: ThemeData(
+            useMaterial3: false,
             primarySwatch: Colors.teal,
           ),
           home: _amplifyConfigured
