@@ -415,7 +415,12 @@ class SaveTripScreenState extends State<SaveTripScreen> {
                                       Text(
                                         items[index].price == 0
                                             ? 'Free'
-                                            : '${items[index].price.toStringAsFixed(items[index].price.truncateToDouble() == items[index].price ? 0 : 1)} ${_formData['currencyCode'] ?? ''} /KG',
+                                            : '${items[index].price
+                                            .toStringAsFixed(items[index]
+                                            .price.truncateToDouble() ==
+                                            items[index].price ? 0 : 1)} '
+                                            '${_formData['currencyCode'] ?? ''
+                                            ''} /${items[index].name == 'Paper' ? 'Item' : 'KG'}',
                                         style: AppTheme.title,
                                       ),
                                     ],
