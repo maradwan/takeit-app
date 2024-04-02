@@ -47,7 +47,8 @@ dependencies:
   loading_indicator: ^3.1.0
   flutter_html: ^3.0.0-beta.2
   flutter_launcher_icons: ^0.13.1
-  
+  url_launcher: ^6.0.12
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -8,6 +8,7 @@ import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/contacts_service.dart';
 import 'package:travel_app/widgets/form_section.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RequesterRequestContactInfoScreen extends StatefulWidget {
   static const String routeName = '/requester-request-contact';
@@ -35,6 +36,14 @@ class RequesterRequestContactInfoScreenState
       debugPrint(e.toString());
     }
     return null;
+  }
+
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   bool isNoContactsShared(Contacts? userContacts) {
@@ -214,7 +223,12 @@ class RequesterRequestContactInfoScreenState
                         if (contacts!.facebook != null)
                           ListTile(
                             leading: const Icon(FontAwesomeIcons.facebook),
-                            title: Text(contacts!.facebook!),
+                            title: GestureDetector(
+                              onTap: () {
+                                _launchURL(contacts!.facebook!);
+                              },
+                              child: Text(contacts!.facebook!),
+                            ),
                             trailing: InkWell(
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
@@ -227,8 +241,12 @@ class RequesterRequestContactInfoScreenState
                           ListTile(
                             leading:
                                 const Icon(FontAwesomeIcons.squareInstagram),
-                            title: Text(contacts!.instagram!),
-                            trailing: InkWell(
+                            title: GestureDetector(
+                              onTap: () {
+                                _launchURL(contacts!.instagram!);
+                              },
+                              child: Text(contacts!.instagram!),
+                            ),                            trailing: InkWell(
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                       text: contacts!.instagram ?? ''));
@@ -239,8 +257,12 @@ class RequesterRequestContactInfoScreenState
                         if (contacts!.twitter != null)
                           ListTile(
                             leading: const Icon(FontAwesomeIcons.twitter),
-                            title: Text(contacts!.twitter!),
-                            trailing: InkWell(
+                            title: GestureDetector(
+                              onTap: () {
+                                _launchURL(contacts!.twitter!);
+                              },
+                              child: Text(contacts!.twitter!),
+                            ),                            trailing: InkWell(
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                       text: contacts!.twitter ?? ''));
@@ -251,8 +273,12 @@ class RequesterRequestContactInfoScreenState
                         if (contacts!.linkedIn != null)
                           ListTile(
                             leading: const Icon(FontAwesomeIcons.linkedin),
-                            title: Text(contacts!.linkedIn!),
-                            trailing: InkWell(
+                            title: GestureDetector(
+                              onTap: () {
+                                _launchURL(contacts!.linkedIn!);
+                              },
+                              child: Text(contacts!.linkedIn!),
+                            ),                            trailing: InkWell(
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                       text: contacts!.linkedIn ?? ''));
@@ -263,8 +289,12 @@ class RequesterRequestContactInfoScreenState
                         if (contacts!.telegram != null)
                           ListTile(
                             leading: const Icon(FontAwesomeIcons.telegram),
-                            title: Text(contacts!.telegram!),
-                            trailing: InkWell(
+                            title: GestureDetector(
+                              onTap: () {
+                                _launchURL(contacts!.telegram!);
+                              },
+                              child: Text(contacts!.telegram!),
+                            ),                            trailing: InkWell(
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                       text: contacts!.telegram ?? ''));
