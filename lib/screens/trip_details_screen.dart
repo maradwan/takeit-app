@@ -8,6 +8,7 @@ import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/share_request_service.dart';
 import 'package:travel_app/util/app_theme.dart';
+import 'package:travel_app/util/constants.dart';
 import 'package:travel_app/util/item_util.dart';
 import 'package:travel_app/widgets/skeleton.dart';
 
@@ -186,21 +187,10 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text('Disclaimer'),
-                                  content: SingleChildScrollView(
+                                  content: const SingleChildScrollView(
                                     child: ListBody(
-                                      children: const <Widget>[
-                                        Text(
-                                          'Please read the following carefully, and by continuing, you consent to the following:\n\n'
-                                              'All my contacts will be shared with the Requester/Sender or Traveler.\n'
-                                              '"Take IT" is not liable for any loss, theft, or damage to your package.\n'
-                                              '"Take IT" is not liable for compensation.\n'
-                                              '"Take IT" bears no liability for Requester/Sender or traveler for their packages.\n'
-                                              '"Take IT is not responsible, but travelers are fully responsible for any duties, customs, or items they carry in their baggage.\n'
-                                              '"Take IT requires the Traveler not to take any items directly from the Requester/Sender; only travelers may obtain items from verified and legal companies like Amazon.\n'
-                                              'Travelers understand that they will be solely responsible, including facing legal consequences, if illegal items are found in their possession.\n'
-                                              '"Take IT" is the only social media app that connects Requesters/Senders with travelers. There is no guarantee of any party in the app, we haven\'t verified the users.\n'
-                                              'You will follow the arrival and departure country laws, rules and policies.',
-                                        ),
+                                      children: <Widget>[
+                                        Text(disclaimerText),
                                       ],
                                     ),
                                   ),
