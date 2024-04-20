@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:travel_app/providers/global_provider.dart';
 import 'package:travel_app/screens/confirm_email_screen.dart';
 import 'package:travel_app/screens/confirm_reset_password_screen.dart';
+import 'package:travel_app/screens/privacy_screen.dart';
+import 'package:travel_app/screens/t_and_c.dart';
 import 'package:travel_app/screens/tabs_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -77,6 +79,7 @@ class LoginScreenState extends State<LoginScreen> {
       return null;
     } on AuthException catch (e) {
       debugPrint(e.message);
+      //todo must handle error to be more ambiguous
       if (e.message.contains('Username already exists')) {
         return 'Email already exists';
       } else if (e.message.contains('The password given is invalid')) {
@@ -130,16 +133,101 @@ class LoginScreenState extends State<LoginScreen> {
           textFieldStyle: const TextStyle(color: Colors.black),
         ),
         onSubmitAnimationCompleted: () {
-          Map<String, String> args = {
-            'username': _signupData?.name ?? '',
-            'password': _signupData?.password ?? '',
-          };
-          Navigator.of(context).pushReplacementNamed(
-            _isSignedIn ? TabsScreen.routeName : ConfirmEmailScreen.routeName,
-            arguments: args,
-          );
+          _showLoginDialog(context);
         },
       ),
     );
   }
+
+
+
+  void _showLoginDialog(BuildContext context) {
+    bool _termsChecked = false;
+    bool _privacyChecked = false;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('Please agree to the Terms and Conditions'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: _termsChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _termsChecked = value!;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(TAndC.routeName);
+                          },
+                          child: const Text(
+                            'I agree to the Terms and Conditions',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: _privacyChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _privacyChecked = value!;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(PrivacyScreen.routeName);
+                          },
+                          child: const Text(
+                            'I agree to the privacy policy',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Submit'),
+                  onPressed: _privacyChecked
+                      ? () {
+                    // Navigator.of(context).pop();
+
+                    Map<String, String> args = {
+                      'username': _signupData?.name ?? '',
+                      'password': _signupData?.password ?? '',
+                    };
+                    Navigator.of(context).pushReplacementNamed(
+                      _isSignedIn ? TabsScreen.routeName : ConfirmEmailScreen.routeName,
+                      arguments: args,
+                    );
+                  }
+                      : null,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+
 }
