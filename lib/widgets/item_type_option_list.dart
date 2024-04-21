@@ -39,30 +39,36 @@ class _ItemTypeOptionListState extends State<ItemTypeOptionList> {
         ..._options
             .map(
               (row) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: row
                     .map(
-                      (option) => ChoiceChip(
-                        labelPadding: const EdgeInsets.all(3),
-                        label: Text(option),
-                        selected: _selectedValue == option,
-                        avatar: Icon(
-                          ItemUtil.itemToIcon[option],
-                          size: 20,
-                        ),
-                        selectedColor: Colors.teal[200],
-                        labelStyle: TextStyle(
-                          color: _selectedValue == option
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                        onSelected: !widget.disabledValues.contains(option)
-                            ? (bool selected) {
-                                setState(() {
-                                  _selectedValue = selected ? option : null;
-                                });
-                              }
-                            : null,
+                      (option) => Column(
+                        children: [
+                          ChoiceChip(
+                            labelPadding: const EdgeInsets.all(3),
+                            label: Text(option),
+                            selected: _selectedValue == option,
+                            avatar: Icon(
+                              ItemUtil.itemToIcon[option],
+                              size: 20,
+                            ),
+                            selectedColor: Colors.teal[200],
+                            labelStyle: TextStyle(
+                              color: _selectedValue == option
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                            onSelected: !widget.disabledValues.contains(option)
+                                ? (bool selected) {
+                                    setState(() {
+                                      _selectedValue = selected ? option : null;
+                                    });
+                                  }
+                                : null,
+                          ),
+                          const SizedBox(height: 10), // Add Y spacing here
+                        ],
                       ),
                     )
                     .toList(),
