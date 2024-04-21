@@ -12,6 +12,9 @@ import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/contacts_service.dart';
 import 'package:travel_app/service/share_request_service.dart';
 import 'package:travel_app/widgets/form_section.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../util/constants.dart';
 
 class TravelerRequestContactInfoScreen extends StatefulWidget {
   static const String routeName = '/traveler-request-contact';
@@ -42,6 +45,14 @@ class TravelerRequestContactInfoScreenState
       debugPrint(e.message);
     }
     return null;
+  }
+
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   bool isNoContactsShared(Contacts? userContacts) {
@@ -224,7 +235,12 @@ class TravelerRequestContactInfoScreenState
                             if (contacts!.facebook != null)
                               ListTile(
                                 leading: const Icon(FontAwesomeIcons.facebook),
-                                title: Text(contacts!.facebook!),
+                                title: GestureDetector(
+                                  onTap: () {
+                                    _launchURL(contacts!.facebook!);
+                                  },
+                                  child: Text(contacts!.facebook!),
+                                ),
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
@@ -238,7 +254,12 @@ class TravelerRequestContactInfoScreenState
                               ListTile(
                                 leading: const Icon(
                                     FontAwesomeIcons.squareInstagram),
-                                title: Text(contacts!.instagram!),
+                                title: GestureDetector(
+                                  onTap: () {
+                                    _launchURL(contacts!.instagram!);
+                                  },
+                                  child: Text(contacts!.instagram!),
+                                ),
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
@@ -251,7 +272,12 @@ class TravelerRequestContactInfoScreenState
                             if (contacts!.twitter != null)
                               ListTile(
                                 leading: const Icon(FontAwesomeIcons.twitter),
-                                title: Text(contacts!.twitter!),
+                                title: GestureDetector(
+                                  onTap: () {
+                                    _launchURL(contacts!.twitter!);
+                                  },
+                                  child: Text(contacts!.twitter!),
+                                ),
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
@@ -264,7 +290,12 @@ class TravelerRequestContactInfoScreenState
                             if (contacts!.linkedIn != null)
                               ListTile(
                                 leading: const Icon(FontAwesomeIcons.linkedin),
-                                title: Text(contacts!.linkedIn!),
+                                title: GestureDetector(
+                                  onTap: () {
+                                    _launchURL(contacts!.linkedIn!);
+                                  },
+                                  child: Text(contacts!.linkedIn!),
+                                ),
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
@@ -277,7 +308,12 @@ class TravelerRequestContactInfoScreenState
                             if (contacts!.telegram != null)
                               ListTile(
                                 leading: const Icon(FontAwesomeIcons.telegram),
-                                title: Text(contacts!.telegram!),
+                                title: GestureDetector(
+                                  onTap: () {
+                                    _launchURL(contacts!.telegram!);
+                                  },
+                                  child: Text(contacts!.telegram!),
+                                ),
                                 trailing: InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(
@@ -291,114 +327,148 @@ class TravelerRequestContactInfoScreenState
                         ),
             ),
             if (requestStatus == RequestStatus.pending)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: AnimatedSize(
-                      duration: const Duration(milliseconds: 300),
-                      child: SizedBox(
-                        width: declineWidth,
-                        height: 40,
-                        child: ElevatedButton.icon(
-                          icon: isUpdating
-                              ? Container()
-                              : const Icon(FontAwesomeIcons.xmark),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red[600]),
-                          onPressed: () async {
-                            if (isUpdating) {
-                              return;
-                            }
-                            setState(() {
-                              isUpdating = true;
-                              declineWidth = 235;
-                              acceptWidth = 0;
-                            });
-                            try {
-                              await ShareRequestService()
-                                  .declineRequest(request.created);
-                              if (!mounted) return;
-                              _showSnackbar('Request declined', 'success');
-                              Navigator.pop(context, true);
-                            } on HttpException catch (e) {
-                              debugPrint(e.message);
-                              setState(() {
-                                isUpdating = false;
-                                declineWidth = 110;
-                                acceptWidth = 110;
-                              });
-                              _showSnackbar(
-                                  'Something went wrong, try again', 'error');
-                            }
-                          },
-                          label: isUpdating
-                              ? const SizedBox(
-                                  height: 25,
-                                  width: 25,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text('Decline'),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Disclaimer'),
+                        content: const SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              Text(disclaimerText),
+                            ],
+                          ),
                         ),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Close'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 10.0), // Adjust the value as needed
+                  child: Text(
+                    'Read Disclaimer',
+                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                  ),
+                ),
+              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    child: SizedBox(
+                      width: declineWidth,
+                      height: 40,
+                      child: ElevatedButton.icon(
+                        icon: isUpdating
+                            ? Container()
+                            : const Icon(FontAwesomeIcons.xmark),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red[600]),
+                        onPressed: () async {
+                          if (isUpdating) {
+                            return;
+                          }
+                          setState(() {
+                            isUpdating = true;
+                            declineWidth = 235;
+                            acceptWidth = 0;
+                          });
+                          try {
+                            await ShareRequestService()
+                                .declineRequest(request.created);
+                            if (!mounted) return;
+                            _showSnackbar('Request declined', 'success');
+                            Navigator.pop(context, true);
+                          } on HttpException catch (e) {
+                            debugPrint(e.message);
+                            setState(() {
+                              isUpdating = false;
+                              declineWidth = 110;
+                              acceptWidth = 110;
+                            });
+                            _showSnackbar(
+                                'Something went wrong, try again', 'error');
+                          }
+                        },
+                        label: isUpdating
+                            ? const SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text('Decline'),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 15),
-                  Flexible(
-                    child: AnimatedSize(
-                      duration: const Duration(milliseconds: 300),
-                      child: SizedBox(
-                        width: acceptWidth,
-                        height: 40,
-                        child: ElevatedButton.icon(
-                          icon: isUpdating
-                              ? Container()
-                              : const Icon(FontAwesomeIcons.check),
-                          onPressed: () async {
-                            if (isUpdating) {
-                              return;
-                            }
+                ),
+                const SizedBox(width: 15),
+                Flexible(
+                  child: AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    child: SizedBox(
+                      width: acceptWidth,
+                      height: 40,
+                      child: ElevatedButton.icon(
+                        icon: isUpdating
+                            ? Container()
+                            : const Icon(FontAwesomeIcons.check),
+                        onPressed: () async {
+                          if (isUpdating) {
+                            return;
+                          }
+                          setState(() {
+                            isUpdating = true;
+                            declineWidth = 0;
+                            acceptWidth = 235;
+                          });
+                          try {
+                            await ShareRequestService()
+                                .acceptRequest(request.created);
+                            if (!mounted) return;
+                            _showSnackbar('Request accepted', 'success');
+                            Navigator.pop(context, true);
+                          } on HttpException catch (e) {
+                            debugPrint(e.message);
                             setState(() {
-                              isUpdating = true;
-                              declineWidth = 0;
-                              acceptWidth = 235;
+                              isUpdating = false;
+                              declineWidth = 110;
+                              acceptWidth = 110;
                             });
-                            try {
-                              await ShareRequestService()
-                                  .acceptRequest(request.created);
-                              if (!mounted) return;
-                              _showSnackbar('Request accepted', 'success');
-                              Navigator.pop(context, true);
-                            } on HttpException catch (e) {
-                              debugPrint(e.message);
-                              setState(() {
-                                isUpdating = false;
-                                declineWidth = 110;
-                                acceptWidth = 110;
-                              });
-                              _showSnackbar(
-                                  'Something went wrong, try again', 'error');
-                            }
-                          },
-                          label: isUpdating
-                              ? const SizedBox(
-                                  height: 25,
-                                  width: 25,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text('Accept'),
-                        ),
+                            _showSnackbar(
+                                'Something went wrong, try again', 'error');
+                          }
+                        },
+                        label: isUpdating
+                            ? const SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text('Accept'),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
+            ),
             const SizedBox(height: 20),
           ],
         ),

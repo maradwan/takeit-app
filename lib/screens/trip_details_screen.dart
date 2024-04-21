@@ -8,6 +8,7 @@ import 'package:travel_app/model/requester_share_request.dart';
 import 'package:travel_app/model/trip.dart';
 import 'package:travel_app/service/share_request_service.dart';
 import 'package:travel_app/util/app_theme.dart';
+import 'package:travel_app/util/constants.dart';
 import 'package:travel_app/util/item_util.dart';
 import 'package:travel_app/widgets/skeleton.dart';
 
@@ -178,6 +179,38 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                           ),
                         );
                       }),
+                      if (!isLoading)
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Disclaimer'),
+                                  content: const SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text(disclaimerText),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Close'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: const Text(
+                            'Read Disclaimer',
+                            style: TextStyle(color: Colors.blue, fontSize: 12),
+                          ),
+                        ),
                       SizedBox(
                         width: double.infinity,
                         child: isLoading
