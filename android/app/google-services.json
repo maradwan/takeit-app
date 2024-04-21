@@ -1,43 +1,26 @@
 {
   "project_info": {
-    "project_number": "1079270040096",
-    "project_id": "takeit-821b3",
-    "storage_bucket": "takeit-821b3.appspot.com"
+    "project_number": "401005504800",
+    "project_id": "takeit-cddd2",
+    "storage_bucket": "takeit-cddd2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1079270040096:android:e04a29d3795869e1d91245",
+        "mobilesdk_app_id": "1:401005504800:android:35e5d2972c8cccf9904f45",
         "android_client_info": {
           "package_name": "com.gotakeit.take_it"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1079270040096-lh15a30nnetl39pqd53f7nq3s0inu13g.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB_EZM5DaWzG7oZXxF5TLbp9OX9PkVADrM"
+          "current_key": "AIzaSyCYsYw3hb2RaqPNOust-5nk-KeqvaUjzdA"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1079270040096-lh15a30nnetl39pqd53f7nq3s0inu13g.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1079270040096-04roiuantsrc19dglbm4t3k3p2bueubt.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.travelApp"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

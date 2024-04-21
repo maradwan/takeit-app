@@ -23,11 +23,17 @@ import 'package:travel_app/screens/tabs_screen.dart';
 import 'package:travel_app/screens/traveler_request_contact_info_screen.dart';
 import 'package:travel_app/screens/trip_details_screen.dart';
 import 'package:travel_app/screens/contacts_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
-
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
