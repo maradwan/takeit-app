@@ -25,14 +25,38 @@ import 'package:travel_app/screens/trip_details_screen.dart';
 import 'package:travel_app/screens/contacts_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  _initializeFCM();
+  FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
+
   runApp(const MyApp());
+}
+
+
+void _initializeFCM() {
+  FirebaseMessaging.instance.requestPermission();
+  FirebaseMessaging.instance.getToken().then((token) {
+    print("FCM Token: $token");
+    // Store the token on your server for sending targeted messages
+  });
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    // Handle the message here.
+    print('A foreground message just showed up: ${message.messageId}');
+  });
+}
+
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+  // Handle the message here.
+  print('A background message just showed up: ${message.messageId}');
 }
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
