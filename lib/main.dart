@@ -57,16 +57,13 @@ void _initializeFCM() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     // Handle the message here.
     print('A foreground message just showed up: ${message.messageId}');
-
-    print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
 
-    localNotificationService.showNotificationAndroid(
-        message.notification!.title!, message.notification!.body!);
-    // _showNotification(notificationId, notificationTitle, notificationContent, payload)
+
 
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
+      localNotificationService.showNotificationAndroid(message.notification!.title!, message.notification!.body!);
     }
   });
 
