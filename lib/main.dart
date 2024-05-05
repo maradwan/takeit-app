@@ -26,38 +26,60 @@ import 'package:travel_app/screens/contacts_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'util/LocalNotificationService.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  _initializeFCM();
+
+  runApp(const MyApp());
+}
+
+void _initializeFCM() async {
+  await LocalNotificationService().init();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  _initializeFCM();
-  FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
-
-  runApp(const MyApp());
-}
+  LocalNotificationService localNotificationService = LocalNotificationService();
 
 
-void _initializeFCM() {
-  FirebaseMessaging.instance.requestPermission();
-  FirebaseMessaging.instance.getToken().then((token) {
+  var _firebaseMessagingInstance = FirebaseMessaging.instance;
+  _firebaseMessagingInstance.requestPermission();
+  _firebaseMessagingInstance.getToken().then((token) {
     print("FCM Token: $token");
     // Store the token on your server for sending targeted messages
   });
 
+  //foreground
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     // Handle the message here.
     print('A foreground message just showed up: ${message.messageId}');
+
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    localNotificationService.showNotificationAndroid(
+        message.notification!.title!, message.notification!.body!);
+    // _showNotification(notificationId, notificationTitle, notificationContent, payload)
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
   });
+
+//background
+  FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
 }
+
 
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   // Handle the message here.
   print('A background message just showed up: ${message.messageId}');
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -90,40 +112,41 @@ class _MyAppState extends State<MyApp> {
           home: _amplifyConfigured
               ? const LoginScreen()
               : Scaffold(
-                  backgroundColor: Colors.teal,
-                  body: Stack(
-                    children: [
-                      Center(
-                        child: SizedBox(
-                          width: 180,
-                          height: 180,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 10,
-                            color: Colors.teal[300],
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 85,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Image.asset(
-                              "assets/images/take_it.png",
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            backgroundColor: Colors.teal,
+            body: Stack(
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: 180,
+                    height: 180,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 10,
+                      color: Colors.teal[300],
+                    ),
                   ),
                 ),
+                Center(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 85,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Image.asset(
+                        "assets/images/take_it.png",
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           routes: {
             ConfirmEmailScreen.routeName: (_) => const ConfirmEmailScreen(),
             ConfirmResetPasswordScreen.routeName: (_) =>
-                const ConfirmResetPasswordScreen(),
+            const ConfirmResetPasswordScreen(),
             TabsScreen.routeName: (_) => const TabsScreen(),
-            SearchResultScreen.routeName: (_) => ChangeNotifierProvider(
+            SearchResultScreen.routeName: (_) =>
+                ChangeNotifierProvider(
                   create: (_) => SearchProvider(),
                   child: const SearchResultScreen(),
                 ),
@@ -136,7 +159,7 @@ class _MyAppState extends State<MyApp> {
                 ),
             ContactsScreen.routeName: (_) => const ContactsScreen(),
             RequesterRequestContactInfoScreen.routeName: (_) =>
-                const RequesterRequestContactInfoScreen(),
+            const RequesterRequestContactInfoScreen(),
             DeleteAccountScreen.routeName: (_) => const DeleteAccountScreen(),
             TAndC.routeName: (_) => const TAndC(),
             PrivacyScreen.routeName: (_) => const PrivacyScreen(),
