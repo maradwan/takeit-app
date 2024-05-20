@@ -11,6 +11,7 @@
     </queries>
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:label="Take It">

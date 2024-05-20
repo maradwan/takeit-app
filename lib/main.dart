@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_app/amplifyconfiguration_prod.dart';
 import 'package:travel_app/screens/privacy_screen.dart';
+import 'package:travel_app/service/devices_service.dart';
+import 'package:travel_app/util/devices.dart';
 import 'package:travel_app/util/env_config.dart';
 import 'package:travel_app/amplifyconfiguration_dev.dart';
 import 'package:travel_app/providers/global_provider.dart';
@@ -48,18 +50,20 @@ void _initializeFCM() async {
 
   var _firebaseMessagingInstance = FirebaseMessaging.instance;
   _firebaseMessagingInstance.requestPermission();
-  _firebaseMessagingInstance.getToken().then((token) {
-    print("FCM Token: $token");
-    // Store the token on your server for sending targeted messages
-  });
+
+
+  String? token = await _firebaseMessagingInstance.getToken();
+
+  String? deviceId = await getDeviceId();
+
+  DevicesService().updateToken(token!, deviceId!);
+
 
   //foreground
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     // Handle the message here.
     print('A foreground message just showed up: ${message.messageId}');
     print('Message data: ${message.data}');
-
-
 
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
